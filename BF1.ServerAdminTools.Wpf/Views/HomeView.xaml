@@ -27,16 +27,8 @@
                 Background="Transparent"
                 Cursor="Arrow"
                 IsReadOnly="True"
-                Text="加载中..."
                 TextWrapping="Wrap">
-                <TextBox.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem
-                            Name="MenuItem_RefushNotice"
-                            Click="MenuItem_RefushNotice_Click"
-                            Header="刷新通知公告" />
-                    </ContextMenu>
-                </TextBox.ContextMenu>
+                战地一服管工具
             </TextBox>
             <TextBox
                 x:Name="TextBox_Change"
@@ -45,7 +37,6 @@
                 Background="Transparent"
                 Cursor="Arrow"
                 IsReadOnly="True"
-                Text="加载中..."
                 TextWrapping="Wrap" />
         </UniformGrid>
     </Grid>

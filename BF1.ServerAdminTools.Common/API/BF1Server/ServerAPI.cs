@@ -443,6 +443,116 @@ public static class ServerAPI
         return respContent;
     }
 
+    public static async Task<RespContent<GetWeaponsByPersonaId>> GetWeaponsByPersonaId(string personaId)
+    {
+        Stopwatch sw = new();
+        sw.Start();
+
+        RespContent<GetWeaponsByPersonaId> respContent = new();
+
+        try
+        {
+            headers["X-GatewaySession"] = Globals.Config.SessionId;
+            respContent.IsSuccess = false;
+
+            var reqBody = new
+            {
+                jsonrpc = "2.0",
+                method = "Progression.getWeaponsByPersonaId",
+                @params = new
+                {
+                    game = "tunguska",
+                    personaId
+                },
+                id = Guid.NewGuid()
+            };
+
+            var request = new RestRequest()
+                .AddHeaders(headers)
+                .AddJsonBody(reqBody);
+
+            var response = await client.ExecutePostAsync(request);
+
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                respContent.IsSuccess = true;
+                respContent.Message = response.Content;
+
+                respContent.Obj = JsonUtil.JsonDese<GetWeaponsByPersonaId>(respContent.Message);
+            }
+            else
+            {
+                var respError = JsonUtil.JsonDese<RespError>(response.Content);
+
+                respContent.Message = $"{respError.error.code} {respError.error.message}";
+            }
+        }
+        catch (Exception ex)
+        {
+            respContent.Message = ex.Message;
+        }
+
+        sw.Stop();
+        respContent.ExecTime = sw.Elapsed.TotalSeconds;
+
+        return respContent;
+    }
+
+    public static async Task<RespContent<GetVehiclesByPersonaId>> GetVehiclesByPersonaId(string personaId)
+    {
+        Stopwatch sw = new();
+        sw.Start();
+
+        RespContent<GetVehiclesByPersonaId> respContent = new();
+
+        try
+        {
+            headers["X-GatewaySession"] = Globals.Config.SessionId;
+            respContent.IsSuccess = false;
+
+            var reqBody = new
+            {
+                jsonrpc = "2.0",
+                method = "Progression.getVehiclesByPersonaId",
+                @params = new
+                {
+                    game = "tunguska",
+                    personaId
+                },
+                id = Guid.NewGuid()
+            };
+
+            var request = new RestRequest()
+                .AddHeaders(headers)
+                .AddJsonBody(reqBody);
+
+            var response = await client.ExecutePostAsync(request);
+
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                respContent.IsSuccess = true;
+                respContent.Message = response.Content;
+
+                respContent.Obj = JsonUtil.JsonDese<GetVehiclesByPersonaId>(respContent.Message);
+            }
+            else
+            {
+                var respError = JsonUtil.JsonDese<RespError>(response.Content);
+
+                respContent.Message = $"{respError.error.code} {respError.error.message}";
+            }
+        }
+        catch (Exception ex)
+        {
+            respContent.Message = ex.Message;
+        }
+
+        sw.Stop();
+        respContent.ExecTime = sw.Elapsed.TotalSeconds;
+
+        return respContent;
+    }
+
     public static async Task<RespContent<DetailedStatsByPersonaId>> DetailedStatsByPersonaId(string personaId)
     {
         Stopwatch sw = new();

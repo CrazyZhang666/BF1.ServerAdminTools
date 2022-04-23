@@ -4,7 +4,6 @@ public static class GameWindow
 {
     private static bool IsOut = true;
     private static bool NeedRun = false;
-    private static Timer timer = new(Run);
 
     public static void Pause()
     {
@@ -18,7 +17,17 @@ public static class GameWindow
 
     static GameWindow()
     {
-        timer.Change(TimeSpan.Zero, TimeSpan.FromSeconds(10));
+        new Thread(() =>
+        {
+            while (true)
+            {
+                Thread.Sleep(10000);
+                Run();
+            }
+        })
+        { 
+            Name = "GameImageThread"
+        }.Start();
     }
 
     public static void Join()
@@ -74,7 +83,7 @@ public static class GameWindow
         IsOut = false;
     }
 
-    private static void Run(object? state)
+    private static void Run()
     {
         if (!NeedRun)
             return;

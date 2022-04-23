@@ -44,47 +44,47 @@
             </TabItem>
 
             <!--  #############################################################################  -->
-            <TabItem Header="查询">
+            <TabItem Header="玩家查询">
                 <views:QueryView />
             </TabItem>
 
             <!--  #############################################################################  -->
-            <TabItem Header="服务器">
+            <TabItem Header="服务器查询">
                 <views:ServerView />
             </TabItem>
 
             <!--  #############################################################################  -->
-            <TabItem Header="权限">
+            <TabItem Header="管理员登录">
                 <views:AuthView />
             </TabItem>
 
             <!--  #############################################################################  -->
-            <TabItem Header="得分板">
+            <TabItem Header="服务器计分板">
                 <views:ScoreView />
             </TabItem>
 
             <!--  #############################################################################  -->
-            <TabItem Header="详情">
+            <TabItem Header="服务器详情">
                 <views:DetailView />
             </TabItem>
 
             <!--  #############################################################################  -->
-            <TabItem Header="规则">
+            <TabItem Header="服务器规则">
                 <views:RuleView />
             </TabItem>
 
             <!--  #############################################################################  -->
-            <TabItem Header="日志">
+            <TabItem Header="工具日志">
                 <views:LogView />
             </TabItem>
 
             <!--  #############################################################################  -->
-            <TabItem Header="聊天栏">
+            <TabItem Header="游戏聊天栏">
                 <views:ChatView />
             </TabItem>
 
             <!--  #############################################################################  -->
-            <TabItem Header="选项">
+            <TabItem Header="工具选项">
                 <views:OptionView />
             </TabItem>
 
@@ -144,8 +144,9 @@
                 Width="30"
                 Height="30"
                 Padding="5"
+                Click="Button_Click_2"
                 Content="▭"
-                Style="{StaticResource ButtonStyle_Web}" Click="Button_Click_2" />
+                Style="{StaticResource ButtonStyle_Web}" />
             <Button
                 Width="30"
                 Height="30"

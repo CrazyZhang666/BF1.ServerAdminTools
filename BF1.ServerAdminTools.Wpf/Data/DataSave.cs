@@ -23,14 +23,5 @@ public static class DataSave
     /// </summary>
     public static bool IsShowCHSWeaponName = true;
 
-    /// <summary>
-    /// 保存违规玩家列表信息
-    /// </summary>
-    public static Dictionary<long, BreakRuleInfo> BreakRuleInfo_PlayerList { get; } = new();
-    /// <summary>
-    /// 已经发送踢出的ID
-    /// </summary>
-    public static Dictionary<long, BreakRuleInfo> NowKick { get; } = new();
-
     public static WpfConfigObj Config { get; set; }
 }

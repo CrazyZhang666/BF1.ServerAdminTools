@@ -1,5 +1,6 @@
 ﻿using BF1.ServerAdminTools.Common.Data;
 using BF1.ServerAdminTools.Common.Helper;
+using BF1.ServerAdminTools.Wpf.Tasks;
 
 namespace BF1.ServerAdminTools.Common.Views
 {
@@ -8,125 +9,121 @@ namespace BF1.ServerAdminTools.Common.Views
     /// </summary>
     public partial class LogView : UserControl
     {
-        public static Action<BreakRuleInfo> _dAddKickOKLog;
-        public static Action<BreakRuleInfo> _dAddKickNOLog;
+        public static Action<BreakRuleInfo>? AddKickOKLog;
+        public static Action<BreakRuleInfo>? AddKickNOLog;
 
-        public static Action<ChangeTeamInfo> _dAddChangeTeamInfo;
         public static Semaphore Semaphore = new(0, 5);
 
         private Dictionary<long, PlayerData> Player_Team1 = new();
         private Dictionary<long, PlayerData> Player_Team2 = new();
 
+        private Dictionary<long, PlayerData>  New_Player_Team1 = new();
+        private Dictionary<long, PlayerData>  New_Player_Team2 = new();
+
         public LogView()
         {
             InitializeComponent();
 
-            _dAddKickOKLog = AddKickOKLog;
-            _dAddKickNOLog = AddKickNOLog;
+            AddKickOKLog = FAddKickOKLog;
+            AddKickNOLog = FAddKickNOLog;
 
-            _dAddChangeTeamInfo = AddChangeTeamLog;
-
-            MainWindow.ClosingDisposeEvent += MainWindow_ClosingDisposeEvent;
-
-            new Thread(CheckPlayerChangeTeam)
+            new Thread(Run)
             {
                 Name = "CheckPlayerChangeTeamThread",
                 IsBackground = true
             }.Start();
         }
 
-        private void MainWindow_ClosingDisposeEvent()
+        private void Run()
         {
-
-        }
-
-        private void CheckPlayerChangeTeam()
-        {
-            var New_Player_Team1 = new Dictionary<long, PlayerData>();
-            var New_Player_Team2 = new Dictionary<long, PlayerData>();
-
             while (true)
             {
                 Semaphore.WaitOne();
-                if (string.IsNullOrEmpty(Globals.Config.GameId))
-                    continue;
+                CheckPlayerChangeTeam();
+                TaskTick.Done();
+            }
+        }
 
-                if (Globals.PlayerDatas_Team1.Count == 0 && Globals.PlayerDatas_Team2.Count == 0)
-                {
-                    New_Player_Team1.Clear();
-                    New_Player_Team2.Clear();
-                    Player_Team1.Clear();
-                    Player_Team2.Clear();
-                    continue;
-                }
+        private void CheckPlayerChangeTeam() 
+        {
+            if (string.IsNullOrEmpty(Globals.Config.GameId))
+                return;
 
-                // 第一次初始化
-                if (Player_Team1.Count == 0 && Player_Team2.Count == 0)
-                {
-                    foreach (var item in Globals.PlayerDatas_Team1)
-                    {
-                        Player_Team1.Add(item.Key, item.Value);
-                    }
-                    foreach (var item in Globals.PlayerDatas_Team2)
-                    {
-                        Player_Team2.Add(item.Key, item.Value);
-                    }
-                    continue;
-                }
-
+            if (Globals.PlayerDatas_Team1.Count == 0 && Globals.PlayerDatas_Team2.Count == 0)
+            {
                 New_Player_Team1.Clear();
                 New_Player_Team2.Clear();
-                // 更新保存的数据
-                foreach (var item in Globals.PlayerDatas_Team1)
-                {
-                    New_Player_Team1.Add(item.Key, item.Value);
-                }
-                foreach (var item in Globals.PlayerDatas_Team2)
-                {
-                    New_Player_Team2.Add(item.Key, item.Value);
-                }
-
-                // 变量保存的队伍1玩家列表
-                foreach (var item in New_Player_Team1)
-                {
-                    if (Player_Team2.ContainsKey(item.Key))
-                    {
-                        _dAddChangeTeamInfo(new ChangeTeamInfo()
-                        {
-                            Rank = item.Value.Rank,
-                            Name = item.Value.Name,
-                            PersonaId = item.Value.PersonaId,
-                            Status = "从 队伍2 更换到 队伍1"
-                        });
-                    }
-                }
-
-                // 变量保存的队伍2玩家列表
-                foreach (var item in New_Player_Team2)
-                {
-                    if (Player_Team1.ContainsKey(item.Key))
-                    {
-                        _dAddChangeTeamInfo(new ChangeTeamInfo()
-                        {
-                            Rank = item.Value.Rank,
-                            Name = item.Value.Name,
-                            PersonaId = item.Value.PersonaId,
-                            Status = "从 队伍1 更换到 队伍2"
-                        });
-                    }
-                }
-
                 Player_Team1.Clear();
                 Player_Team2.Clear();
-                // 更新保存的数据
-                foreach (var item in New_Player_Team1)
+                return;
+            }
+
+            // 第一次初始化
+            if (Player_Team1.Count == 0 && Player_Team2.Count == 0)
+            {
+                foreach (var item in Globals.PlayerDatas_Team1)
                 {
                     Player_Team1.Add(item.Key, item.Value);
                 }
-                foreach (var item in New_Player_Team2)
+                foreach (var item in Globals.PlayerDatas_Team2)
                 {
                     Player_Team2.Add(item.Key, item.Value);
                 }
+                return;
+            }
+
+            New_Player_Team1.Clear();
+            New_Player_Team2.Clear();
+            // 更新保存的数据
+            foreach (var item in Globals.PlayerDatas_Team1)
+            {
+                New_Player_Team1.Add(item.Key, item.Value);
+            }
+            foreach (var item in Globals.PlayerDatas_Team2)
+            {
+                New_Player_Team2.Add(item.Key, item.Value);
+            }
+
+            // 变量保存的队伍1玩家列表
+            foreach (var item in New_Player_Team1)
+            {
+                if (Player_Team2.ContainsKey(item.Key))
+                {
+                    AddChangeTeamLog(new ChangeTeamInfo()
+                    {
+                        Rank = item.Value.Rank,
+                        Name = item.Value.Name,
+                        PersonaId = item.Value.PersonaId,
+                        Status = "从 队伍2 更换到 队伍1"
+                    });
+                }
+            }
+
+            // 变量保存的队伍2玩家列表
+            foreach (var item in New_Player_Team2)
+            {
+                if (Player_Team1.ContainsKey(item.Key))
+                {
+                    AddChangeTeamLog(new ChangeTeamInfo()
+                    {
+                        Rank = item.Value.Rank,
+                        Name = item.Value.Name,
+                        PersonaId = item.Value.PersonaId,
+                        Status = "从 队伍1 更换到 队伍2"
+                    });
+                }
+            }
+
+            Player_Team1.Clear();
+            Player_Team2.Clear();
+            // 更新保存的数据
+            foreach (var item in New_Player_Team1)
+            {
+                Player_Team1.Add(item.Key, item.Value);
+            }
+            foreach (var item in New_Player_Team2)
+            {
+                Player_Team2.Add(item.Key, item.Value);
             }
         }
 
@@ -149,7 +146,7 @@ namespace BF1.ServerAdminTools.Common.Views
 
         /////////////////////////////////////////////////////
 
-        private void AddKickOKLog(BreakRuleInfo info)
+        private void FAddKickOKLog(BreakRuleInfo info)
         {
             Application.Current.Dispatcher.BeginInvoke(() =>
             {
@@ -168,7 +165,7 @@ namespace BF1.ServerAdminTools.Common.Views
             });
         }
 
-        private void AddKickNOLog(BreakRuleInfo info)
+        private void FAddKickNOLog(BreakRuleInfo info)
         {
             Application.Current.Dispatcher.BeginInvoke(() =>
             {

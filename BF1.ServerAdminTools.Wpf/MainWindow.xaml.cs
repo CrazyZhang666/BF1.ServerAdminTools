@@ -2,6 +2,7 @@
 using BF1.ServerAdminTools.Common.Models;
 using BF1.ServerAdminTools.Common.Utils;
 using BF1.ServerAdminTools.Common.Views;
+using BF1.ServerAdminTools.Wpf.Tasks;
 using BF1.ServerAdminTools.Wpf.Utils;
 using System.Windows.Media.Imaging;
 
@@ -106,6 +107,7 @@ namespace BF1.ServerAdminTools.Common
             else
                 Core.LogError($"中文聊天指针分配失败");
 
+            Tasks.Start();
         }
 
         private void Window_Main_Closing(object sender, CancelEventArgs e)

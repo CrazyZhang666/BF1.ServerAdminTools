@@ -220,19 +220,16 @@
                         <RadioButton
                             x:Name="RadioButton_SwitchMapSelect0"
                             Margin="5"
-                            Checked="RadioButton_SwitchMapSelect0_Checked"
                             Content="顺序换图"
                             GroupName="SwitchMapSelect" />
                         <RadioButton
                             x:Name="RadioButton_SwitchMapSelect1"
                             Margin="5"
-                            Checked="RadioButton_SwitchMapSelect1_Checked"
                             Content="随机换图"
                             GroupName="SwitchMapSelect" />
                         <RadioButton
                             x:Name="RadioButton_SwitchMapSelect2"
                             Margin="5"
-                            Checked="RadioButton_SwitchMapSelect2_Checked"
                             Content="重开原图"
                             GroupName="SwitchMapSelect" />
                     </WrapPanel>
@@ -488,16 +485,16 @@
                 <Button
                     x:Name="Button_ApplyRule"
                     Click="Button_ApplyRule_Click"
-                    Content="① 应用当前规则" />
+                    Content="应用当前规则" />
                 <Button
                     x:Name="Button_QueryRule"
                     Click="Button_QueryRule_Click"
-                    Content="② 查询当前规则" />
+                    Content="查询当前规则" />
+                <TextBlock />
                 <Button
                     x:Name="Button_CheckBreakRulePlayer"
                     Click="Button_CheckBreakRulePlayer_Click"
-                    Content="③ 检查违规玩家" />
-                <TextBlock />
+                    Content="检查违规玩家" />
                 <Button
                     x:Name="Button_ManualKickBreakRulePlayer"
                     Margin="0,5,5,0"

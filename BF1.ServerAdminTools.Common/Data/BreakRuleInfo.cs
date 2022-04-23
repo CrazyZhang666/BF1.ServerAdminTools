@@ -24,10 +24,6 @@ public record BreakRuleInfo
     /// </summary>
     public string Reason { get; set; }
     /// <summary>
-    /// 踢人标志，-1代表默认，0代表正在踢人中，1代表踢出成功，2代表踢出失败
-    /// </summary>
-    public int Flag { get; set; }
-    /// <summary>
     /// 执行踢人操作的状态
     /// </summary>
     public string Status { get; set; }

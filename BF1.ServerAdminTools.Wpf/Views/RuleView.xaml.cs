@@ -6,6 +6,7 @@ using BF1.ServerAdminTools.Common.Models;
 using BF1.ServerAdminTools.Common.Utils;
 using BF1.ServerAdminTools.Common.Windows;
 using BF1.ServerAdminTools.Wpf.Data;
+using BF1.ServerAdminTools.Wpf.Tasks;
 
 namespace BF1.ServerAdminTools.Common.Views
 {
@@ -14,10 +15,6 @@ namespace BF1.ServerAdminTools.Common.Views
     /// </summary>
     public partial class RuleView : UserControl
     {
-        /// <summary>
-        /// 是否已经执行
-        /// </summary>
-        private bool isHasBeenExec = false;
         /// <summary>
         /// 是否执行应用规则
         /// </summary>
@@ -38,12 +35,6 @@ namespace BF1.ServerAdminTools.Common.Views
                 });
             }
             ListBox_WeaponInfo.SelectedIndex = 0;
-
-            new Thread(AutoKickLifeBreakPlayer)
-            {
-                Name = "AutoKickLifeThread",
-                IsBackground = true
-            }.Start();
 
             new Thread(CheckState)
             {
@@ -238,207 +229,27 @@ namespace BF1.ServerAdminTools.Common.Views
         {
             while (true)
             {
+                if (!DataSave.AutoKickBreakPlayer)
+                {
+                    Dispatcher.Invoke(() =>
+                    {
+                        CheckBox_RunAutoKick.IsChecked = false;
+                    });
+                }
+
                 if (string.IsNullOrEmpty(Globals.Config.GameId))
                 {
-                    if (!isHasBeenExec)
+                    Dispatcher.BeginInvoke(() =>
                     {
-                        Dispatcher.BeginInvoke(() =>
+                        if (CheckBox_RunAutoKick.IsChecked == true)
                         {
-                            if (CheckBox_RunAutoKick.IsChecked == true)
-                            {
-                                CheckBox_RunAutoKick.IsChecked = false;
-                                DataSave.AutoKickBreakPlayer = false;
-                            }
-                        });
-
-                        isHasBeenExec = true;
-                    }
+                            CheckBox_RunAutoKick.IsChecked = false;
+                            DataSave.AutoKickBreakPlayer = false;
+                        }
+                    });
                 }
 
                 Thread.Sleep(1000);
-            }
-        }
-
-        ////////////////////////////////////////////////////////////////////////////////
-
-        private void AutoKickLifeBreakPlayer()
-        {
-            int a = 0;
-            List<PlayerData> players = new();
-            while (true)
-            {
-                Thread.Sleep(100);
-                // 自动踢出违规玩家
-                if (DataSave.AutoKickBreakPlayer)
-                {
-                    if (!Globals.IsGameRun || !Globals.IsToolInit)
-                    {
-                        DataSave.AutoKickBreakPlayer = false;
-                        Dispatcher.Invoke(() =>
-                        {
-                            CheckBox_RunAutoKick.IsChecked = false;
-                        });
-                    }
-                    if (DataSave.NowRule.LifeMaxKD == 0 && DataSave.NowRule.LifeMaxKPM == 0
-                        && DataSave.NowRule.LifeMaxWeaponStar == 0 && DataSave.NowRule.LifeMaxVehicleStar == 0)
-                        continue;
-
-                    lock (Globals.PlayerDatas_Team1)
-                    {
-                        players.AddRange(Globals.PlayerDatas_Team1.Values);
-                    }
-                    lock (Globals.PlayerDatas_Team2)
-                    {
-                        players.AddRange(Globals.PlayerDatas_Team2.Values);
-                    }
-
-                    try
-                    {
-                        foreach (var item in players)
-                        {
-                            CheckBreakLifePlayer(item);
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        Core.LogError("生涯数据获取错误", e);
-                        MsgBoxUtil.ErrorMsgBox("生涯数据获取错误", e);
-                    }
-                    Thread.Sleep(20000);
-                }
-            }
-        }
-
-        private void CheckBreakLifePlayer(PlayerData data)
-        {
-            // 跳过管理员
-            if (Globals.Server_AdminList.Contains(data.PersonaId))
-                return;
-
-            // 跳过白名单玩家
-            if (DataSave.NowRule.Custom_WhiteList.Contains(data.Name))
-                return;
-
-            lock (DataSave.NowKick)
-            {
-                if (DataSave.NowKick.ContainsKey(data.PersonaId))
-                    return;
-            }
-
-            lock (Globals.PlayerDatas_Team1)
-            {
-                lock (Globals.PlayerDatas_Team2)
-                {
-                    //已经不在服务器了
-                    if (!Globals.PlayerDatas_Team1.ContainsKey(data.PersonaId) && !Globals.PlayerDatas_Team2.ContainsKey(data.PersonaId))
-                        return;
-                }
-            }
-
-            var resultTemp = ServerAPI.DetailedStatsByPersonaId(data.PersonaId.ToString()).Result;
-            if (!resultTemp.IsSuccess)
-            {
-                return;
-            }
-
-            var career = resultTemp.Obj;
-
-            // 拿到该玩家的生涯数据
-            int kills = career.result.basicStats.kills;
-            int deaths = career.result.basicStats.deaths;
-
-            float kd = (float)Math.Round((double)kills / deaths, 2);
-            float kpm = career.result.basicStats.kpm;
-            int weaponStar =0;
-            int vehicleStar=0;
-            foreach (var item in career.result.kitStats)
-            {
-                if (weaponStar < (int)item.kills)
-                    weaponStar = (int)item.kills;
-            }
-
-            foreach (var item in career.result.vehicleStats)
-            {
-                if (vehicleStar < (int)item.killsAs)
-                    vehicleStar = (int)item.killsAs;
-            }
-
-            weaponStar = weaponStar / 100;
-            vehicleStar = vehicleStar / 100;
-
-            // 限制玩家生涯KD
-            if (DataSave.NowRule.LifeMaxKD != 0 && kd > DataSave.NowRule.LifeMaxKD)
-            {
-                AutoKickPlayer(new BreakRuleInfo
-                {
-                    Name = data.Name,
-                    PersonaId = data.PersonaId,
-                    Reason = $"Life KD Limit {DataSave.NowRule.LifeMaxKD:0.00}",
-                    Type = BreakType.Life_KD_Limit
-                });
-
-                return;
-            }
-
-            // 限制玩家生涯KPM
-            if (DataSave.NowRule.LifeMaxKPM != 0 && kpm > DataSave.NowRule.LifeMaxKPM)
-            {
-                AutoKickPlayer(new BreakRuleInfo
-                {
-                    Name = data.Name,
-                    PersonaId = data.PersonaId,
-                    Reason = $"Life KPM Limit {DataSave.NowRule.LifeMaxKPM:0.00}",
-                    Type = BreakType.Life_KPM_Limit
-                });
-
-                return;
-            }
-
-            // 限制玩家武器星级
-            if (DataSave.NowRule.LifeMaxWeaponStar != 0 && weaponStar > DataSave.NowRule.LifeMaxWeaponStar)
-            {
-                AutoKickPlayer(new BreakRuleInfo
-                {
-                    Name = data.Name,
-                    PersonaId = data.PersonaId,
-                    Reason = $"Life Weapon Star Limit {DataSave.NowRule.LifeMaxWeaponStar:0}",
-                    Type = BreakType.Life_Weapon_Star_Limit
-                });
-
-                return;
-            }
-
-            // 限制玩家载具星级
-            if (DataSave.NowRule.LifeMaxVehicleStar != 0 && vehicleStar > DataSave.NowRule.LifeMaxVehicleStar)
-            {
-                AutoKickPlayer(new BreakRuleInfo
-                {
-                    Name = data.Name,
-                    PersonaId = data.PersonaId,
-                    Reason = $"Life Vehicle Star Limit {DataSave.NowRule.LifeMaxVehicleStar:0}",
-                    Type = BreakType.Life_Vehicle_Star_Limit
-                });
-
-                return;
-            }
-        }
-
-        // 自动踢出违规玩家
-        private async void AutoKickPlayer(BreakRuleInfo info)
-        {
-            var result = await ServerAPI.AdminKickPlayer(info.PersonaId.ToString(), info.Reason);
-
-            if (result.IsSuccess)
-            {
-                info.Status = "踢出成功";
-                info.Time = DateTime.Now;
-                LogView._dAddKickOKLog(info);
-            }
-            else
-            {
-                info.Status = "踢出失败 " + result.Message;
-                info.Time = DateTime.Now;
-                LogView._dAddKickNOLog(info);
             }
         }
 
@@ -825,9 +636,16 @@ namespace BF1.ServerAdminTools.Common.Views
             MainWindow._SetOperatingState(1, $"查询当前规则成功，请点击<检查违规玩家>测试是否正确");
         }
 
-        private void Button_CheckBreakRulePlayer_Click(object sender, RoutedEventArgs e)
+        private bool isRun;
+
+        private async void Button_CheckBreakRulePlayer_Click(object sender, RoutedEventArgs e)
         {
             AudioUtil.ClickSound();
+
+            if (isRun)
+                return;
+
+            isRun = true;
 
             TextBox_RuleLog.Clear();
 
@@ -836,10 +654,51 @@ namespace BF1.ServerAdminTools.Common.Views
             AppendLog($"{DateTime.Now:yyyy/MM/dd HH:mm:ss}");
             AppendLog("");
 
+            if (!Globals.IsGameRun || !Globals.IsToolInit)
+            {
+                MainWindow._SetOperatingState(3, $"运行环境检查失败");
+                AppendLog("运行环境检查失败");
+                AppendLog("");
+                return;
+            }
+
+            AppendLog("正在检查玩家");
+
+            TaskCheckLife.NeedPause = true;
+            TaskCheckRule.NeedPause = true;
+
+            await Task.Run(() =>
+            {
+                var team1Player = new List<PlayerData>();
+
+                lock (Globals.PlayerDatas_Team1)
+                {
+                    team1Player.AddRange(Globals.PlayerDatas_Team1.Values);
+                }
+                lock (Globals.PlayerDatas_Team2)
+                {
+                    team1Player.AddRange(Globals.PlayerDatas_Team2.Values);
+                }
+
+                foreach (var item in team1Player)
+                {
+                    Dispatcher.Invoke(() =>
+                    {
+                        AppendLog($"正在检查玩家: {item.Name}");
+                    });
+                    TaskCheckLife.CheckBreakLifePlayer(item);
+                }
+
+                TaskCheckRule.StartCheck();
+            });
+
+            TaskCheckLife.NeedPause = false;
+            TaskCheckRule.NeedPause = false;
+
             int index = 1;
             AppendLog($"========== 违规类型 : 限制玩家最高击杀 ==========");
             AppendLog("");
-            var list = DataSave.BreakRuleInfo_PlayerList.Values.Where(item => item.Type is BreakType.Kill_Limit);
+            var list = TaskKick.NeedKick.Values.Where(item => item.Type is BreakType.Kill_Limit);
             foreach (var item in list)
             {
                 AppendLog($"玩家ID {index++} : {item.Name}");
@@ -849,7 +708,7 @@ namespace BF1.ServerAdminTools.Common.Views
             index = 1;
             AppendLog($"========== 违规类型 : 限制玩家最高KD ==========");
             AppendLog("");
-            list = DataSave.BreakRuleInfo_PlayerList.Values.Where(item => item.Type is BreakType.KD_Limit);
+            list = TaskKick.NeedKick.Values.Where(item => item.Type is BreakType.KD_Limit);
             foreach (var item in list)
             {
                 AppendLog($"玩家ID {index++} : {item.Name}");
@@ -859,7 +718,7 @@ namespace BF1.ServerAdminTools.Common.Views
             index = 1;
             AppendLog($"========== 违规类型 : 限制玩家最高KPM ==========");
             AppendLog("");
-            list = DataSave.BreakRuleInfo_PlayerList.Values.Where(item => item.Type is BreakType.KPM_Limit);
+            list = TaskKick.NeedKick.Values.Where(item => item.Type is BreakType.KPM_Limit);
             foreach (var item in list)
             {
                 AppendLog($"玩家ID {index++} : {item.Name}");
@@ -869,7 +728,7 @@ namespace BF1.ServerAdminTools.Common.Views
             index = 1;
             AppendLog($"========== 违规类型 : 限制玩家等级范围 ==========");
             AppendLog("");
-            list = DataSave.BreakRuleInfo_PlayerList.Values.Where(item => item.Type is BreakType.Rank_Limit);
+            list = TaskKick.NeedKick.Values.Where(item => item.Type is BreakType.Rank_Limit);
             foreach (var item in list)
             {
                 AppendLog($"玩家ID {index++} : {item.Name}");
@@ -879,7 +738,7 @@ namespace BF1.ServerAdminTools.Common.Views
             index = 1;
             AppendLog($"========== 违规类型 : 限制玩家使用武器 ==========");
             AppendLog("");
-            list = DataSave.BreakRuleInfo_PlayerList.Values.Where(item => item.Type is BreakType.Weapon_Limit);
+            list = TaskKick.NeedKick.Values.Where(item => item.Type is BreakType.Weapon_Limit);
             foreach (var item in list)
             {
                 AppendLog($"玩家ID {index++} : {item.Name}");
@@ -887,6 +746,8 @@ namespace BF1.ServerAdminTools.Common.Views
             AppendLog("\n");
 
             MainWindow._SetOperatingState(1, $"检查违规玩家成功，如果符合规则就可以勾选<激活自动踢出违规玩家>了");
+
+            isRun = false;
         }
 
         private void Button_Add_BlackList_Click(object sender, RoutedEventArgs e)
@@ -1212,10 +1073,13 @@ namespace BF1.ServerAdminTools.Common.Views
                     AppendLog("");
                     AppendLog("环境检查完毕，自动踢人已开启");
 
-                    isHasBeenExec = false;
-
                     DataSave.AutoKickBreakPlayer = true;
                     MainWindow._SetOperatingState(1, $"自动踢人开启成功");
+                    await Task.Run(() =>
+                    {
+                        Thread.Sleep(500);
+                        Dispatcher.Invoke(() => { CheckBox_RunAutoKick.IsChecked = true; });
+                    });
                 }
                 else
                 {
@@ -1244,34 +1108,6 @@ namespace BF1.ServerAdminTools.Common.Views
             ProcessUtil.OpenLink(ConfigLocal.Base);
         }
 
-        /// <summary>
-        /// 手动T人
-        /// </summary>
-        /// <param name="info"></param>
-        private async void ManualKickPlayer(BreakRuleInfo info)
-        {
-            // 跳过管理员
-            if (!Globals.Server_AdminList.Contains(info.PersonaId))
-            {
-                // 白名单玩家不踢出
-                if (!DataSave.NowRule.Custom_WhiteList.Contains(info.Name))
-                {
-                    var result = await ServerAPI.AdminKickPlayer(info.PersonaId.ToString(), info.Reason);
-
-                    if (result.IsSuccess)
-                    {
-                        info.Status = "踢出成功";
-                        LogView._dAddKickOKLog(info);
-                    }
-                    else
-                    {
-                        info.Status = "踢出失败 " + result.Message;
-                        LogView._dAddKickNOLog(info);
-                    }
-                }
-            }
-        }
-
         private async void Button_ManualKickBreakRulePlayer_Click(object sender, RoutedEventArgs e)
         {
             AudioUtil.ClickSound();
@@ -1280,46 +1116,13 @@ namespace BF1.ServerAdminTools.Common.Views
             if (await CheckKickEnv())
             {
                 AppendLog("");
-                AppendLog("环境检查完毕，执行手动踢人操作成功，请查看日志了解执行结果");
+                AppendLog("环境检查完毕，正在执行手动踢人操作，这可能需要一点时间");
+                AppendLog("请查看日志了解执行结果");
 
-                for (int i = 0; i < DataSave.BreakRuleInfo_PlayerList.Count; i++)
-                {
-                    ManualKickPlayer(DataSave.BreakRuleInfo_PlayerList[i]);
-                }
-
-                var team1Player = new List<PlayerData>();
-
-                lock (Globals.PlayerDatas_Team1)
-                {
-                    team1Player.AddRange(Globals.PlayerDatas_Team1.Values);
-                }
-                lock (Globals.PlayerDatas_Team2)
-                {
-                    team1Player.AddRange(Globals.PlayerDatas_Team2.Values);
-                }
-
-                foreach (var item in team1Player)
-                {
-                    CheckBreakLifePlayer(item);
-                }
+                TaskKick.Kick();
 
                 MainWindow._SetOperatingState(1, "执行手动踢人操作成功，请查看日志了解执行结果");
             }
-        }
-
-        private void RadioButton_SwitchMapSelect0_Checked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void RadioButton_SwitchMapSelect1_Checked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void RadioButton_SwitchMapSelect2_Checked(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }
