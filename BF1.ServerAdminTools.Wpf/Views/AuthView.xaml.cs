@@ -5,6 +5,8 @@ using BF1.ServerAdminTools.Common.Utils;
 using BF1.ServerAdminTools.Common.Windows;
 using ScottPlot;
 
+using RestSharp;
+
 namespace BF1.ServerAdminTools.Common.Views
 {
     /// <summary>
@@ -66,10 +68,89 @@ namespace BF1.ServerAdminTools.Common.Views
             }
         }
 
-        private void Button_GetPlayerSessionID_Click(object sender, RoutedEventArgs e)
+        private async void Button_RefreshPlayerSessionId_Click(object sender, RoutedEventArgs e)
         {
             AudioUtil.ClickSound();
 
+            if (string.IsNullOrEmpty(TextBox_Remid.Text)) TextBox_Remid.Text = Globals.Config.Remid;
+            else Globals.Config.Remid = TextBox_Remid.Text;
+            if (string.IsNullOrEmpty(TextBox_Sid.Text)) TextBox_Sid.Text = Globals.Config.Sid;
+            else Globals.Config.Sid = TextBox_Sid.Text;
+
+            if (string.IsNullOrEmpty(Globals.Config.Remid) && string.IsNullOrEmpty(Globals.Config.Sid))
+            {
+                MainWindow._SetOperatingState(2, $"Cookie不存在，进行网页登录");
+                WebLogin();
+                return;
+            }
+
+            MainWindow._SetOperatingState(1, "正在获取AuthCode");
+
+            string url = "https://accounts.ea.com/connect/auth?response_type=code&locale=zh_CN&client_id=sparta-backend-as-user-pc";
+            var options = new RestClientOptions(url)
+            {
+                Timeout = 5000,
+                FollowRedirects = false
+            };
+
+            string cookie = "";
+            if (!string.IsNullOrEmpty(Globals.Config.Remid)) cookie = $"{cookie}remid={Globals.Config.Remid};";
+            if (!string.IsNullOrEmpty(Globals.Config.Sid)) cookie = $"{cookie}sid={Globals.Config.Sid};";
+
+            var client = new RestClient(options);
+            var request = new RestRequest()
+                .AddHeader("Cookie", cookie);
+
+            var response = await client.ExecuteGetAsync(request);
+            if (response.StatusCode != HttpStatusCode.Redirect)
+            {
+                MainWindow._SetOperatingState(3, $"EA连接失败{response.StatusCode}");
+            }
+
+            string location = response.Headers.ToList()
+                .Find(x => x.Name == "Location")
+                .Value.ToString();
+
+            if (location.Contains("http://127.0.0.1/success?code="))
+            {
+                string code = location.Replace("http://127.0.0.1/success?code=", "");
+                MainWindow._SetOperatingState(1, $"正在获取SessionId，Code为{code}");
+
+                if (response.Cookies["remid"] != null)
+                {
+                    Globals.Config.Remid = response.Cookies["remid"].Value;
+                }
+                if (response.Cookies["sid"] != null)
+                {
+                    Globals.Config.Sid = response.Cookies["sid"].Value;
+                }
+
+                TextBox_Remid.Text = "";
+                TextBox_Sid.Text = "";
+
+                var result = await ServerAPI.GetEnvIdViaAuthCode(code);
+
+                if (result.IsSuccess)
+                {
+                    var envIdViaAuthCode = JsonUtil.JsonDese<EnvIdViaAuthCode>(result.Message);
+                    Globals.Config.SessionId = envIdViaAuthCode.result.sessionId;
+                    MainWindow._SetOperatingState(1, $"获取SessionID成功  |  耗时: {result.ExecTime:0.00} 秒");
+                    Core.SaveConfig();
+                }
+                else
+                {
+                    MainWindow._SetOperatingState(3, $"获取SessionID失败 {result.Message}  |  耗时: {result.ExecTime:0.00} 秒");
+                }
+            }
+            else
+            {
+                MainWindow._SetOperatingState(2, $"Cookie已失效，进行网页登录");
+                WebLogin();
+            }
+        }
+
+        private void WebLogin()
+        {
             if (CoreUtil.IsWebView2DependencyInstalled())
             {
                 if (WebView2Window == null)
@@ -87,6 +168,7 @@ namespace BF1.ServerAdminTools.Common.Views
                     }
                     else
                     {
+                        WebView2Window = null;
                         WebView2Window = new WebView2Window();
                         WebView2Window.Show();
                     }
@@ -94,54 +176,8 @@ namespace BF1.ServerAdminTools.Common.Views
             }
             else
             {
-                MainWindow._SetOperatingState(3, "未安装WebView2对应依赖！");
+                MainWindow._SetOperatingState(3, "未安装WebView2对应依赖，请安装依赖或手动获取Cookie");
                 return;
-            }
-        }
-
-        private async void Button_RefreshPlayerSessionId_Click(object sender, RoutedEventArgs e)
-        {
-            AudioUtil.ClickSound();
-            MainWindow._SetOperatingState(1, $"正在刷新SessionID");
-            string data = await Core.Login();
-            MainWindow._SetOperatingState(1, data);
-        }
-
-        private async void Button_VerifyPlayerSessionId_Click(object sender, RoutedEventArgs e)
-        {
-            AudioUtil.ClickSound();
-
-            if (!string.IsNullOrEmpty(Globals.Config.SessionId))
-            {
-                TextBlock_CheckSessionIdStatus.Text = "正在验证中，请等待...";
-                TextBlock_CheckSessionIdStatus.Background = Brushes.Gray;
-                MainWindow._SetOperatingState(1, "正在验证中，请等待...");
-
-                await ServerAPI.SetAPILocale();
-                var result = await ServerAPI.GetWelcomeMessage();
-
-                if (result.IsSuccess)
-                {
-                    var welcomeMsg = result.Obj as WelcomeMsg;
-
-                    var msg = ChsUtil.ToSimplifiedChinese(welcomeMsg.result.firstMessage);
-
-                    TextBlock_CheckSessionIdStatus.Text = msg;
-                    TextBlock_CheckSessionIdStatus.Background = Brushes.Green;
-
-                    MainWindow._SetOperatingState(1, $"验证成功 {msg}  |  耗时: {result.ExecTime:0.00} 秒");
-                }
-                else
-                {
-                    TextBlock_CheckSessionIdStatus.Text = "验证失败";
-                    TextBlock_CheckSessionIdStatus.Background = Brushes.Red;
-
-                    MainWindow._SetOperatingState(3, $"验证失败 {result.Message}  |  耗时: {result.ExecTime:0.00} 秒");
-                }
-            }
-            else
-            {
-                MainWindow._SetOperatingState(2, "请先获取玩家SessionID后，再执行本操作");
             }
         }
 

@@ -16,21 +16,21 @@
 
     <Grid>
         <DockPanel LastChildFill="True">
-            <UniformGrid Columns="2" DockPanel.Dock="Bottom">
-                <Button
+            <UniformGrid Columns="1" DockPanel.Dock="Bottom">
+                <!--<Button
                     x:Name="Button_GetPlayerAccountInfo"
                     Margin="5,5,2.5,5"
                     Click="Button_GetPlayerAccountInfo_Click"
                     Content="获取玩家账号信息"
-                    Style="{StaticResource ButtonStyle_Web}" />
+                    Style="{StaticResource ButtonStyle_Web}" />-->
                 <Button
                     x:Name="Button_ClearCache"
-                    Margin="2.5,5,5,5"
+                    Margin="5,5,5,5"
                     Click="Button_ClearCache_Click"
                     Content="清空缓存"
                     Style="{StaticResource ButtonStyle_WebRed}" />
             </UniformGrid>
-            <UniformGrid Columns="2" DockPanel.Dock="Bottom">
+            <!--<UniformGrid Columns="2" DockPanel.Dock="Bottom">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Margin="5,5,5,0" ToolTip="战队1小帮手网页，和手机APP功能一样">
                         <Hyperlink NavigateUri="https://companion-api.battlefield.com/companion/home" RequestNavigate="Hyperlink_RequestNavigate">
@@ -45,7 +45,7 @@
                         </Hyperlink>
                     </TextBlock>
                 </StackPanel>
-            </UniformGrid>
+            </UniformGrid>-->
             <wv2:WebView2 x:Name="WebView2" DockPanel.Dock="Top" />
         </DockPanel>
     </Grid>

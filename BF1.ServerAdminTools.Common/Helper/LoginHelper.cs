@@ -7,9 +7,9 @@ internal static class LoginHelper
     public static async Task<string> LoginSessionID()
     {
         string temp;
-        if (string.IsNullOrEmpty(Globals.Config.Remid))
+        if (string.IsNullOrEmpty(Globals.Config.Remid) && string.IsNullOrEmpty(Globals.Config.Sid))
         {
-            temp = "刷新SessionID失败，玩家Remid为空，请先获取玩家Remid后，再执行本操作";
+            temp = "玩家Cookie为空，跳过本次刷新";
             Core.LogError(temp);
             return temp;
         }
@@ -20,40 +20,49 @@ internal static class LoginHelper
             FollowRedirects = false
         };
 
+        string cookie = "";
+        if (!string.IsNullOrEmpty(Globals.Config.Remid)) cookie = $"{cookie}remid={Globals.Config.Remid};";
+        if (!string.IsNullOrEmpty(Globals.Config.Sid)) cookie = $"{cookie}sid={Globals.Config.Sid};";
+
         var client = new RestClient(options);
         var request = new RestRequest()
-            .AddHeader("Cookie", $"remid={Globals.Config.Remid}");
+            .AddHeader("Cookie", cookie);
 
-        Core.LogInfo($"当前Remin为 {Globals.Config.Remid}");
+        Core.LogInfo($"正在获取SessionId，使用Cookie: {cookie}");
 
         var response = await client.ExecuteGetAsync(request);
         if (response.StatusCode != HttpStatusCode.Redirect)
         {
-            temp = $"刷新SessionID失败，玩家Remid不正确 {Globals.Config.Remid}";
-            Core.LogError($"刷新SessionID失败，玩家Remid不正确 {Globals.Config.Remid}");
+            temp = $"刷新SessionID失败，EA连接失败";
+            Core.LogError($"刷新SessionID失败，EA连接失败");
             return temp;
         }
 
-        string code = response.Headers.ToList()
+        string location = response.Headers.ToList()
                 .Find(x => x.Name == "Location")
                 .Value.ToString();
 
-        Core.LogInfo($"当前Location为 {code}");
-
-        if (!code.Contains("http://127.0.0.1/success?code="))
+        if (!location.Contains("http://127.0.0.1/success?code="))
         {
-            temp = $"刷新SessionID失败，code错误 {code}";
+            temp = $"刷新SessionID失败，Cookie已失效";
             Core.LogError(temp);
             return temp;
         }
 
-        Globals.Config.Remid = response.Cookies[0].Value;
-        Globals.Config.Sid = response.Cookies[1].Value;
+        string code = location.Replace("http://127.0.0.1/success?code=", "");
+        Core.LogInfo($"Authcode为 {code}");
 
-        Core.LogInfo($"当前Remid为 {Globals.Config.Remid}");
-        Core.LogInfo($"当前Sid为 {Globals.Config.Sid}");
+        if (response.Cookies["remid"] != null)
+        {
+            Globals.Config.Remid = response.Cookies["remid"].Value;
+            Core.LogInfo($"Remid已变更，当前Remid为 {Globals.Config.Remid}");
+        }
+        if (response.Cookies["sid"] != null)
+        {
+            Globals.Config.Sid = response.Cookies["sid"].Value;
+            Core.LogInfo($"Sid已变更，当前Sid为 {Globals.Config.Sid}");
+        }
 
-        code = code.Replace("http://127.0.0.1/success?code=", "");
         var result = await ServerAPI.GetEnvIdViaAuthCode(code);
 
         if (result.IsSuccess)
@@ -62,14 +71,13 @@ internal static class LoginHelper
             Globals.Config.SessionId = envIdViaAuthCode.result.sessionId;
             temp = $"刷新SessionID成功 {Globals.Config.SessionId} |  耗时: {result.ExecTime:0.00} 秒";
             Core.LogInfo(temp);
+            Core.SaveConfig();
         }
         else
         {
             temp = $"刷新SessionID失败，Code无效 {code} |  耗时: {result.ExecTime:0.00} 秒";
             Core.LogError(temp);
         }
-
-        Core.SaveConfig();
 
         return temp;
     }

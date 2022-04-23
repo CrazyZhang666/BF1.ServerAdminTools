@@ -1,5 +1,7 @@
 ﻿using BF1.ServerAdminTools.Common.Helper;
 using BF1.ServerAdminTools.Common.Utils;
+using BF1.ServerAdminTools.Common.API.BF1Server;
+using BF1.ServerAdminTools.Common.API.BF1Server.RespJson;
 using Microsoft.Web.WebView2.Core;
 
 namespace BF1.ServerAdminTools.Common.Windows
@@ -9,7 +11,7 @@ namespace BF1.ServerAdminTools.Common.Windows
     /// </summary>
     public partial class WebView2Window : Window
     {
-        private const string Uri = "https://companion-api.battlefield.com/companion/home";
+        private const string Uri = "https://accounts.ea.com/connect/auth?response_type=code&locale=zh_CN&client_id=sparta-backend-as-user-pc";
 
         public WebView2Window()
         {
@@ -39,8 +41,67 @@ namespace BF1.ServerAdminTools.Common.Windows
             // 新窗口打开页面的处理
             WebView2.CoreWebView2.NewWindowRequested += CoreWebView2_NewWindowRequested;
 
+            // Url变化的处理
+            WebView2.CoreWebView2.SourceChanged += CoreWebView2_SourceChanged;
+
             WebView2.CoreWebView2.Navigate(Uri);
         }
+
+        private async void CoreWebView2_SourceChanged(object sender, CoreWebView2SourceChangedEventArgs e)
+        {
+            if (!WebView2.Source.ToString().Contains("http://127.0.0.1/success?code=")) return;
+
+            string code = WebView2.Source.ToString().Replace("http://127.0.0.1/success?code=", "");
+
+            var cookies = await WebView2.CoreWebView2.CookieManager.GetCookiesAsync(null);
+
+            if (cookies == null)
+            {
+                MainWindow._SetOperatingState(3, $"登录成功，获取Cookie失败，请尝试清除缓存");
+                return;
+            }
+
+            foreach (var item in cookies)
+            {
+                if (item.Name == "remid")
+                {
+                    if (!string.IsNullOrEmpty(item.Value))
+                    {
+                        Globals.Config.Remid = item.Value;
+                    }
+                    continue;
+                }
+
+                if (item.Name == "sid")
+                {
+                    if (!string.IsNullOrEmpty(item.Value))
+                    {
+                        Globals.Config.Sid = item.Value;
+                    }
+                    continue;
+                }
+            }
+
+            MainWindow._SetOperatingState(1, $"登录完成，正在获取SessionId，Code为{code}");
+
+            this.Close();
+
+            var result = await ServerAPI.GetEnvIdViaAuthCode(code);
+
+            if (result.IsSuccess)
+            {
+                var envIdViaAuthCode = JsonUtil.JsonDese<EnvIdViaAuthCode>(result.Message);
+                Globals.Config.SessionId = envIdViaAuthCode.result.sessionId;
+                Core.SaveConfig();
+                MainWindow._SetOperatingState(1, $"获取SessionID成功:{Globals.Config.SessionId}  |  耗时: {result.ExecTime:0.00} 秒");
+            }
+            else
+            {
+                MainWindow._SetOperatingState(3, $"获取SessionID失败 {result.Message}  |  耗时: {result.ExecTime:0.00} 秒");
+            }
+        }
+
+
 
         private void Window_WebView2_Closing(object sender, CancelEventArgs e)
         {
@@ -55,74 +116,14 @@ namespace BF1.ServerAdminTools.Common.Windows
             deferral.Complete();
         }
 
-        private async void Button_GetPlayerAccountInfo_Click(object sender, RoutedEventArgs e)
-        {
-            // 获取remid、sid、sessionId
-            var cookies = await WebView2.CoreWebView2?.CookieManager?.GetCookiesAsync(null);
-            if (cookies != null && cookies.Count >= 3)
-            {
-                foreach (var item in cookies)
-                {
-                    if (item.Name == "remid")
-                    {
-                        if (!string.IsNullOrEmpty(item.Value))
-                            Globals.Config.Remid = item.Value;
-                        continue;
-                    }
-
-                    if (item.Name == "sid")
-                    {
-                        if (!string.IsNullOrEmpty(item.Value))
-                            Globals.Config.Sid = item.Value;
-                        continue;
-                    }
-
-                    if (item.Name == "gatewaySessionId")
-                    {
-                        if (!string.IsNullOrEmpty(item.Value))
-                            Globals.Config.SessionId = item.Value;
-                        continue;
-                    }
-                }
-
-                if (MessageBox.Show($"成功获取到 玩家账号信息\n\n" +
-                    $"remid\n{Globals.Config.Remid}\n\n" +
-                    $"sid\n{Globals.Config.Sid}\n\n" +
-                    $"sessionId\n{Globals.Config.SessionId}\n\n" +
-                    $"是否现在就关闭此窗口？",
-                    "提示", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
-                {
-                    Core.LogInfo($"成功获取到 Remid {Globals.Config.Remid}");
-                    Core.LogInfo($"成功获取到 Sid {Globals.Config.Sid}");
-                    Core.LogInfo($"成功获取到 SessionId {Globals.Config.SessionId}");
-                    Core.SaveConfig();
-                    this.Close();
-                }
-            }
-            else
-            {
-                MsgBoxUtil.ErrorMsgBox("获取 玩家账号信息 失败，请重新登录网页后再次尝试");
-            }
-        }
-
         private async void Button_ClearCache_Click(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show("你确认要清空本地缓存吗，这一般会在 玩家账号信息 失效的情况下使用，你可能需要重新登录小帮手", "警告",
-                MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
-            {
-                await WebView2.CoreWebView2?.ExecuteScriptAsync("localStorage.clear()");
-                WebView2.CoreWebView2?.CookieManager.DeleteAllCookies();
+            await WebView2.CoreWebView2?.ExecuteScriptAsync("localStorage.clear()");
+            WebView2.CoreWebView2?.CookieManager.DeleteAllCookies();
 
-                WebView2.Reload();
+            WebView2.Reload();
 
-                Core.LogInfo($"清空WebView2缓存成功");
-            }
-        }
-
-        private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
-        {
-            WebView2.CoreWebView2?.Navigate(e.Uri.OriginalString);
-            Core.LogInfo($"导航到 {e.Uri.OriginalString} 成功");
+            Core.LogInfo($"清空WebView2缓存成功");
         }
     }
 }

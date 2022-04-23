@@ -10,31 +10,20 @@
     d:DesignWidth="1600"
     mc:Ignorable="d">
 
-    <Grid Background="#77FFFFFF">
+    <Grid Background="#AAFFFFFF">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.4*" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <!--  ################################  -->
         <StackPanel Grid.Column="0">
-            <TextBlock Style="{StaticResource TextBlockStyle_Title}" Text="第一步" />
-            <TextBlock Margin="5">
-                <Run>
-                    首先安装WebView2外部依赖
-                </Run>
-                <Hyperlink NavigateUri="https://go.microsoft.com/fwlink/p/?LinkId=2124703" RequestNavigate="Hyperlink_RequestNavigate">
-                    👉 点我下载安装
-                </Hyperlink>
-                <TextBlock.ToolTip>
-                    https://developer.microsoft.com/zh-cn/microsoft-edge/webview2/#download-section
-                </TextBlock.ToolTip>
-            </TextBlock>
+            <TextBlock  Style="{StaticResource TextBlockStyle_Title}" Text="获取SessionId" />
             <TextBlock
                 Margin="5"
                 Foreground="Green"
-                Text="提示：然后点击下面按钮，登录战地小帮手网页，然后点击获取玩家账号信息，提示成功获取到后即可关闭获取窗口"
+                Text="提示：点击登录即可打开网页自动登录，可将Cookie填入下方的输入框以使用特定的Cookie登录"
                 TextWrapping="Wrap" />
-            <TextBlock
+            <!--<TextBlock
                 Margin="5"
                 Foreground="Red"
                 Text="警告：除非需要更换账号或者修复Code获取失败，否则获取玩家账号信息功能只需要点一次，因为每次点击都会刷新remid、sid和sessionId"
@@ -43,10 +32,23 @@
                 x:Name="Button_GetPlayerSessionID"
                 Click="Button_GetPlayerSessionID_Click"
                 Content="获取玩家账号信息（仅第一次使用需要）"
-                Style="{StaticResource ButtonStyle_Web}" />
+                Style="{StaticResource ButtonStyle_Web}" />-->
             <!--  ################################  -->
-            <TextBlock Style="{StaticResource TextBlockStyle_Title}" Text="第二步" />
-            <TextBlock
+            <TextBlock Margin="5" Text="Remid (可选)" />
+            <TextBox
+                    x:Name="TextBox_Remid"
+                    Height="45"
+                    TextWrapping="Wrap"
+                    Margin="5">
+            </TextBox>
+            <TextBlock Margin="5" Text="Sid (可选)" />
+            <TextBox
+                    x:Name="TextBox_Sid"
+                    Height="45"
+                    TextWrapping="Wrap"
+                    Margin="5">
+            </TextBox>
+            <!--<TextBlock
                 x:Name="TextBlock_CheckSessionIdStatus"
                 Margin="5"
                 Padding="5,30,5,30"
@@ -54,44 +56,24 @@
                 FontSize="16"
                 Foreground="White"
                 Text="等待玩家操作"
-                TextAlignment="Center" />
-            <TextBlock Margin="5" Text="获取玩家账号信息成功后，点击下面按钮验证SessionID有效性" />
-            <TextBlock
-                Margin="5"
-                Foreground="Green"
-                Text="提示：如果验证成功，会提示玩家的ID和欢迎语，否则请检查操作"
-                TextWrapping="Wrap" />
+                TextAlignment="Center" />-->
             <Button
-                x:Name="Button_RefreshPlayerSessionId"
+                x:Name="Button_Login"
                 Click="Button_RefreshPlayerSessionId_Click"
-                Content="刷新玩家SessionID"
-                Style="{StaticResource ButtonStyle_WebRed}" />
-            <Button
-                x:Name="Button_VerifyPlayerSessionId"
-                Margin="5,0,5,5"
-                Click="Button_VerifyPlayerSessionId_Click"
-                Content="验证玩家SessionID有效性"
+                FontSize="20"
+                Padding="5,15,5,15"
+                Content="登录"
                 Style="{StaticResource ButtonStyle_Web}" />
-            <!--  ################################  -->
-            <TextBlock />
-            <TextBlock
-                Margin="5"
-                Foreground="Green"
-                Text="提示：如果欢迎语不是中文，请重新获取（必须是中文，英文可能会导致问题）"
-                TextWrapping="Wrap" />
-            <TextBlock
-                Margin="5"
-                Foreground="HotPink"
-                TextWrapping="Wrap">
-                提示：如果SessionID过期，点击刷新玩家SessionID即可。如果提示获取Code失败，请执行第一步修复Code获取失败，然后重新获取玩家账号信息
-            </TextBlock>
-            <TextBlock
-                Margin="5"
-                Foreground="DarkOrange"
-                TextWrapping="Wrap">
-                提示：如何让程序自动更新SessionID？首先打开获取玩家账号信息（第一步的按钮），然后点击右下角的修复Code获取失败，
-                此时网页会跳转，可能会让你登陆，然后网页变成127.0.0.1这样的显示时，点击左下角的获取玩家账号信息，这时弹窗三个数据都会发生变化，
-                点确定关闭窗口，然后点击第二步的刷新玩家SessionID，这样以后程序以后就会全自动刷新SessionID了。更换账号需要重复上面步骤
+            <TextBlock Margin="5">
+                <Run>
+                    安装WebView2外部依赖
+                </Run>
+                <Hyperlink NavigateUri="https://go.microsoft.com/fwlink/p/?LinkId=2124703" RequestNavigate="Hyperlink_RequestNavigate">
+                    👉 点我下载安装
+                </Hyperlink>
+                <TextBlock.ToolTip>
+                    https://developer.microsoft.com/zh-cn/microsoft-edge/webview2/#download-section
+                </TextBlock.ToolTip>
             </TextBlock>
             <TextBlock
                 Margin="5"
