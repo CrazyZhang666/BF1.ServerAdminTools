@@ -1,6 +1,6 @@
 ﻿namespace BF1.ServerAdminTools.Wpf.Data;
 
-public record ServerRule
+public record ServerRuleObj
 {
     public string Name { get; set; }
     public int MaxKill { get; set; }

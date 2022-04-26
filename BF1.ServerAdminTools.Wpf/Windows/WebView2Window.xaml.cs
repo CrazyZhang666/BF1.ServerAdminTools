@@ -22,7 +22,7 @@ namespace BF1.ServerAdminTools.Common.Windows
         private async void Window_WebView2_Loaded(object sender, RoutedEventArgs e)
         {
             // 刷新DNS缓存
-            CoreUtil.FlushDNSCache();
+            Core.DnsFlushResolverCache();
             Core.LogInfo($"启动WebView2成功，已刷新DNS缓存");
 
             var env = await CoreWebView2Environment.CreateAsync(null, ConfigLocal.Cache, null);

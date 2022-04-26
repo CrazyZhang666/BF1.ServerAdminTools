@@ -103,10 +103,10 @@ internal static class SQLiteHelper
         switch (sheetName)
         {
             case DataShell.KICKOK:
-                connection.Execute(@"INSERT INTO kick_ok(name, personaId, reason, status)VALUES(@Name, @PersonaId, @Reason, @Status)", info);
+                connection.Execute("INSERT INTO kick_ok(name, personaId, reason, status)VALUES(@Name, @PersonaId, @Reason, @Status)", info);
                 break;
             case DataShell.KICKFAIL:
-                connection.Execute(@"INSERT INTO kick_fail(name, personaId, reason, status)VALUES(@Name, @PersonaId, @Reason, @Status)", info);
+                connection.Execute("INSERT INTO kick_fail(name, personaId, reason, status)VALUES(@Name, @PersonaId, @Reason, @Status)", info);
                 break;
         }
     }
@@ -117,6 +117,6 @@ internal static class SQLiteHelper
     /// <param name="info"></param>
     public static void AddLog2SQLite(ChangeTeamInfo info)
     {
-        connection.Execute(@"INSERT INTO change_team(rank, name, personaId, status)VALUES(@Rank,@Name,@PersonaId,@Status)", info);
+        connection.Execute("INSERT INTO change_team(rank, name, personaId, status)VALUES(@Rank,@Name,@PersonaId,@Status)", info);
     }
 }

@@ -27,7 +27,7 @@ namespace BF1.ServerAdminTools.Common
                 Core.LogInfo($"当前程序版本号 {CoreUtil.ClientVersionInfo}");
                 Core.LogInfo($"当前程序最后编译时间 {CoreUtil.ClientBuildTime}");
 
-                CoreUtil.FlushDNSCache();
+                Core.DnsFlushResolverCache();
                 Core.LogInfo("刷新DNS缓存成功");
 
                 // 初始化

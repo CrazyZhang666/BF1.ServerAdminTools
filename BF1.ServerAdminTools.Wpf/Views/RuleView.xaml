@@ -12,112 +12,30 @@
     mc:Ignorable="d">
 
     <Grid Background="#77FFFFFF">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition Width="0.6*" />
-            <ColumnDefinition Width="0.4*" />
-        </Grid.ColumnDefinitions>
-        <!--  ################################  -->
         <TabControl
-            Grid.Column="0"
             Margin="5"
             Background="Transparent"
             Style="{StaticResource TabControlStyle_Main}">
             <TabControl.Resources>
                 <Style BasedOn="{StaticResource TabItemStyle_Main}" TargetType="{x:Type TabItem}" />
             </TabControl.Resources>
-            <!--  ################################  -->
-            <TabItem Header="普通规则">
+            <TabItem Header="规则预览">
                 <Grid>
-                    <StackPanel Margin="5,0,5,0" VerticalAlignment="Top">
-                        <StackPanel.Resources>
-                            <Style TargetType="{x:Type TextBlock}">
-                                <Setter Property="Margin" Value="5" />
-                            </Style>
-                            <Style TargetType="{x:Type Slider}">
-                                <Setter Property="Margin" Value="5" />
-                                <Setter Property="IsSnapToTickEnabled" Value="True" />
-                            </Style>
-                        </StackPanel.Resources>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="0.6*" />
+                        <ColumnDefinition Width="0.4*" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Margin="5">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="当前规则名字：" />
+                            <TextBlock Text="当前选择的规则：" />
                             <TextBlock x:Name="NowName" />
                         </StackPanel>
-                        <TextBlock Text="{Binding ElementName=Slider_MaxKill, Path=Value, StringFormat=玩家最高击杀 : {0:0}, FallbackValue='玩家最高击杀 :'}" />
-                        <Slider
-                            x:Name="Slider_MaxKill"
-                            Margin="5,0,5,0"
-                            Maximum="100"
-                            Minimum="0"
-                            TickFrequency="1"
-                            TickPlacement="None" />
-                        <TextBlock />
-                        <!--  ################################  -->
-                        <TextBlock Text="{Binding ElementName=Slider_KDFlag, Path=Value, StringFormat=计算玩家KD的最低击杀数 : {0:0}, FallbackValue='计算玩家KD的最低击杀数 :'}" />
-                        <Slider
-                            x:Name="Slider_KDFlag"
-                            Margin="5,0,5,0"
-                            Maximum="100"
-                            Minimum="0"
-                            TickFrequency="1"
-                            TickPlacement="None" />
-                        <TextBlock Text="{Binding ElementName=Slider_MaxKD, Path=Value, StringFormat=玩家最高KD : {0:0.00}, FallbackValue='玩家最高KD :'}" />
-                        <Slider
-                            x:Name="Slider_MaxKD"
-                            Margin="5,0,5,0"
-                            Maximum="10"
-                            Minimum="0"
-                            TickFrequency="0.01"
-                            TickPlacement="None" />
-                        <TextBlock />
-                        <!--  ################################  -->
-                        <TextBlock Text="{Binding ElementName=Slider_KPMFlag, Path=Value, StringFormat=计算玩家KPM的最低击杀数 : {0:0}, FallbackValue='计算玩家KPM的最低击杀数 :'}" />
-                        <Slider
-                            x:Name="Slider_KPMFlag"
-                            Margin="5,0,5,0"
-                            Maximum="100"
-                            Minimum="0"
-                            TickFrequency="1"
-                            TickPlacement="None" />
-                        <TextBlock Text="{Binding ElementName=Slider_MaxKPM, Path=Value, StringFormat=玩家最高KPM : {0:0.00}, FallbackValue='玩家最高KPM :'}" />
-                        <Slider
-                            x:Name="Slider_MaxKPM"
-                            Margin="5,0,5,0"
-                            Maximum="10"
-                            Minimum="0"
-                            TickFrequency="0.01"
-                            TickPlacement="None" />
-                        <TextBlock />
-                        <!--  ################################  -->
-                        <TextBlock Text="{Binding ElementName=Slider_MinRank, Path=Value, StringFormat=玩家最低等级 : {0:0}, FallbackValue='玩家最低击等级 :'}" />
-                        <Slider
-                            x:Name="Slider_MinRank"
-                            Margin="5,0,5,0"
-                            Maximum="150"
-                            Minimum="0"
-                            TickFrequency="1"
-                            TickPlacement="None" />
-                        <TextBlock Text="{Binding ElementName=Slider_MaxRank, Path=Value, StringFormat=玩家最高等级 : {0:0}, FallbackValue='玩家最高等级 :'}" />
-                        <Slider
-                            x:Name="Slider_MaxRank"
-                            Margin="5,0,5,0"
-                            Maximum="150"
-                            Minimum="0"
-                            TickFrequency="1"
-                            TickPlacement="None" />
-                        <TextBlock />
-                        <TextBlock
-                            Foreground="Green"
-                            Text="说明：如果设置0则代表忽略该规则。假如设置玩家最大击杀数为50，那么玩家击杀数为51及以上则会被踢出，其他同理"
-                            TextWrapping="Wrap" />
-                        <TextBlock Foreground="Green" TextWrapping="Wrap">
-                            提示：KD和KPM的最低击杀数，假如设置10，那么玩家击杀数到达11及以上才会计算设置的KD，避免错误踢出玩家。
-                            如果没有设置最低击杀数，那么玩家可能开局摧毁一辆运兵车就会触发KD检测。如果要限制KD或者KPM，强烈建议设置最低击杀数
-                        </TextBlock>
                     </StackPanel>
                     <ListView
-                        Name="Rule_List"
-                        Margin="5,520,5,5"
+                        Name="RuleList"
+                        Grid.Column="0"
+                        Margin="5,30,5,496"
                         Background="Transparent"
                         BorderBrush="#1E88E5"
                         ScrollViewer.VerticalScrollBarVisibility="Visible"
@@ -138,409 +56,577 @@
                             </ContextMenu>
                         </ListView.ContextMenu>
                     </ListView>
+                    <TextBlock
+                        Margin="5,428,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Text="地图规则" />
+                    <ListView
+                        Name="MapRuleList"
+                        Grid.Column="0"
+                        Margin="5,446,5,10"
+                        Background="Transparent"
+                        BorderBrush="#1E88E5"
+                        ScrollViewer.VerticalScrollBarVisibility="Visible"
+                        SelectionMode="Single">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn
+                                    Width="200"
+                                    DisplayMemberBinding="{Binding Map}"
+                                    Header="地图名字" />
+                                <GridViewColumn
+                                    Width="400"
+                                    DisplayMemberBinding="{Binding Name}"
+                                    Header="规则名字" />
+                            </GridView>
+                        </ListView.View>
+                        <ListView.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Click="Add_Map_Rule" Header="添加" />
+                                <MenuItem Click="Delete_Map_Rule" Header="删除" />
+                                <MenuItem Click="Load_Map_Rule" Header="修改" />
+                            </ContextMenu>
+                        </ListView.ContextMenu>
+                    </ListView>
+                    <DockPanel Grid.Column="1" LastChildFill="True">
+                        <emoji:TextBlock
+                            Margin="0,5,5,5"
+                            DockPanel.Dock="Top"
+                            Style="{StaticResource TextBlockStyle_Title}"
+                            Text="📃 规则日志" />
+                        <TextBox
+                            x:Name="RuleLog"
+                            Margin="0,5,5,5"
+                            Padding="5"
+                            Background="Transparent"
+                            Cursor="Arrow"
+                            DockPanel.Dock="Bottom"
+                            HorizontalScrollBarVisibility="Disabled"
+                            IsReadOnly="True"
+                            VerticalScrollBarVisibility="Auto" />
+                    </DockPanel>
+                    <DockPanel Grid.Column="2" LastChildFill="True">
+                        <StackPanel DockPanel.Dock="Bottom">
+                            <TextBlock Margin="5">
+                                <Run>
+                                    SQLite数据库查询软件下载
+                                </Run>
+                                <Hyperlink NavigateUri="https://download.sqlitebrowser.org/DB.Browser.for.SQLite-3.12.2-win64.msi" RequestNavigate="Hyperlink_RequestNavigate">
+                                    👉 点我下载安装
+                                </Hyperlink>
+                                <TextBlock.ToolTip>
+                                    https://download.sqlitebrowser.org/DB.Browser.for.SQLite-3.12.2-win64.msi
+                                </TextBlock.ToolTip>
+                            </TextBlock>
+                            <Button
+                                x:Name="Button_OpenConfigurationFolder"
+                                Margin="0,5,5,5"
+                                Click="Button_OpenConfigurationFolder_Click"
+                                Content="打开配置文件夹"
+                                Style="{StaticResource ButtonStyle_Web}" />
+                        </StackPanel>
+                        <StackPanel DockPanel.Dock="Top">
+                            <StackPanel.Resources>
+                                <Style BasedOn="{StaticResource ButtonStyle_Web}" TargetType="{x:Type Button}">
+                                    <Setter Property="Margin" Value="0,5,5,0" />
+                                </Style>
+                            </StackPanel.Resources>
+                            <Button
+                                x:Name="Button_ApplyRule"
+                                Click="Button_ApplyRule_Click"
+                                Content="应用当前规则" />
+                            <Button
+                                x:Name="Button_QueryRule"
+                                Click="Button_QueryRule_Click"
+                                Content="查询当前规则" />
+                            <TextBlock />
+                            <Button
+                                x:Name="Button_CheckBreakRulePlayer"
+                                Click="Button_CheckBreakRulePlayer_Click"
+                                Content="检查违规玩家" />
+                            <Button
+                                x:Name="Button_ManualKickBreakRulePlayer"
+                                Margin="0,5,5,0"
+                                Click="Button_ManualKickBreakRulePlayer_Click"
+                                Content="手动踢出全部违规玩家"
+                                Style="{StaticResource ButtonStyle_WebRed}" />
+                            <TextBlock />
+                            <TextBlock
+                                Margin="5"
+                                HorizontalAlignment="Center"
+                                FontSize="24"
+                                FontWeight="Bold"
+                                Text="开启自动踢人功能" />
+                            <CheckBox
+                                x:Name="RunAutoKick"
+                                Margin="10"
+                                HorizontalAlignment="Center"
+                                Click="CheckBox_RunAutoKick_Click"
+                                IsChecked="False"
+                                Style="{StaticResource CheckBox_Slider}" />
+                            <TextBlock />
+                            <TextBlock
+                                Margin="0,5,5,5"
+                                Foreground="HotPink"
+                                Text="提示：如果修改了规则，必须重新点击【应用当前规则】才能生效"
+                                TextWrapping="Wrap" />
+                            <TextBlock
+                                Margin="0,5,5,5"
+                                Foreground="Green"
+                                Text="提示：在开启自动踢人功能前，请先到【详情】-【获取当前服务器详情数据】，这样可以自动获取当前服务器管理员和服主信息，以免出现无限踢出管理员情况"
+                                TextWrapping="Wrap" />
+                            <TextBlock
+                                Margin="0,5,5,5"
+                                Foreground="DarkOrange"
+                                Text="提示：黑名单和白名单不能加队标"
+                                TextWrapping="Wrap" />
+                            <TextBlock
+                                Margin="0,5,5,5"
+                                Foreground="Green"
+                                Text="提示：无法踢出管理员和服主（即使用游戏内部的管理员菜单也无法踢出，这是战地1游戏机制），自动踢人会跳过服主、管理员和白名单玩家，但是他们还是会在出现违规列表中，这样会有个提醒作用"
+                                TextWrapping="Wrap" />
+                        </StackPanel>
+                    </DockPanel>
                 </Grid>
             </TabItem>
-            <!--  ################################  -->
-            <TabItem Header="高级规则">
-                <StackPanel Margin="5">
-                    <StackPanel.Resources>
-                        <Style TargetType="{x:Type TextBlock}">
-                            <Setter Property="Margin" Value="5" />
-                        </Style>
-                        <Style TargetType="{x:Type Slider}">
-                            <Setter Property="Margin" Value="5" />
-                            <Setter Property="IsSnapToTickEnabled" Value="True" />
-                        </Style>
-                    </StackPanel.Resources>
-                    <!--  ################################  -->
-                    <TextBlock Text="{Binding ElementName=Slider_LifeMaxKD, Path=Value, StringFormat=最高生涯KD : {0:0.00}, FallbackValue='最高生涯KD :'}" />
-                    <Slider
-                        x:Name="Slider_LifeMaxKD"
-                        Margin="5,0,5,0"
-                        Maximum="10"
-                        Minimum="0"
-                        TickFrequency="0.01"
-                        TickPlacement="None" />
-                    <TextBlock Text="{Binding ElementName=Slider_LifeMaxKPM, Path=Value, StringFormat=最高生涯KPM : {0:0.00}, FallbackValue='最高生涯KPM :'}" />
-                    <Slider
-                        x:Name="Slider_LifeMaxKPM"
-                        Margin="5,0,5,0"
-                        Maximum="10"
-                        Minimum="0"
-                        TickFrequency="0.01"
-                        TickPlacement="None" />
-                    <TextBlock />
-                    <!--  ################################  -->
-                    <TextBlock Text="{Binding ElementName=Slider_LifeMaxWeaponStar, Path=Value, StringFormat=最高生涯武器星数 : {0:0}, FallbackValue='最高生涯武器星数 :'}" />
-                    <Slider
-                        x:Name="Slider_LifeMaxWeaponStar"
-                        Margin="5,0,5,0"
-                        Maximum="100"
-                        Minimum="0"
-                        TickFrequency="1"
-                        TickPlacement="None" />
-                    <TextBlock Text="{Binding ElementName=Slider_LifeMaxVehicleStar, Path=Value, StringFormat=最高生涯载具星数 : {0:0}, FallbackValue='最高生涯载具星数 :'}" />
-                    <Slider
-                        x:Name="Slider_LifeMaxVehicleStar"
-                        Margin="5,0,5,0"
-                        Maximum="100"
-                        Minimum="0"
-                        TickFrequency="1"
-                        TickPlacement="None" />
-                    <!--  ################################  -->
-                    <TextBlock />
-                    <TextBlock Foreground="Green" TextWrapping="Wrap">
-                        提示：生涯KD和KPM是玩家只要进入服务器就开始查询计算
-                    </TextBlock>
-                    <TextBlock Text="{Binding ElementName=Slider_ScoreSwitchMap, Path=Value, StringFormat=分差达到 : {0:0} 后自动换图, FallbackValue='分差达到 : 后自动换图'}" />
-                    <Slider
-                        x:Name="Slider_ScoreSwitchMap"
-                        Margin="5,0,5,0"
-                        Maximum="500"
-                        Minimum="0"
-                        TickFrequency="1"
-                        TickPlacement="None" />
-                    <TextBlock Text="{Binding ElementName=Slider_ScoreNotSwitchMap, Path=Value, StringFormat=分数达到 : {0:0} 后不再换图, FallbackValue='分数达到 : 后不再换图'}" />
-                    <Slider
-                        x:Name="Slider_ScoreNotSwitchMap"
-                        Margin="5,0,5,0"
-                        Maximum="900"
-                        Minimum="0"
-                        TickFrequency="1"
-                        TickPlacement="None" />
-                    <TextBlock Text="{Binding ElementName=Slider_ScoreStartSwitchMap, Path=Value, StringFormat=劣势方分数达到 : {0:0} 后开始判断, FallbackValue='劣势方分数达到 : 后开始判断'}" />
-                    <Slider
-                        x:Name="Slider_ScoreStartSwitchMap"
-                        Margin="5,0,5,0"
-                        Maximum="900"
-                        Minimum="0"
-                        TickFrequency="1"
-                        TickPlacement="None" />
-                    <WrapPanel>
-                        <RadioButton
-                            x:Name="RadioButton_SwitchMapSelect0"
-                            Margin="5"
-                            Content="顺序换图"
-                            GroupName="SwitchMapSelect" />
-                        <RadioButton
-                            x:Name="RadioButton_SwitchMapSelect1"
-                            Margin="5"
-                            Content="随机换图"
-                            GroupName="SwitchMapSelect" />
-                        <RadioButton
-                            x:Name="RadioButton_SwitchMapSelect2"
-                            Margin="5"
-                            Content="重开原图"
-                            GroupName="SwitchMapSelect" />
-                    </WrapPanel>
-                    <TextBlock />
-                    <TextBlock Text="{Binding ElementName=Slider_SocreOtherRule, Path=Value, StringFormat=分差达到 : {0:0} 后劣势方使用其他规则, FallbackValue='分差达到 : 后劣势方使用其他规则'}" />
-                    <Slider
-                        x:Name="Slider_SocreOtherRule"
-                        Margin="5,0,5,0"
-                        Maximum="300"
-                        Minimum="0"
-                        TickFrequency="1"
-                        TickPlacement="None" />
-                    <ComboBox
-                        Name="Combo_Rule"
-                        Height="24"
-                        Margin="5,5,5,0"
-                        IsReadOnly="True" />
-                    <TextBlock Foreground="Green" TextWrapping="Wrap">
-                        说明：其他规则只会生效 击杀，KD，KPM
-                    </TextBlock>
-                </StackPanel>
+            <TabItem Header="规则设置">
+                <Grid>
+                    <TabControl
+                        Grid.Column="0"
+                        Margin="5"
+                        Background="Transparent"
+                        Style="{StaticResource TabControlStyle_Main}">
+                        <TabControl.Resources>
+                            <Style BasedOn="{StaticResource TabItemStyle_Main}" TargetType="{x:Type TabItem}" />
+                        </TabControl.Resources>
+                        <TabItem Header="普通规则">
+                            <Grid>
+                                <StackPanel Margin="5,0,5,0" VerticalAlignment="Top">
+                                    <StackPanel.Resources>
+                                        <Style TargetType="{x:Type TextBlock}">
+                                            <Setter Property="Margin" Value="5" />
+                                        </Style>
+                                        <Style TargetType="{x:Type Slider}">
+                                            <Setter Property="Margin" Value="5" />
+                                            <Setter Property="IsSnapToTickEnabled" Value="True" />
+                                        </Style>
+                                    </StackPanel.Resources>
+                                    <TextBlock Text="{Binding ElementName=Slider_MaxKill, Path=Value, StringFormat=玩家最高击杀 : {0:0}, FallbackValue='玩家最高击杀 :'}" />
+                                    <Slider
+                                        x:Name="MaxKill"
+                                        Margin="5,0,5,0"
+                                        Maximum="100"
+                                        Minimum="0"
+                                        TickFrequency="1"
+                                        TickPlacement="None" />
+                                    <TextBlock />
+                                    <TextBlock Text="{Binding ElementName=Slider_KDFlag, Path=Value, StringFormat=计算玩家KD的最低击杀数 : {0:0}, FallbackValue='计算玩家KD的最低击杀数 :'}" />
+                                    <Slider
+                                        x:Name="KDFlag"
+                                        Margin="5,0,5,0"
+                                        Maximum="100"
+                                        Minimum="0"
+                                        TickFrequency="1"
+                                        TickPlacement="None" />
+                                    <TextBlock Text="{Binding ElementName=Slider_MaxKD, Path=Value, StringFormat=玩家最高KD : {0:0.00}, FallbackValue='玩家最高KD :'}" />
+                                    <Slider
+                                        x:Name="MaxKD"
+                                        Margin="5,0,5,0"
+                                        Maximum="10"
+                                        Minimum="0"
+                                        TickFrequency="0.01"
+                                        TickPlacement="None" />
+                                    <TextBlock />
+                                    <TextBlock Text="{Binding ElementName=Slider_KPMFlag, Path=Value, StringFormat=计算玩家KPM的最低击杀数 : {0:0}, FallbackValue='计算玩家KPM的最低击杀数 :'}" />
+                                    <Slider
+                                        x:Name="KPMFlag"
+                                        Margin="5,0,5,0"
+                                        Maximum="100"
+                                        Minimum="0"
+                                        TickFrequency="1"
+                                        TickPlacement="None" />
+                                    <TextBlock Text="{Binding ElementName=Slider_MaxKPM, Path=Value, StringFormat=玩家最高KPM : {0:0.00}, FallbackValue='玩家最高KPM :'}" />
+                                    <Slider
+                                        x:Name="MaxKPM"
+                                        Margin="5,0,5,0"
+                                        Maximum="10"
+                                        Minimum="0"
+                                        TickFrequency="0.01"
+                                        TickPlacement="None" />
+                                    <TextBlock />
+                                    <TextBlock Text="{Binding ElementName=Slider_MinRank, Path=Value, StringFormat=玩家最低等级 : {0:0}, FallbackValue='玩家最低击等级 :'}" />
+                                    <Slider
+                                        x:Name="MinRank"
+                                        Margin="5,0,5,0"
+                                        Maximum="150"
+                                        Minimum="0"
+                                        TickFrequency="1"
+                                        TickPlacement="None" />
+                                    <TextBlock Text="{Binding ElementName=Slider_MaxRank, Path=Value, StringFormat=玩家最高等级 : {0:0}, FallbackValue='玩家最高等级 :'}" />
+                                    <Slider
+                                        x:Name="MaxRank"
+                                        Margin="5,0,5,0"
+                                        Maximum="150"
+                                        Minimum="0"
+                                        TickFrequency="1"
+                                        TickPlacement="None" />
+                                    <TextBlock />
+                                    <TextBlock
+                                        Foreground="Green"
+                                        Text="说明：如果设置0则代表忽略该规则。假如设置玩家最大击杀数为50，那么玩家击杀数为51及以上则会被踢出，其他同理"
+                                        TextWrapping="Wrap" />
+                                    <TextBlock Foreground="Green" TextWrapping="Wrap">
+                                        提示：KD和KPM的最低击杀数，假如设置10，那么玩家击杀数到达11及以上才会计算设置的KD，避免错误踢出玩家。
+                                        如果没有设置最低击杀数，那么玩家可能开局摧毁一辆运兵车就会触发KD检测。如果要限制KD或者KPM，强烈建议设置最低击杀数
+                                    </TextBlock>
+                                </StackPanel>
+
+                            </Grid>
+                        </TabItem>
+                        <TabItem Header="高级规则">
+                            <StackPanel Margin="5">
+                                <StackPanel.Resources>
+                                    <Style TargetType="{x:Type TextBlock}">
+                                        <Setter Property="Margin" Value="5" />
+                                    </Style>
+                                    <Style TargetType="{x:Type Slider}">
+                                        <Setter Property="Margin" Value="5" />
+                                        <Setter Property="IsSnapToTickEnabled" Value="True" />
+                                    </Style>
+                                </StackPanel.Resources>
+                                <TextBlock Text="{Binding ElementName=Slider_LifeMaxKD, Path=Value, StringFormat=最高生涯KD : {0:0.00}, FallbackValue='最高生涯KD :'}" />
+                                <Slider
+                                    x:Name="LifeMaxKD"
+                                    Margin="5,0,5,0"
+                                    Maximum="10"
+                                    Minimum="0"
+                                    TickFrequency="0.01"
+                                    TickPlacement="None" />
+                                <TextBlock Text="{Binding ElementName=Slider_LifeMaxKPM, Path=Value, StringFormat=最高生涯KPM : {0:0.00}, FallbackValue='最高生涯KPM :'}" />
+                                <Slider
+                                    x:Name="LifeMaxKPM"
+                                    Margin="5,0,5,0"
+                                    Maximum="10"
+                                    Minimum="0"
+                                    TickFrequency="0.01"
+                                    TickPlacement="None" />
+                                <TextBlock />
+                                <TextBlock Text="{Binding ElementName=Slider_LifeMaxWeaponStar, Path=Value, StringFormat=最高生涯武器星数 : {0:0}, FallbackValue='最高生涯武器星数 :'}" />
+                                <Slider
+                                    x:Name="LifeMaxWeaponStar"
+                                    Margin="5,0,5,0"
+                                    Maximum="100"
+                                    Minimum="0"
+                                    TickFrequency="1"
+                                    TickPlacement="None" />
+                                <TextBlock Text="{Binding ElementName=Slider_LifeMaxVehicleStar, Path=Value, StringFormat=最高生涯载具星数 : {0:0}, FallbackValue='最高生涯载具星数 :'}" />
+                                <Slider
+                                    x:Name="LifeMaxVehicleStar"
+                                    Margin="5,0,5,0"
+                                    Maximum="100"
+                                    Minimum="0"
+                                    TickFrequency="1"
+                                    TickPlacement="None" />
+                                <TextBlock />
+                                <TextBlock Foreground="Green" TextWrapping="Wrap">
+                                    提示：生涯KD和KPM是玩家只要进入服务器就开始查询计算
+                                </TextBlock>
+                                <TextBlock Text="{Binding ElementName=Slider_ScoreSwitchMap, Path=Value, StringFormat=分差达到 : {0:0} 后自动换图, FallbackValue='分差达到 : 后自动换图'}" />
+                                <Slider
+                                    x:Name="ScoreSwitchMap"
+                                    Margin="5,0,5,0"
+                                    Maximum="500"
+                                    Minimum="0"
+                                    TickFrequency="1"
+                                    TickPlacement="None" />
+                                <TextBlock Text="{Binding ElementName=Slider_ScoreNotSwitchMap, Path=Value, StringFormat=分数达到 : {0:0} 后不再换图, FallbackValue='分数达到 : 后不再换图'}" />
+                                <Slider
+                                    x:Name="ScoreNotSwitchMap"
+                                    Margin="5,0,5,0"
+                                    Maximum="900"
+                                    Minimum="0"
+                                    TickFrequency="1"
+                                    TickPlacement="None" />
+                                <TextBlock Text="{Binding ElementName=Slider_ScoreStartSwitchMap, Path=Value, StringFormat=劣势方分数达到 : {0:0} 后开始判断, FallbackValue='劣势方分数达到 : 后开始判断'}" />
+                                <Slider
+                                    x:Name="ScoreStartSwitchMap"
+                                    Margin="5,0,5,0"
+                                    Maximum="900"
+                                    Minimum="0"
+                                    TickFrequency="1"
+                                    TickPlacement="None" />
+                                <WrapPanel>
+                                    <RadioButton
+                                        x:Name="SwitchMapSelect0"
+                                        Margin="5"
+                                        Content="顺序换图"
+                                        GroupName="SwitchMapSelect" />
+                                    <RadioButton
+                                        x:Name="SwitchMapSelect1"
+                                        Margin="5"
+                                        Content="随机换图"
+                                        GroupName="SwitchMapSelect" />
+                                    <RadioButton
+                                        x:Name="SwitchMapSelect2"
+                                        Margin="5"
+                                        Content="重开原图"
+                                        GroupName="SwitchMapSelect" />
+                                </WrapPanel>
+                                <TextBlock />
+                                <TextBlock Text="{Binding ElementName=Slider_SocreOtherRule, Path=Value, StringFormat=分差达到 : {0:0} 后劣势方使用其他规则, FallbackValue='分差达到 : 后劣势方使用其他规则'}" />
+                                <Slider
+                                    x:Name="SocreOtherRule"
+                                    Margin="5,0,5,0"
+                                    Maximum="300"
+                                    Minimum="0"
+                                    TickFrequency="1"
+                                    TickPlacement="None" />
+                                <ComboBox
+                                    Name="OtherRule"
+                                    Height="24"
+                                    Margin="5,5,5,0"
+                                    IsReadOnly="True" />
+                                <TextBlock Foreground="Green" TextWrapping="Wrap">
+                                    说明：其他规则只会生效 击杀，KD，KPM
+                                </TextBlock>
+                            </StackPanel>
+                        </TabItem>
+                        <TabItem Header="限制武器">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <ListBox
+                                    x:Name="ListWeaponInfo"
+                                    Grid.Column="0"
+                                    Margin="5,5,0,5"
+                                    Style="{StaticResource ListBoxStyle_WebList}">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <DockPanel Height="40" LastChildFill="True">
+                                                <TextBlock
+                                                    Width="25"
+                                                    Margin="5,0,5,0"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    DockPanel.Dock="Left"
+                                                    Text="{Binding Mark}"
+                                                    TextAlignment="Center" />
+                                                <StackPanel VerticalAlignment="Center" DockPanel.Dock="Right">
+                                                    <TextBlock
+                                                        Name="txt1"
+                                                        Margin="0"
+                                                        VerticalAlignment="Bottom"
+                                                        FontWeight="Bold"
+                                                        Text="{Binding English}" />
+                                                    <TextBlock
+                                                        Name="txt2"
+                                                        Margin="0,3,0,0"
+                                                        VerticalAlignment="Top"
+                                                        Text="{Binding Chinese}" />
+                                                </StackPanel>
+                                            </DockPanel>
+                                            <DataTemplate.Triggers>
+                                                <DataTrigger Binding="{Binding ElementName=txt2, Path=Text}" Value="">
+                                                    <Setter TargetName="txt2" Property="Visibility" Value="Collapsed" />
+                                                </DataTrigger>
+                                            </DataTemplate.Triggers>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                    <Button
+                                        x:Name="Button_BreakWeaponInfo_Add"
+                                        Margin="5"
+                                        Padding="5"
+                                        Click="Button_BreakWeaponInfo_Add_Click"
+                                        Content="👉"
+                                        Style="{StaticResource ButtonStyle_Web}" />
+                                    <Button
+                                        x:Name="Button_BreakWeaponInfo_Remove"
+                                        Margin="5"
+                                        Padding="5"
+                                        Click="Button_BreakWeaponInfo_Remove_Click"
+                                        Content="👈"
+                                        Style="{StaticResource ButtonStyle_Web}" />
+                                    <Button
+                                        x:Name="Button_BreakWeaponInfo_Clear"
+                                        Margin="5"
+                                        Padding="5"
+                                        Click="Button_BreakWeaponInfo_Clear_Click"
+                                        Content="✘"
+                                        Style="{StaticResource ButtonStyle_WebRed}" />
+                                </StackPanel>
+                                <ListBox
+                                    x:Name="BreakWeaponInfo"
+                                    Grid.Column="2"
+                                    Margin="0,5,5,5"
+                                    Style="{StaticResource ListBoxStyle_WebList}">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Height="40">
+                                                <StackPanel VerticalAlignment="Center">
+                                                    <TextBlock
+                                                        Margin="0"
+                                                        VerticalAlignment="Bottom"
+                                                        FontWeight="Bold"
+                                                        Text="{Binding English}" />
+                                                    <TextBlock
+                                                        Margin="0,3,0,0"
+                                                        VerticalAlignment="Top"
+                                                        Text="{Binding Chinese}" />
+                                                </StackPanel>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </Grid>
+                        </TabItem>
+                        <TabItem Header="玩家黑/白名单">
+                            <UniformGrid Columns="2">
+                                <DockPanel LastChildFill="True">
+                                    <TextBlock
+                                        DockPanel.Dock="Top"
+                                        Style="{StaticResource TextBlockStyle_Title}"
+                                        Text="玩家黑名单" />
+                                    <UniformGrid Columns="4" DockPanel.Dock="Bottom">
+                                        <Button
+                                            x:Name="Button_Add_BlackList"
+                                            Margin="5,5,0,5"
+                                            Click="Button_Add_BlackList_Click"
+                                            Content="添加"
+                                            Style="{StaticResource ButtonStyle_Web}" />
+                                        <Button
+                                            x:Name="Button_Remove_BlackList"
+                                            Margin="5,5,0,5"
+                                            Click="Button_Remove_BlackList_Click"
+                                            Content="移除"
+                                            Style="{StaticResource ButtonStyle_Web}" />
+                                        <Button
+                                            x:Name="Button_Input_BlackList"
+                                            Margin="5,5,0,5"
+                                            Click="Button_Input_BlackList_Click"
+                                            Content="导入"
+                                            Style="{StaticResource ButtonStyle_Web}" />
+                                        <Button
+                                            x:Name="Button_Clear_BlackList"
+                                            Margin="5,5,2.5,5"
+                                            Click="Button_Clear_BlackList_Click"
+                                            Content="清空"
+                                            Style="{StaticResource ButtonStyle_WebRed}" />
+                                    </UniformGrid>
+                                    <TextBox
+                                        x:Name="TextBox_BlackList_PlayerName"
+                                        Margin="5,0,2.5,0"
+                                        Padding="10"
+                                        DockPanel.Dock="Bottom" />
+                                    <ListBox
+                                        x:Name="BlackList"
+                                        Margin="5,5,2.5,5"
+                                        DockPanel.Dock="Top"
+                                        Style="{StaticResource ListBoxStyle_Normal}" />
+                                </DockPanel>
+                                <DockPanel LastChildFill="True">
+                                    <TextBlock
+                                        DockPanel.Dock="Top"
+                                        Style="{StaticResource TextBlockStyle_Title}"
+                                        Text="玩家白名单" />
+                                    <UniformGrid Columns="4" DockPanel.Dock="Bottom">
+                                        <Button
+                                            x:Name="Button_Add_WhiteList"
+                                            Margin="2.5,5,0,5"
+                                            Click="Button_Add_WhiteList_Click"
+                                            Content="添加"
+                                            Style="{StaticResource ButtonStyle_Web}" />
+                                        <Button
+                                            x:Name="Button_Remove_WhiteList"
+                                            Margin="5,5,0,5"
+                                            Click="Button_Remove_WhiteList_Click"
+                                            Content="移除"
+                                            Style="{StaticResource ButtonStyle_Web}" />
+                                        <Button
+                                            x:Name="Button_Input_WhiteList"
+                                            Margin="5,5,0,5"
+                                            Click="Button_Input_WhiteList_Click"
+                                            Content="导入"
+                                            Style="{StaticResource ButtonStyle_Web}" />
+                                        <Button
+                                            x:Name="Button_Clear_WhiteList"
+                                            Margin="5"
+                                            Click="Button_Clear_WhiteList_Click"
+                                            Content="清空"
+                                            Style="{StaticResource ButtonStyle_WebRed}" />
+                                    </UniformGrid>
+                                    <TextBox
+                                        x:Name="TextBox_WhiteList_PlayerName"
+                                        Margin="2.5,0,5,0"
+                                        Padding="10"
+                                        DockPanel.Dock="Bottom" />
+                                    <ListBox
+                                        x:Name="WhiteList"
+                                        Margin="2.5,5,5,5"
+                                        DockPanel.Dock="Top"
+                                        Style="{StaticResource ListBoxStyle_Normal}" />
+                                </DockPanel>
+                            </UniformGrid>
+                        </TabItem>
+                    </TabControl>
+                </Grid>
             </TabItem>
-            <!--  ################################  -->
-            <TabItem Header="限制武器">
+            <TabItem Header="黑名单订阅">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
-                        <ColumnDefinition Width="Auto" />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    <ListBox
-                        x:Name="ListBox_WeaponInfo"
-                        Grid.Column="0"
-                        Margin="5,5,0,5"
-                        Style="{StaticResource ListBoxStyle_WebList}">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <DockPanel Height="40" LastChildFill="True">
-                                    <TextBlock
-                                        Width="25"
-                                        Margin="5,0,5,0"
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        DockPanel.Dock="Left"
-                                        Text="{Binding Mark}"
-                                        TextAlignment="Center" />
-                                    <StackPanel VerticalAlignment="Center" DockPanel.Dock="Right">
-                                        <TextBlock
-                                            Name="txt1"
-                                            Margin="0"
-                                            VerticalAlignment="Bottom"
-                                            FontWeight="Bold"
-                                            Text="{Binding English}" />
-                                        <TextBlock
-                                            Name="txt2"
-                                            Margin="0,3,0,0"
-                                            VerticalAlignment="Top"
-                                            Text="{Binding Chinese}" />
-                                    </StackPanel>
-                                </DockPanel>
-                                <DataTemplate.Triggers>
-                                    <DataTrigger Binding="{Binding ElementName=txt2, Path=Text}" Value="">
-                                        <Setter TargetName="txt2" Property="Visibility" Value="Collapsed" />
-                                    </DataTrigger>
-                                </DataTemplate.Triggers>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                        <Button
-                            x:Name="Button_BreakWeaponInfo_Add"
+                    <StackPanel Grid.Column="0" Margin="5">
+                        <ListView
+                            Name="SubscribeBlackList"
+                            Height="300"
                             Margin="5"
-                            Padding="5"
-                            Click="Button_BreakWeaponInfo_Add_Click"
-                            Content="👉"
-                            Style="{StaticResource ButtonStyle_Web}" />
-                        <Button
-                            x:Name="Button_BreakWeaponInfo_Remove"
-                            Margin="5"
-                            Padding="5"
-                            Click="Button_BreakWeaponInfo_Remove_Click"
-                            Content="👈"
-                            Style="{StaticResource ButtonStyle_Web}" />
-                        <Button
-                            x:Name="Button_BreakWeaponInfo_Clear"
-                            Margin="5"
-                            Padding="5"
-                            Click="Button_BreakWeaponInfo_Clear_Click"
-                            Content="✘"
-                            Style="{StaticResource ButtonStyle_WebRed}" />
+                            Background="Transparent"
+                            BorderBrush="#1E88E5"
+                            ScrollViewer.VerticalScrollBarVisibility="Visible"
+                            SelectionMode="Single">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn
+                                        Width="200"
+                                        DisplayMemberBinding="{Binding Name}"
+                                        Header="订阅名字" />
+                                    <GridViewColumn
+                                        Width="200"
+                                        DisplayMemberBinding="{Binding LastTime}"
+                                        Header="最后更新时间" />
+                                    <GridViewColumn
+                                        Width="200"
+                                        DisplayMemberBinding="{Binding UpdateTime}"
+                                        Header="最后刷新时间" />
+                                    <GridViewColumn
+                                        Width="200"
+                                        DisplayMemberBinding="{Binding Url}"
+                                        Header="订阅地址" />
+                                </GridView>
+                            </ListView.View>
+                            <ListView.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Click="Add_Subscribe" Header="添加" />
+                                    <MenuItem Click="Delete_Subscribe" Header="删除" />
+                                </ContextMenu>
+                            </ListView.ContextMenu>
+                        </ListView>
+                        <StackPanel>
+                            <Button
+                                Click="Button_Click"
+                                Content="更新黑名单"
+                                Style="{StaticResource ButtonStyle_Web}" />
+                        </StackPanel>
                     </StackPanel>
-                    <ListBox
-                        x:Name="ListBox_BreakWeaponInfo"
-                        Grid.Column="2"
-                        Margin="0,5,5,5"
-                        Style="{StaticResource ListBoxStyle_WebList}">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <Grid Height="40">
-                                    <StackPanel VerticalAlignment="Center">
-                                        <TextBlock
-                                            Margin="0"
-                                            VerticalAlignment="Bottom"
-                                            FontWeight="Bold"
-                                            Text="{Binding English}" />
-                                        <TextBlock
-                                            Margin="0,3,0,0"
-                                            VerticalAlignment="Top"
-                                            Text="{Binding Chinese}" />
-                                    </StackPanel>
-                                </Grid>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
                 </Grid>
             </TabItem>
-            <!--  ################################  -->
-            <TabItem Header="玩家黑/白名单">
-                <UniformGrid Columns="2">
-                    <DockPanel LastChildFill="True">
-                        <TextBlock
-                            DockPanel.Dock="Top"
-                            Style="{StaticResource TextBlockStyle_Title}"
-                            Text="玩家黑名单" />
-                        <UniformGrid Columns="4" DockPanel.Dock="Bottom">
-                            <Button
-                                x:Name="Button_Add_BlackList"
-                                Margin="5,5,0,5"
-                                Click="Button_Add_BlackList_Click"
-                                Content="添加"
-                                Style="{StaticResource ButtonStyle_Web}" />
-                            <Button
-                                x:Name="Button_Remove_BlackList"
-                                Margin="5,5,0,5"
-                                Click="Button_Remove_BlackList_Click"
-                                Content="移除"
-                                Style="{StaticResource ButtonStyle_Web}" />
-                            <Button
-                                x:Name="Button_Input_BlackList"
-                                Margin="5,5,0,5"
-                                Click="Button_Input_BlackList_Click"
-                                Content="导入"
-                                Style="{StaticResource ButtonStyle_Web}" />
-                            <Button
-                                x:Name="Button_Clear_BlackList"
-                                Margin="5,5,2.5,5"
-                                Click="Button_Clear_BlackList_Click"
-                                Content="清空"
-                                Style="{StaticResource ButtonStyle_WebRed}" />
-                        </UniformGrid>
-                        <TextBox
-                            x:Name="TextBox_BlackList_PlayerName"
-                            Margin="5,0,2.5,0"
-                            Padding="10"
-                            DockPanel.Dock="Bottom" />
-                        <ListBox
-                            x:Name="ListBox_Custom_BlackList"
-                            Margin="5,5,2.5,5"
-                            DockPanel.Dock="Top"
-                            Style="{StaticResource ListBoxStyle_Normal}" />
-                    </DockPanel>
-                    <DockPanel LastChildFill="True">
-                        <TextBlock
-                            DockPanel.Dock="Top"
-                            Style="{StaticResource TextBlockStyle_Title}"
-                            Text="玩家白名单" />
-                        <UniformGrid Columns="4" DockPanel.Dock="Bottom">
-                            <Button
-                                x:Name="Button_Add_WhiteList"
-                                Margin="2.5,5,0,5"
-                                Click="Button_Add_WhiteList_Click"
-                                Content="添加"
-                                Style="{StaticResource ButtonStyle_Web}" />
-                            <Button
-                                x:Name="Button_Remove_WhiteList"
-                                Margin="5,5,0,5"
-                                Click="Button_Remove_WhiteList_Click"
-                                Content="移除"
-                                Style="{StaticResource ButtonStyle_Web}" />
-                            <Button
-                                x:Name="Button_Input_WhiteList"
-                                Margin="5,5,0,5"
-                                Click="Button_Input_WhiteList_Click"
-                                Content="导入"
-                                Style="{StaticResource ButtonStyle_Web}" />
-                            <Button
-                                x:Name="Button_Clear_WhiteList"
-                                Margin="5"
-                                Click="Button_Clear_WhiteList_Click"
-                                Content="清空"
-                                Style="{StaticResource ButtonStyle_WebRed}" />
-                        </UniformGrid>
-                        <TextBox
-                            x:Name="TextBox_WhiteList_PlayerName"
-                            Margin="2.5,0,5,0"
-                            Padding="10"
-                            DockPanel.Dock="Bottom" />
-                        <ListBox
-                            x:Name="ListBox_Custom_WhiteList"
-                            Margin="2.5,5,5,5"
-                            DockPanel.Dock="Top"
-                            Style="{StaticResource ListBoxStyle_Normal}" />
-                    </DockPanel>
-                </UniformGrid>
-            </TabItem>
         </TabControl>
-        <!--  ################################  -->
-        <DockPanel Grid.Column="1" LastChildFill="True">
-            <emoji:TextBlock
-                Margin="0,5,5,5"
-                DockPanel.Dock="Top"
-                Style="{StaticResource TextBlockStyle_Title}"
-                Text="📃 规则日志" />
-            <TextBox
-                x:Name="TextBox_RuleLog"
-                Margin="0,5,5,5"
-                Padding="5"
-                Background="Transparent"
-                Cursor="Arrow"
-                DockPanel.Dock="Bottom"
-                HorizontalScrollBarVisibility="Disabled"
-                IsReadOnly="True"
-                VerticalScrollBarVisibility="Auto" />
-        </DockPanel>
-        <!--  ################################  -->
-        <DockPanel Grid.Column="2" LastChildFill="True">
-            <StackPanel DockPanel.Dock="Bottom">
-                <TextBlock Margin="5">
-                    <Run>
-                        SQLite数据库查询软件下载
-                    </Run>
-                    <Hyperlink NavigateUri="https://download.sqlitebrowser.org/DB.Browser.for.SQLite-3.12.2-win64.msi" RequestNavigate="Hyperlink_RequestNavigate">
-                        👉 点我下载安装
-                    </Hyperlink>
-                    <TextBlock.ToolTip>
-                        https://download.sqlitebrowser.org/DB.Browser.for.SQLite-3.12.2-win64.msi
-                    </TextBlock.ToolTip>
-                </TextBlock>
-                <Button
-                    x:Name="Button_OpenConfigurationFolder"
-                    Margin="0,5,5,5"
-                    Click="Button_OpenConfigurationFolder_Click"
-                    Content="打开配置文件夹"
-                    Style="{StaticResource ButtonStyle_Web}" />
-            </StackPanel>
-            <!--  ################  -->
-            <StackPanel DockPanel.Dock="Top">
-                <StackPanel.Resources>
-                    <Style BasedOn="{StaticResource ButtonStyle_Web}" TargetType="{x:Type Button}">
-                        <Setter Property="Margin" Value="0,5,5,0" />
-                    </Style>
-                </StackPanel.Resources>
-                <Button
-                    x:Name="Button_ApplyRule"
-                    Click="Button_ApplyRule_Click"
-                    Content="应用当前规则" />
-                <Button
-                    x:Name="Button_QueryRule"
-                    Click="Button_QueryRule_Click"
-                    Content="查询当前规则" />
-                <TextBlock />
-                <Button
-                    x:Name="Button_CheckBreakRulePlayer"
-                    Click="Button_CheckBreakRulePlayer_Click"
-                    Content="检查违规玩家" />
-                <Button
-                    x:Name="Button_ManualKickBreakRulePlayer"
-                    Margin="0,5,5,0"
-                    Click="Button_ManualKickBreakRulePlayer_Click"
-                    Content="手动踢出全部违规玩家"
-                    Style="{StaticResource ButtonStyle_WebRed}" />
-                <!--  ################################  -->
-                <TextBlock />
-                <TextBlock
-                    Margin="5"
-                    HorizontalAlignment="Center"
-                    FontSize="24"
-                    FontWeight="Bold"
-                    Text="开启自动踢人功能" />
-                <CheckBox
-                    x:Name="CheckBox_RunAutoKick"
-                    Margin="10"
-                    HorizontalAlignment="Center"
-                    Click="CheckBox_RunAutoKick_Click"
-                    IsChecked="False"
-                    Style="{StaticResource CheckBox_Slider}" />
-                <TextBlock />
-                <TextBlock
-                    Margin="0,5,5,5"
-                    Foreground="HotPink"
-                    Text="提示：如果修改了规则，必须重新点击【应用当前规则】才能生效"
-                    TextWrapping="Wrap" />
-                <TextBlock
-                    Margin="0,5,5,5"
-                    Foreground="Green"
-                    Text="提示：在开启自动踢人功能前，请先到【详情】-【获取当前服务器详情数据】，这样可以自动获取当前服务器管理员和服主信息，以免出现无限踢出管理员情况"
-                    TextWrapping="Wrap" />
-                <TextBlock
-                    Margin="0,5,5,5"
-                    Foreground="DarkOrange"
-                    Text="提示：黑名单和白名单不能加队标"
-                    TextWrapping="Wrap" />
-                <TextBlock
-                    Margin="0,5,5,5"
-                    Foreground="Green"
-                    Text="提示：无法踢出管理员和服主（即使用游戏内部的管理员菜单也无法踢出，这是战地1游戏机制），自动踢人会跳过服主、管理员和白名单玩家，但是他们还是会在出现违规列表中，这样会有个提醒作用"
-                    TextWrapping="Wrap" />
-                <!--  ################################  -->
-
-            </StackPanel>
-        </DockPanel>
     </Grid>
-
 </UserControl>

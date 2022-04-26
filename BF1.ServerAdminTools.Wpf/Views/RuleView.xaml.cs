@@ -6,7 +6,9 @@ using BF1.ServerAdminTools.Common.Models;
 using BF1.ServerAdminTools.Common.Utils;
 using BF1.ServerAdminTools.Common.Windows;
 using BF1.ServerAdminTools.Wpf.Data;
+using BF1.ServerAdminTools.Wpf.Models;
 using BF1.ServerAdminTools.Wpf.Tasks;
+using BF1.ServerAdminTools.Wpf.Windows;
 
 namespace BF1.ServerAdminTools.Common.Views
 {
@@ -15,6 +17,7 @@ namespace BF1.ServerAdminTools.Common.Views
     /// </summary>
     public partial class RuleView : UserControl
     {
+        public static Action? CloseRunCheck;
         /// <summary>
         /// 是否执行应用规则
         /// </summary>
@@ -24,40 +27,48 @@ namespace BF1.ServerAdminTools.Common.Views
         {
             InitializeComponent();
 
+            MainWindow.ClosingDisposeEvent += MainWindow_ClosingDisposeEvent;
+
+            CloseRunCheck = CloseRunAutoKick;
+
             // 添加武器信息列表
             foreach (var item in WeaponData.AllWeaponInfo)
             {
-                ListBox_WeaponInfo.Items.Add(new WeaponInfoModel()
+                ListWeaponInfo.Items.Add(new WeaponInfoModel()
                 {
                     English = item.English,
                     Chinese = item.Chinese,
                     Mark = ""
                 });
             }
-            ListBox_WeaponInfo.SelectedIndex = 0;
-
-            new Thread(CheckState)
-            {
-                Name = "CheckStateThread",
-                IsBackground = true
-            }.Start();
+            ListWeaponInfo.SelectedIndex = 0;
 
             foreach (var item in DataSave.Rules)
             {
-                Rule_List.Items.Add(item.Value);
+                RuleList.Items.Add(item.Value);
+            }
+
+            foreach (var item in DataSave.Config.MapRule)
+            {
+                if (!DataSave.Rules.TryGetValue(item.Value, out var rule))
+                    continue;
+                MapRuleList.Items.Add(new MapRuleModel { Map = item.Key, Name = rule.Name });
             }
 
             DataSave.NowRule = DataSave.Rules["default"];
 
             LoadRule();
+        }
 
-            MainWindow.ClosingDisposeEvent += MainWindow_ClosingDisposeEvent;
+        private void CloseRunAutoKick()
+        {
+            Dispatcher.Invoke(() => RunAutoKick.IsChecked = false);
         }
 
         private void LoadRule()
         {
-            Combo_Rule.SelectedItem = null;
-            Combo_Rule.Items.Clear();
+            OtherRule.SelectedItem = null;
+            OtherRule.Items.Clear();
 
             NowName.Text = DataSave.NowRule.Name;
 
@@ -76,45 +87,45 @@ namespace BF1.ServerAdminTools.Common.Views
                 DataSave.NowRule.Custom_WhiteList = new();
             }
 
-            Slider_MaxKill.Value = DataSave.NowRule.MaxKill;
-            Slider_KDFlag.Value = DataSave.NowRule.KDFlag;
-            Slider_MaxKD.Value = DataSave.NowRule.MaxKD;
-            Slider_KPMFlag.Value = DataSave.NowRule.KPMFlag;
-            Slider_MaxKPM.Value = DataSave.NowRule.MaxKPM;
-            Slider_MinRank.Value = DataSave.NowRule.MinRank;
-            Slider_MaxRank.Value = DataSave.NowRule.MaxRank;
+            MaxKill.Value = DataSave.NowRule.MaxKill;
+            KDFlag.Value = DataSave.NowRule.KDFlag;
+            MaxKD.Value = DataSave.NowRule.MaxKD;
+            KPMFlag.Value = DataSave.NowRule.KPMFlag;
+            MaxKPM.Value = DataSave.NowRule.MaxKPM;
+            MinRank.Value = DataSave.NowRule.MinRank;
+            MaxRank.Value = DataSave.NowRule.MaxRank;
 
-            Slider_LifeMaxKD.Value = DataSave.NowRule.LifeMaxKD;
-            Slider_LifeMaxKPM.Value = DataSave.NowRule.LifeMaxKPM;
-            Slider_LifeMaxWeaponStar.Value = DataSave.NowRule.LifeMaxWeaponStar;
-            Slider_LifeMaxVehicleStar.Value = DataSave.NowRule.LifeMaxVehicleStar;
+            LifeMaxKD.Value = DataSave.NowRule.LifeMaxKD;
+            LifeMaxKPM.Value = DataSave.NowRule.LifeMaxKPM;
+            LifeMaxWeaponStar.Value = DataSave.NowRule.LifeMaxWeaponStar;
+            LifeMaxVehicleStar.Value = DataSave.NowRule.LifeMaxVehicleStar;
 
-            Slider_ScoreSwitchMap.Value = DataSave.NowRule.ScoreSwitchMap;
-            Slider_ScoreStartSwitchMap.Value = DataSave.NowRule.ScoreStartSwitchMap;
-            Slider_ScoreNotSwitchMap.Value = DataSave.NowRule.ScoreNotSwitchMap;
-            Slider_SocreOtherRule.Value = DataSave.NowRule.ScoreOtherRule;
+            ScoreSwitchMap.Value = DataSave.NowRule.ScoreSwitchMap;
+            ScoreStartSwitchMap.Value = DataSave.NowRule.ScoreStartSwitchMap;
+            ScoreNotSwitchMap.Value = DataSave.NowRule.ScoreNotSwitchMap;
+            SocreOtherRule.Value = DataSave.NowRule.ScoreOtherRule;
 
             if (DataSave.NowRule.SwitchMapType == 0)
             {
-                RadioButton_SwitchMapSelect0.IsChecked = true;
+                SwitchMapSelect0.IsChecked = true;
             }
             else if (DataSave.NowRule.SwitchMapType == 1)
             {
-                RadioButton_SwitchMapSelect1.IsChecked = true;
+                SwitchMapSelect1.IsChecked = true;
             }
             else if (DataSave.NowRule.SwitchMapType == 2)
             {
-                RadioButton_SwitchMapSelect2.IsChecked = true;
+                SwitchMapSelect2.IsChecked = true;
             }
 
-            Combo_Rule.Items.Add("");
+            OtherRule.Items.Add("");
 
             var self = DataSave.NowRule.Name.ToLower();
             foreach (var item in DataSave.Rules)
             {
                 if (item.Key != self)
                 {
-                    Combo_Rule.Items.Add(item.Value.Name);
+                    OtherRule.Items.Add(item.Value.Name);
                 }
             }
 
@@ -127,38 +138,38 @@ namespace BF1.ServerAdminTools.Common.Views
                 }
             }
 
-            Combo_Rule.SelectedItem = DataSave.NowRule.OtherRule;
+            OtherRule.SelectedItem = DataSave.NowRule.OtherRule;
 
-            ListBox_BreakWeaponInfo.Items.Clear();
+            BreakWeaponInfo.Items.Clear();
             foreach (var item in DataSave.NowRule.Custom_WeaponList)
             {
-                ListBox_BreakWeaponInfo.Items.Add(new WeaponInfoModel()
+                BreakWeaponInfo.Items.Add(new WeaponInfoModel()
                 {
                     English = item,
                     Chinese = PlayerUtil.GetWeaponChsName(item)
                 });
             }
 
-            if (ListBox_BreakWeaponInfo.Items.Count != 0)
+            if (BreakWeaponInfo.Items.Count != 0)
             {
-                ListBox_BreakWeaponInfo.SelectedIndex = 0;
+                BreakWeaponInfo.SelectedIndex = 0;
             }
 
-            ListBox_Custom_BlackList.Items.Clear();
+            BlackList.Items.Clear();
             foreach (var item in DataSave.NowRule.Custom_BlackList)
             {
-                ListBox_Custom_BlackList.Items.Add(item);
+                BlackList.Items.Add(item);
             }
 
-            ListBox_Custom_WhiteList.Items.Clear();
+            WhiteList.Items.Clear();
             foreach (var item in DataSave.NowRule.Custom_WhiteList)
             {
-                ListBox_Custom_WhiteList.Items.Add(item);
+                WhiteList.Items.Add(item);
             }
 
-            foreach (WeaponInfoModel item in ListBox_WeaponInfo.Items)
+            foreach (WeaponInfoModel item in ListWeaponInfo.Items)
             {
-                foreach (WeaponInfoModel item1 in ListBox_BreakWeaponInfo.Items)
+                foreach (WeaponInfoModel item1 in BreakWeaponInfo.Items)
                 {
                     if (item.English == item1.English)
                     {
@@ -172,88 +183,56 @@ namespace BF1.ServerAdminTools.Common.Views
             }
 
             DataSave.AutoKickBreakPlayer = false;
-            CheckBox_RunAutoKick.IsChecked = false;
+            RunAutoKick.IsChecked = false;
         }
 
         private void MainWindow_ClosingDisposeEvent()
         {
-            DataSave.NowRule.MaxKill = Convert.ToInt32(Slider_MaxKill.Value);
-            DataSave.NowRule.KDFlag = Convert.ToInt32(Slider_KDFlag.Value);
-            DataSave.NowRule.MaxKD = Convert.ToSingle(Slider_MaxKD.Value);
-            DataSave.NowRule.KPMFlag = Convert.ToInt32(Slider_KPMFlag.Value);
-            DataSave.NowRule.MaxKPM = Convert.ToSingle(Slider_MaxKPM.Value);
-            DataSave.NowRule.MinRank = Convert.ToInt32(Slider_MinRank.Value);
-            DataSave.NowRule.MaxRank = Convert.ToInt32(Slider_MaxRank.Value);
-            DataSave.NowRule.LifeMaxKD = Convert.ToSingle(Slider_LifeMaxKD.Value);
-            DataSave.NowRule.LifeMaxKPM = Convert.ToSingle(Slider_LifeMaxKPM.Value);
-            DataSave.NowRule.LifeMaxWeaponStar = Convert.ToInt32(Slider_LifeMaxWeaponStar.Value);
-            DataSave.NowRule.LifeMaxVehicleStar = Convert.ToInt32(Slider_LifeMaxVehicleStar.Value);
-            DataSave.NowRule.ScoreSwitchMap = Convert.ToInt32(Slider_ScoreSwitchMap.Value);
-            DataSave.NowRule.ScoreNotSwitchMap = Convert.ToInt32(Slider_ScoreNotSwitchMap.Value);
-            DataSave.NowRule.ScoreStartSwitchMap = Convert.ToInt32(Slider_ScoreStartSwitchMap.Value);
-            if (RadioButton_SwitchMapSelect0.IsChecked == true)
+            DataSave.NowRule.MaxKill = Convert.ToInt32(MaxKill.Value);
+            DataSave.NowRule.KDFlag = Convert.ToInt32(KDFlag.Value);
+            DataSave.NowRule.MaxKD = Convert.ToSingle(MaxKD.Value);
+            DataSave.NowRule.KPMFlag = Convert.ToInt32(KPMFlag.Value);
+            DataSave.NowRule.MaxKPM = Convert.ToSingle(MaxKPM.Value);
+            DataSave.NowRule.MinRank = Convert.ToInt32(MinRank.Value);
+            DataSave.NowRule.MaxRank = Convert.ToInt32(MaxRank.Value);
+            DataSave.NowRule.LifeMaxKD = Convert.ToSingle(LifeMaxKD.Value);
+            DataSave.NowRule.LifeMaxKPM = Convert.ToSingle(LifeMaxKPM.Value);
+            DataSave.NowRule.LifeMaxWeaponStar = Convert.ToInt32(LifeMaxWeaponStar.Value);
+            DataSave.NowRule.LifeMaxVehicleStar = Convert.ToInt32(LifeMaxVehicleStar.Value);
+            DataSave.NowRule.ScoreSwitchMap = Convert.ToInt32(ScoreSwitchMap.Value);
+            DataSave.NowRule.ScoreNotSwitchMap = Convert.ToInt32(ScoreNotSwitchMap.Value);
+            DataSave.NowRule.ScoreStartSwitchMap = Convert.ToInt32(ScoreStartSwitchMap.Value);
+            if (SwitchMapSelect0.IsChecked == true)
             {
                 DataSave.NowRule.SwitchMapType = 0;
             }
-            else if (RadioButton_SwitchMapSelect1.IsChecked == true)
+            else if (SwitchMapSelect1.IsChecked == true)
             {
                 DataSave.NowRule.SwitchMapType = 1;
             }
-            else if (RadioButton_SwitchMapSelect2.IsChecked == true)
+            else if (SwitchMapSelect2.IsChecked == true)
             {
                 DataSave.NowRule.SwitchMapType = 2;
             }
-            DataSave.NowRule.OtherRule = Combo_Rule.SelectedItem as string;
-            DataSave.NowRule.ScoreOtherRule = Convert.ToInt32(Slider_SocreOtherRule.Value);
+            DataSave.NowRule.OtherRule = OtherRule.SelectedItem as string;
+            DataSave.NowRule.ScoreOtherRule = Convert.ToInt32(SocreOtherRule.Value);
 
             DataSave.NowRule.Custom_WeaponList.Clear();
-            foreach (WeaponInfoModel item in ListBox_BreakWeaponInfo.Items)
+            foreach (WeaponInfoModel item in BreakWeaponInfo.Items)
             {
                 DataSave.NowRule.Custom_WeaponList.Add(item.English);
             }
             DataSave.NowRule.Custom_BlackList.Clear();
-            foreach (string item in ListBox_Custom_BlackList.Items)
+            foreach (string item in BlackList.Items)
             {
                 DataSave.NowRule.Custom_BlackList.Add(item);
             }
             DataSave.NowRule.Custom_WhiteList.Clear();
-            foreach (string item in ListBox_Custom_WhiteList.Items)
+            foreach (string item in WhiteList.Items)
             {
                 DataSave.NowRule.Custom_WhiteList.Add(item);
             }
         }
-
-        ////////////////////////////////////////////////////////////////////////////////
-
-        private void CheckState()
-        {
-            while (true)
-            {
-                if (!DataSave.AutoKickBreakPlayer)
-                {
-                    Dispatcher.Invoke(() =>
-                    {
-                        CheckBox_RunAutoKick.IsChecked = false;
-                    });
-                }
-
-                if (string.IsNullOrEmpty(Globals.Config.GameId))
-                {
-                    Dispatcher.BeginInvoke(() =>
-                    {
-                        if (CheckBox_RunAutoKick.IsChecked == true)
-                        {
-                            CheckBox_RunAutoKick.IsChecked = false;
-                            DataSave.AutoKickBreakPlayer = false;
-                        }
-                    });
-                }
-
-                Thread.Sleep(1000);
-            }
-        }
-
-        ////////////////////////////////////////////////////////////////////////////////
 
         private void Button_BreakWeaponInfo_Add_Click(object sender, RoutedEventArgs e)
         {
@@ -261,17 +240,17 @@ namespace BF1.ServerAdminTools.Common.Views
 
             bool isContains = false;
 
-            int index = ListBox_WeaponInfo.SelectedIndex;
+            int index = ListWeaponInfo.SelectedIndex;
             if (index != -1)
             {
-                var wi = ListBox_WeaponInfo.SelectedItem as WeaponInfoModel;
+                var wi = ListWeaponInfo.SelectedItem as WeaponInfoModel;
                 if (string.IsNullOrEmpty(wi.Chinese))
                 {
                     MainWindow._SetOperatingState(2, "请不要把分类项添加到限制武器列表");
                     return;
                 }
 
-                foreach (WeaponInfoModel item in ListBox_BreakWeaponInfo.Items)
+                foreach (WeaponInfoModel item in BreakWeaponInfo.Items)
                 {
                     if (wi.English == item.English)
                     {
@@ -280,9 +259,9 @@ namespace BF1.ServerAdminTools.Common.Views
                     }
                 }
 
-                foreach (var item in ListBox_BreakWeaponInfo.Items)
+                foreach (var item in BreakWeaponInfo.Items)
                 {
-                    if (ListBox_WeaponInfo.SelectedItem == item)
+                    if (ListWeaponInfo.SelectedItem == item)
                     {
                         isContains = true;
                         break;
@@ -291,15 +270,15 @@ namespace BF1.ServerAdminTools.Common.Views
 
                 if (!isContains)
                 {
-                    ListBox_BreakWeaponInfo.Items.Add(ListBox_WeaponInfo.SelectedItem);
-                    (ListBox_WeaponInfo.Items[ListBox_WeaponInfo.SelectedIndex] as WeaponInfoModel).Mark = "✔";
+                    BreakWeaponInfo.Items.Add(ListWeaponInfo.SelectedItem);
+                    (ListWeaponInfo.Items[ListWeaponInfo.SelectedIndex] as WeaponInfoModel).Mark = "✔";
 
-                    ListBox_WeaponInfo.SelectedIndex = index;
+                    ListWeaponInfo.SelectedIndex = index;
 
-                    int count = ListBox_BreakWeaponInfo.Items.Count;
+                    int count = BreakWeaponInfo.Items.Count;
                     if (count != 0)
                     {
-                        ListBox_BreakWeaponInfo.SelectedIndex = count - 1;
+                        BreakWeaponInfo.SelectedIndex = count - 1;
                     }
 
                     MainWindow._SetOperatingState(1, "添加限制武器成功");
@@ -319,12 +298,12 @@ namespace BF1.ServerAdminTools.Common.Views
         {
             AudioUtil.ClickSound();
 
-            int index1 = ListBox_WeaponInfo.SelectedIndex;
-            int index2 = ListBox_BreakWeaponInfo.SelectedIndex;
+            int index1 = ListWeaponInfo.SelectedIndex;
+            int index2 = BreakWeaponInfo.SelectedIndex;
             if (index2 != -1)
             {
-                var bwi = ListBox_BreakWeaponInfo.SelectedItem as WeaponInfoModel;
-                foreach (WeaponInfoModel item in ListBox_WeaponInfo.Items)
+                var bwi = BreakWeaponInfo.SelectedItem as WeaponInfoModel;
+                foreach (WeaponInfoModel item in ListWeaponInfo.Items)
                 {
                     if (item.English == bwi.English)
                     {
@@ -332,15 +311,15 @@ namespace BF1.ServerAdminTools.Common.Views
                     }
                 }
 
-                ListBox_BreakWeaponInfo.Items.RemoveAt(ListBox_BreakWeaponInfo.SelectedIndex);
+                BreakWeaponInfo.Items.RemoveAt(BreakWeaponInfo.SelectedIndex);
 
-                int count = ListBox_BreakWeaponInfo.Items.Count;
+                int count = BreakWeaponInfo.Items.Count;
                 if (count != 0)
                 {
-                    ListBox_BreakWeaponInfo.SelectedIndex = count - 1;
+                    BreakWeaponInfo.SelectedIndex = count - 1;
                 }
 
-                ListBox_WeaponInfo.SelectedIndex = index1;
+                ListWeaponInfo.SelectedIndex = index1;
 
                 MainWindow._SetOperatingState(1, "移除限制武器成功");
             }
@@ -354,25 +333,25 @@ namespace BF1.ServerAdminTools.Common.Views
         {
             AudioUtil.ClickSound();
 
-            int index = ListBox_WeaponInfo.SelectedIndex;
+            int index = ListWeaponInfo.SelectedIndex;
 
             // 清空限制武器列表
             DataSave.NowRule.Custom_WeaponList.Clear();
-            ListBox_BreakWeaponInfo.Items.Clear();
+            BreakWeaponInfo.Items.Clear();
 
-            foreach (WeaponInfoModel item in ListBox_WeaponInfo.Items)
+            foreach (WeaponInfoModel item in ListWeaponInfo.Items)
             {
                 item.Mark = "";
             }
 
-            ListBox_WeaponInfo.SelectedIndex = index;
+            ListWeaponInfo.SelectedIndex = index;
 
             MainWindow._SetOperatingState(1, "清空限制武器列表成功");
         }
 
         private void AppendLog(string msg)
         {
-            TextBox_RuleLog.AppendText(msg + "\n");
+            RuleLog.AppendText(msg + "\n");
         }
 
         private void Add_Rule(object sender, RoutedEventArgs e)
@@ -387,23 +366,23 @@ namespace BF1.ServerAdminTools.Common.Views
                 return;
             }
 
-            var rule = new ServerRule()
+            var rule = new ServerRuleObj()
             {
                 Name = name
             };
 
             DataSave.Rules.Add(name.ToLower(), rule);
-            Rule_List.Items.Add(rule);
+            RuleList.Items.Add(rule);
             ConfigUtil.SaveRule(rule);
 
             LoadRule();
 
-            Rule_List.SelectedItem = null;
+            RuleList.SelectedItem = null;
         }
 
         private void Load_Rule(object sender, RoutedEventArgs e)
         {
-            var item = Rule_List.SelectedItem as ServerRule;
+            var item = RuleList.SelectedItem as ServerRuleObj;
 
             if (item == null)
                 return;
@@ -411,16 +390,16 @@ namespace BF1.ServerAdminTools.Common.Views
             DataSave.NowRule = item;
             LoadRule();
             isApplyRule = false;
-            Rule_List.SelectedItem = null;
+            RuleList.SelectedItem = null;
 
-            TextBox_RuleLog.Clear();
+            RuleLog.Clear();
 
             AppendLog("已切换规则");
         }
 
         private void Delete_Rule(object sender, RoutedEventArgs e)
         {
-            var item = Rule_List.SelectedItem as ServerRule;
+            var item = RuleList.SelectedItem as ServerRuleObj;
 
             if (item == null)
                 return;
@@ -441,51 +420,127 @@ namespace BF1.ServerAdminTools.Common.Views
             var name = item.Name.ToLower().Trim();
 
             DataSave.Rules.Remove(name);
-            Rule_List.Items.Remove(item);
+            RuleList.Items.Remove(item);
             ConfigUtil.DeleteRule(name);
 
-            Rule_List.SelectedItem = null;
+            RuleList.SelectedItem = null;
+        }
+
+        private async void Add_Map_Rule(object sender, RoutedEventArgs e)
+        {
+            if (Globals.ServerDetailed == null)
+            {
+                await Core.InitServerInfo();
+            }
+
+            if (Globals.ServerDetailed == null)
+            {
+                MsgBoxUtil.WarningMsgBox("服务器地图获取失败");
+                return;
+            }
+
+            ServerRuleObj? rule = new MapRuleWindow().Set(out string? map);
+            if (map == null || rule == null)
+            {
+                return;
+            }
+
+            string name = rule.Name.ToLower();
+            TaskMapRule.NeedPause = true;
+
+            if (DataSave.Config.MapRule.ContainsKey(map))
+            {
+                DataSave.Config.MapRule[map] = name;
+                foreach (MapRuleModel item in MapRuleList.Items)
+                {
+                    if (item.Map == map)
+                    { 
+                        item.Name = rule.Name;
+                    }
+                }
+            }
+            else
+            {
+                DataSave.Config.MapRule.Add(map, name);
+                ConfigUtil.SaveConfig();
+            }
+
+            TaskMapRule.NeedPause = false;
+
+        }
+
+        private void Delete_Map_Rule(object sender, RoutedEventArgs e)
+        {
+            if (MapRuleList.SelectedItem is not MapRuleModel item)
+                return;
+            TaskMapRule.NeedPause = true;
+
+            DataSave.Config.MapRule.Remove(item.Map);
+            ConfigUtil.SaveConfig();
+
+            TaskMapRule.NeedPause = false;
+        }
+
+        private void Load_Map_Rule(object sender, RoutedEventArgs e)
+        {
+            if (MapRuleList.SelectedItem is not MapRuleModel item)
+                return;
+
+            ServerRuleObj? rule = new MapRuleWindow(item.Map, item.Name).Set(out string? map);
+            if (rule == null || map == null)
+                return;
+
+            if (item.Name == rule.Name)
+                return;
+
+            TaskMapRule.NeedPause = true;
+
+            DataSave.Config.MapRule[map] = rule.Name.ToLower();
+            item.Name = rule.Name;
+            ConfigUtil.SaveConfig();
+
+            TaskMapRule.NeedPause = false;
         }
 
         private void Button_ApplyRule_Click(object sender, RoutedEventArgs e)
         {
             AudioUtil.ClickSound();
 
-            TextBox_RuleLog.Clear();
+            RuleLog.Clear();
 
             AppendLog("===== 操作时间 =====");
             AppendLog("");
             AppendLog($"{DateTime.Now:yyyy/MM/dd HH:mm:ss}");
             AppendLog("");
 
-            DataSave.NowRule.MaxKill = Convert.ToInt32(Slider_MaxKill.Value);
-            DataSave.NowRule.KDFlag = Convert.ToInt32(Slider_KDFlag.Value);
-            DataSave.NowRule.MaxKD = Convert.ToSingle(Slider_MaxKD.Value);
-            DataSave.NowRule.KPMFlag = Convert.ToInt32(Slider_KPMFlag.Value);
-            DataSave.NowRule.MaxKPM = Convert.ToSingle(Slider_MaxKPM.Value);
-            DataSave.NowRule.MinRank = Convert.ToInt32(Slider_MinRank.Value);
-            DataSave.NowRule.MaxRank = Convert.ToInt32(Slider_MaxRank.Value);
-            DataSave.NowRule.LifeMaxKD = Convert.ToSingle(Slider_LifeMaxKD.Value);
-            DataSave.NowRule.LifeMaxKPM = Convert.ToSingle(Slider_LifeMaxKPM.Value);
-            DataSave.NowRule.LifeMaxWeaponStar = Convert.ToInt32(Slider_LifeMaxWeaponStar.Value);
-            DataSave.NowRule.LifeMaxVehicleStar = Convert.ToInt32(Slider_LifeMaxVehicleStar.Value);
-            DataSave.NowRule.ScoreSwitchMap = Convert.ToInt32(Slider_ScoreSwitchMap.Value);
-            DataSave.NowRule.ScoreNotSwitchMap = Convert.ToInt32(Slider_ScoreNotSwitchMap.Value);
-            DataSave.NowRule.ScoreStartSwitchMap = Convert.ToInt32(Slider_ScoreStartSwitchMap.Value);
-            if (RadioButton_SwitchMapSelect0.IsChecked == true)
+            DataSave.NowRule.MaxKill = Convert.ToInt32(MaxKill.Value);
+            DataSave.NowRule.KDFlag = Convert.ToInt32(KDFlag.Value);
+            DataSave.NowRule.MaxKD = Convert.ToSingle(MaxKD.Value);
+            DataSave.NowRule.KPMFlag = Convert.ToInt32(KPMFlag.Value);
+            DataSave.NowRule.MaxKPM = Convert.ToSingle(MaxKPM.Value);
+            DataSave.NowRule.MinRank = Convert.ToInt32(MinRank.Value);
+            DataSave.NowRule.MaxRank = Convert.ToInt32(MaxRank.Value);
+            DataSave.NowRule.LifeMaxKD = Convert.ToSingle(LifeMaxKD.Value);
+            DataSave.NowRule.LifeMaxKPM = Convert.ToSingle(LifeMaxKPM.Value);
+            DataSave.NowRule.LifeMaxWeaponStar = Convert.ToInt32(LifeMaxWeaponStar.Value);
+            DataSave.NowRule.LifeMaxVehicleStar = Convert.ToInt32(LifeMaxVehicleStar.Value);
+            DataSave.NowRule.ScoreSwitchMap = Convert.ToInt32(ScoreSwitchMap.Value);
+            DataSave.NowRule.ScoreNotSwitchMap = Convert.ToInt32(ScoreNotSwitchMap.Value);
+            DataSave.NowRule.ScoreStartSwitchMap = Convert.ToInt32(ScoreStartSwitchMap.Value);
+            if (SwitchMapSelect0.IsChecked == true)
             {
                 DataSave.NowRule.SwitchMapType = 0;
             }
-            else if (RadioButton_SwitchMapSelect1.IsChecked == true)
+            else if (SwitchMapSelect1.IsChecked == true)
             {
                 DataSave.NowRule.SwitchMapType = 1;
             }
-            else if (RadioButton_SwitchMapSelect2.IsChecked == true)
+            else if (SwitchMapSelect2.IsChecked == true)
             {
                 DataSave.NowRule.SwitchMapType = 2;
             }
-            DataSave.NowRule.OtherRule = Combo_Rule.SelectedItem as string;
-            DataSave.NowRule.ScoreOtherRule = Convert.ToInt32(Slider_SocreOtherRule.Value);
+            DataSave.NowRule.OtherRule = OtherRule.SelectedItem as string;
+            DataSave.NowRule.ScoreOtherRule = Convert.ToInt32(SocreOtherRule.Value);
 
             if (DataSave.NowRule.MinRank >= DataSave.NowRule.MaxRank && DataSave.NowRule.MinRank != 0 && DataSave.NowRule.MaxRank != 0)
             {
@@ -505,7 +560,7 @@ namespace BF1.ServerAdminTools.Common.Views
             // 清空限制武器列表
             DataSave.NowRule.Custom_WeaponList.Clear();
             // 添加自定义限制武器
-            foreach (var item in ListBox_BreakWeaponInfo.Items)
+            foreach (var item in BreakWeaponInfo.Items)
             {
                 DataSave.NowRule.Custom_WeaponList.Add((item as WeaponInfoModel).English);
             }
@@ -513,7 +568,7 @@ namespace BF1.ServerAdminTools.Common.Views
             // 清空黑名单列表
             DataSave.NowRule.Custom_BlackList.Clear();
             // 添加自定义黑名单列表
-            foreach (var item in ListBox_Custom_BlackList.Items)
+            foreach (var item in BlackList.Items)
             {
                 DataSave.NowRule.Custom_BlackList.Add(item as string);
             }
@@ -521,14 +576,14 @@ namespace BF1.ServerAdminTools.Common.Views
             // 清空白名单列表
             DataSave.NowRule.Custom_WhiteList.Clear();
             // 添加自定义白名单列表
-            foreach (var item in ListBox_Custom_WhiteList.Items)
+            foreach (var item in WhiteList.Items)
             {
                 DataSave.NowRule.Custom_WhiteList.Add(item as string);
             }
 
-            if (CheckBox_RunAutoKick.IsChecked == true)
+            if (RunAutoKick.IsChecked == true)
             {
-                CheckBox_RunAutoKick.IsChecked = false;
+                RunAutoKick.IsChecked = false;
                 DataSave.AutoKickBreakPlayer = false;
             }
 
@@ -547,7 +602,7 @@ namespace BF1.ServerAdminTools.Common.Views
         {
             AudioUtil.ClickSound();
 
-            TextBox_RuleLog.Clear();
+            RuleLog.Clear();
 
             AppendLog("===== 查询时间 =====");
             AppendLog("");
@@ -647,7 +702,7 @@ namespace BF1.ServerAdminTools.Common.Views
 
             isRun = true;
 
-            TextBox_RuleLog.Clear();
+            RuleLog.Clear();
 
             AppendLog("===== 查询时间 =====");
             AppendLog("");
@@ -758,7 +813,7 @@ namespace BF1.ServerAdminTools.Common.Views
             {
                 bool isContains = false;
 
-                foreach (var item in ListBox_Custom_BlackList.Items)
+                foreach (var item in BlackList.Items)
                 {
                     if ((item as string) == TextBox_BlackList_PlayerName.Text)
                     {
@@ -768,7 +823,7 @@ namespace BF1.ServerAdminTools.Common.Views
 
                 if (!isContains)
                 {
-                    ListBox_Custom_BlackList.Items.Add(TextBox_BlackList_PlayerName.Text);
+                    BlackList.Items.Add(TextBox_BlackList_PlayerName.Text);
 
                     MainWindow._SetOperatingState(1, $"添加 {TextBox_BlackList_PlayerName.Text} 到黑名单列表成功");
                     TextBox_BlackList_PlayerName.Text = "";
@@ -789,10 +844,10 @@ namespace BF1.ServerAdminTools.Common.Views
         {
             AudioUtil.ClickSound();
 
-            if (ListBox_Custom_BlackList.SelectedIndex != -1)
+            if (BlackList.SelectedIndex != -1)
             {
-                MainWindow._SetOperatingState(1, $"从黑名单列表删除（{ListBox_Custom_BlackList.SelectedItem}）成功");
-                ListBox_Custom_BlackList.Items.Remove(ListBox_Custom_BlackList.SelectedItem);
+                MainWindow._SetOperatingState(1, $"从黑名单列表删除（{BlackList.SelectedItem}）成功");
+                BlackList.Items.Remove(BlackList.SelectedItem);
             }
             else
             {
@@ -816,7 +871,7 @@ namespace BF1.ServerAdminTools.Common.Views
 
                 // 清空黑名单列表
                 DataSave.NowRule.Custom_BlackList.Clear();
-                ListBox_Custom_BlackList.Items.Clear();
+                BlackList.Items.Clear();
 
                 var list = data.Split("\n");
                 foreach (var item in list)
@@ -826,7 +881,7 @@ namespace BF1.ServerAdminTools.Common.Views
                         continue;
 
                     DataSave.NowRule.Custom_BlackList.Add(name);
-                    ListBox_Custom_BlackList.Items.Add(name);
+                    BlackList.Items.Add(name);
                 }
 
                 MainWindow._SetOperatingState(1, "导入黑名单列表成功");
@@ -846,7 +901,7 @@ namespace BF1.ServerAdminTools.Common.Views
 
             // 清空黑名单列表
             DataSave.NowRule.Custom_BlackList.Clear();
-            ListBox_Custom_BlackList.Items.Clear();
+            BlackList.Items.Clear();
 
             MainWindow._SetOperatingState(1, $"清空黑名单列表成功");
         }
@@ -859,7 +914,7 @@ namespace BF1.ServerAdminTools.Common.Views
             {
                 bool isContains = false;
 
-                foreach (var item in ListBox_Custom_WhiteList.Items)
+                foreach (var item in WhiteList.Items)
                 {
                     if ((item as string) == TextBox_WhiteList_PlayerName.Text)
                     {
@@ -869,7 +924,7 @@ namespace BF1.ServerAdminTools.Common.Views
 
                 if (!isContains)
                 {
-                    ListBox_Custom_WhiteList.Items.Add(TextBox_WhiteList_PlayerName.Text);
+                    WhiteList.Items.Add(TextBox_WhiteList_PlayerName.Text);
 
                     MainWindow._SetOperatingState(1, $"添加 {TextBox_WhiteList_PlayerName.Text} 到白名单列表成功");
 
@@ -891,10 +946,10 @@ namespace BF1.ServerAdminTools.Common.Views
         {
             AudioUtil.ClickSound();
 
-            if (ListBox_Custom_WhiteList.SelectedIndex != -1)
+            if (WhiteList.SelectedIndex != -1)
             {
-                MainWindow._SetOperatingState(1, $"从白名单列表删除（{ListBox_Custom_WhiteList.SelectedItem}）成功");
-                ListBox_Custom_WhiteList.Items.Remove(ListBox_Custom_WhiteList.SelectedItem);
+                MainWindow._SetOperatingState(1, $"从白名单列表删除（{WhiteList.SelectedItem}）成功");
+                WhiteList.Items.Remove(WhiteList.SelectedItem);
             }
             else
             {
@@ -918,7 +973,7 @@ namespace BF1.ServerAdminTools.Common.Views
 
                 // 清空黑名单列表
                 DataSave.NowRule.Custom_WhiteList.Clear();
-                ListBox_Custom_WhiteList.Items.Clear();
+                WhiteList.Items.Clear();
 
                 var list = data.Split("\n");
                 foreach (var item in list)
@@ -928,7 +983,7 @@ namespace BF1.ServerAdminTools.Common.Views
                         continue;
 
                     DataSave.NowRule.Custom_WhiteList.Add(name);
-                    ListBox_Custom_WhiteList.Items.Add(name);
+                    WhiteList.Items.Add(name);
                 }
 
                 MainWindow._SetOperatingState(1, "导入白名单列表成功");
@@ -948,7 +1003,7 @@ namespace BF1.ServerAdminTools.Common.Views
 
             // 清空白名单列表
             DataSave.NowRule.Custom_WhiteList.Clear();
-            ListBox_Custom_WhiteList.Items.Clear();
+            WhiteList.Items.Clear();
 
             MainWindow._SetOperatingState(1, $"清空白名单列表成功");
         }
@@ -959,7 +1014,7 @@ namespace BF1.ServerAdminTools.Common.Views
         /// <returns></returns>
         private async Task<bool> CheckKickEnv()
         {
-            TextBox_RuleLog.Clear();
+            RuleLog.Clear();
 
             MainWindow._SetOperatingState(2, $"正在检查环境...");
 
@@ -1065,7 +1120,7 @@ namespace BF1.ServerAdminTools.Common.Views
         // 开启自动踢人
         private async void CheckBox_RunAutoKick_Click(object sender, RoutedEventArgs e)
         {
-            if (CheckBox_RunAutoKick.IsChecked == true)
+            if (RunAutoKick.IsChecked == true)
             {
                 // 检查自动踢人环境
                 if (await CheckKickEnv())
@@ -1078,19 +1133,19 @@ namespace BF1.ServerAdminTools.Common.Views
                     await Task.Run(() =>
                     {
                         Thread.Sleep(500);
-                        Dispatcher.Invoke(() => { CheckBox_RunAutoKick.IsChecked = true; });
+                        Dispatcher.Invoke(() => { RunAutoKick.IsChecked = true; });
                     });
                 }
                 else
                 {
-                    CheckBox_RunAutoKick.IsChecked = false;
+                    RunAutoKick.IsChecked = false;
                     DataSave.AutoKickBreakPlayer = false;
                 }
             }
             else
             {
                 DataSave.AutoKickBreakPlayer = false;
-                CheckBox_RunAutoKick.IsChecked = false;
+                RunAutoKick.IsChecked = false;
                 MainWindow._SetOperatingState(1, $"自动踢人关闭成功");
             }
         }
@@ -1123,6 +1178,11 @@ namespace BF1.ServerAdminTools.Common.Views
 
                 MainWindow._SetOperatingState(1, "执行手动踢人操作成功，请查看日志了解执行结果");
             }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

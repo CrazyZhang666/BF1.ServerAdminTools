@@ -54,17 +54,16 @@ internal class NettyServer
     {
         public override void ChannelRead(IChannelHandlerContext context, object message)
         {
-            Task.Run(async () =>
+            if (message is IByteBuffer buffer)
             {
-                var buffer = message as IByteBuffer;
-                if (buffer != null)
+                Task.Run(async () =>
                 {
                     IByteBuffer buff = Unpooled.Buffer();
                     var key = buffer.ReadLong();
                     if (key != ConfigUtils.Config.ServerKey)
                     {
                         buff.WriteByte(70);
-                        context.WriteAndFlushAsync(buff);
+                        await context.WriteAndFlushAsync(buff);
                         return;
                     }
                     var type = buffer.ReadByte();
@@ -137,13 +136,66 @@ internal class NettyServer
                             buff.WriteByte(9);
                             EncodePack.AdminList(buff);
                             break;
-                        //
+                        //添加VIP
                         case 10:
+                            buff.WriteByte(10);
+                            name = buffer.ReadString(buffer.ReadInt(), Encoding.UTF8);
+                            if (Globals.ServerInfo == null)
+                            {
+                                buff.WriteBoolean(false);
+                                break;
+                            }
+                            buff.WriteBoolean(true);
+                            var list1 = Globals.RspInfo.vipList;
+                            if (list1.FindIndex(a =>
+                            {
+                                string temp = a.displayName;
+                                if (temp.StartsWith("["))
+                                {
+                                    temp = temp[temp.IndexOf(']')..];
+                                }
+                                return temp == name;
+                            }) != -1)
+                            {
+                                buff.WriteBoolean(false);
+                                return;
+                            }
+                            buff.WriteBoolean(true);
+                            var result = await ServerAPI.AddServerVip(name);
+                            buff.WriteBoolean(result.IsSuccess);
+                            break;
+                        //删除VIP
+                        case 11:
+                            buff.WriteByte(11);
+                            name = buffer.ReadString(buffer.ReadInt(), Encoding.UTF8);
+                            if (Globals.ServerInfo == null)
+                            {
+                                buff.WriteBoolean(false);
+                                break;
+                            }
+                            buff.WriteBoolean(true);
+                            list1 = Globals.RspInfo.vipList;
+                            if (list1.FindIndex(a =>
+                            {
+                                string temp = a.displayName;
+                                if (temp.StartsWith("["))
+                                {
+                                    temp = temp[temp.IndexOf(']')..];
+                                }
+                                return temp == name;
+                            }) == -1)
+                            {
+                                buff.WriteBoolean(false);
+                                return;
+                            }
+                            buff.WriteBoolean(true);
+                            var result2 = await ServerAPI.RemoveServerVip(name);
+                            buff.WriteBoolean(result2.IsSuccess);
                             break;
                     }
                     await context.WriteAndFlushAsync(buff);
-                }
-            });
+                });
+            }
         }
 
         public override void ChannelReadComplete(IChannelHandlerContext context) => context.Flush();

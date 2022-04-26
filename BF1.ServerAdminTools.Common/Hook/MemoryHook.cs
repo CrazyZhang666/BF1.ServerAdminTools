@@ -1,5 +1,4 @@
-﻿using BF1.ServerAdminTools.Common.API.GT;
-using BF1.ServerAdminTools.Common.Data;
+﻿using BF1.ServerAdminTools.Common.Data;
 using BF1.ServerAdminTools.Common.Helper;
 using BF1.ServerAdminTools.Common.Utils;
 
@@ -19,41 +18,46 @@ internal static class MemoryHook
             Globals.IsToolInit = false;
             LoggerHelper.Info($"目标程序名称 {ProcessName}");
             var pArray = Process.GetProcessesByName(ProcessName);
-            if (pArray.Length > 0)
+            foreach (var item in pArray)
             {
-                var process = pArray[0];
-                windowHandle = process.MainWindowHandle;
-                LoggerHelper.Info($"目标程序窗口句柄 {windowHandle}");
-                processId = process.Id;
-                LoggerHelper.Info($"目标程序进程ID {processId}");
-                processHandle = WinAPI.OpenProcess(
-                    ProcessAccessFlags.VirtualMemoryRead |
-                    ProcessAccessFlags.VirtualMemoryWrite |
-                    ProcessAccessFlags.VirtualMemoryOperation,
-                    false, processId);
-                LoggerHelper.Info($"目标程序进程句柄 {processHandle}");
-                if (process.MainModule != null)
+                if (TestHook(item))
                 {
-                    processBaseAddress = process.MainModule.BaseAddress.ToInt64();
-                    LoggerHelper.Info($"目标程序主模块基址 0x{processBaseAddress:x}");
-                    Globals.IsToolInit = true;
                     return true;
                 }
-                else
-                {
-                    LoggerHelper.Error($"发生错误，目标程序主模块基址为空");
-                    return false;
-                }
             }
-            else
-            {
-                LoggerHelper.Error($"发生错误，未发现目标进程");
-                return false;
-            }
+
+            LoggerHelper.Error($"发生错误，未发现目标进程");
+            return false;
         }
         catch (Exception ex)
         {
             LoggerHelper.Error($"战地1内存模块初始化异常", ex);
+            return false;
+        }
+    }
+
+    private static bool TestHook(Process process) 
+    {
+        windowHandle = process.MainWindowHandle;
+        LoggerHelper.Info(msg: $"目标程序窗口句柄 {windowHandle}");
+        processId = process.Id;
+        LoggerHelper.Info($"目标程序进程ID {processId}");
+        processHandle = WinAPI.OpenProcess(
+            ProcessAccessFlags.VirtualMemoryRead |
+            ProcessAccessFlags.VirtualMemoryWrite |
+            ProcessAccessFlags.VirtualMemoryOperation,
+            false, processId);
+        LoggerHelper.Info($"目标程序进程句柄 {processHandle}");
+        if (process.MainModule != null)
+        {
+            processBaseAddress = process.MainModule.BaseAddress.ToInt64();
+            LoggerHelper.Info($"目标程序主模块基址 0x{processBaseAddress:x}");
+            Globals.IsToolInit = true;
+            return true;
+        }
+        else
+        {
+            LoggerHelper.Error($"发生错误，目标程序主模块基址为空");
             return false;
         }
     }
@@ -544,12 +548,7 @@ internal static class MemoryHook
 
                     if (Globals.ServerDetailed == null)
                     {
-                        var res = await GTAPI.GetServerDetailed(Globals.Config.GameId);
-                        if (res.IsSuccess)
-                        {
-                            Globals.ServerDetailed = res.Obj;
-                            Globals.ServerDetailed.currentMap = ChsUtil.ToSimplifiedChinese(Globals.ServerDetailed.currentMap);
-                        }
+                        await Core.InitServerDetailed();
                     }
                     IsGet = false;
                 });

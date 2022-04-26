@@ -9,12 +9,14 @@ internal static class ConfigUtil
 {
     public static string ServerRule { get; } = $"{ConfigLocal.Base}/ServerRule";
     public static string Wpf { get; } = $"{ConfigLocal.Base}/Wpf";
+    public static string Subscribe { get; } = $"{ConfigLocal.Base}/Subscribe";
     public static string Self { get; } = $"{Wpf}/config.json";
 
     public static void Init()
     {
         Directory.CreateDirectory(ServerRule);
         Directory.CreateDirectory(Wpf);
+        Directory.CreateDirectory(Subscribe);
         NettyCore.InitConfig();
     }
 
@@ -23,6 +25,11 @@ internal static class ConfigUtil
         foreach (var item in DataSave.Rules)
         {
             FileUtil.WriteFile($"{ServerRule}/{item.Key}.json", JsonUtil.JsonSeri(item.Value));
+        }
+
+        foreach (var item in DataSave.Subscribes)
+        {
+            FileUtil.WriteFile($"{Subscribe}/{item.Key}.json", JsonUtil.JsonSeri(item.Value));
         }
     }
 
@@ -35,7 +42,7 @@ internal static class ConfigUtil
             {
                 var name = item.Name.Trim().ToLower().Replace(".json", "");
                 var data = File.ReadAllText(item.FullName);
-                var rule = JsonUtil.JsonDese<ServerRule>(data);
+                var rule = JsonUtil.JsonDese<ServerRuleObj>(data);
 
                 if (rule != null)
                 {
@@ -46,12 +53,27 @@ internal static class ConfigUtil
 
         if (!DataSave.Rules.ContainsKey("default"))
         {
-            var rule = new ServerRule()
+            var rule = new ServerRuleObj()
             {
                 Name = "Default"
             };
             DataSave.Rules.Add("default", rule);
             FileUtil.WriteFile($"{ServerRule}/default.json", JsonUtil.JsonSeri(rule));
+        }
+
+        dir = new DirectoryInfo(Subscribe);
+        foreach (var item in dir.GetFiles())
+        {
+            if (item.Extension is ".json")
+            {
+                var data = File.ReadAllText(item.FullName);
+                var rule = JsonUtil.JsonDese<SubscribeObj>(data);
+
+                if (rule != null)
+                {
+                    DataSave.Subscribes.Add(rule.Name, rule);
+                }
+            }
         }
 
         if (File.Exists(Self))
@@ -67,6 +89,27 @@ internal static class ConfigUtil
                 Window_O = true
             };
             FileUtil.WriteFile(Self, JsonUtil.JsonSeri(DataSave.NowRule));
+        }
+
+        if (DataSave.Config.MapRule == null)
+        {
+            DataSave.Config.MapRule = new();
+        }
+        var remove = new List<string>();
+        foreach (var item in DataSave.Config.MapRule)
+        {
+            if (!DataSave.Rules.ContainsKey(item.Value))
+            {
+                remove.Add(item.Key);
+            }
+        }
+        if (remove.Count != 0)
+        {
+            foreach (var item in remove)
+            {
+                DataSave.Config.MapRule.Remove(item);
+            }
+            SaveConfig();
         }
 
         NettyCore.LoadConfig();
@@ -88,9 +131,15 @@ internal static class ConfigUtil
             JsonUtil.JsonSeri(DataSave.NowRule));
     }
 
-    public static void SaveRule(ServerRule rule)
+    public static void SaveRule(ServerRuleObj rule)
     {
         FileUtil.WriteFile($"{ServerRule}/{rule.Name.Trim().ToLower()}.json",
             JsonUtil.JsonSeri(rule));
+    }
+
+    public static void SaveSubscribe(SubscribeObj subscribe)
+    {
+        FileUtil.WriteFile($"{Subscribe}/{subscribe.Name.Trim()}.json",
+            JsonUtil.JsonSeri(subscribe));
     }
 }

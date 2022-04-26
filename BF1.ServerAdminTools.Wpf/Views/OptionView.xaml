@@ -14,7 +14,13 @@
             <ColumnDefinition />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-
+        <StackPanel Grid.Column="1" Margin="5">
+            <GroupBox Header="订阅黑名单">
+                <ListView>
+                    
+                </ListView>
+            </GroupBox>
+        </StackPanel>
         <StackPanel Grid.Column="0" Margin="5">
             <GroupBox Header="按键音">
                 <WrapPanel>

@@ -7,11 +7,15 @@ public static class DataSave
     /// <summary>
     /// 加载的规则列表
     /// </summary>
-    public static Dictionary<string, ServerRule> Rules { get; } = new();
+    public static Dictionary<string, ServerRuleObj> Rules { get; } = new();
+    /// <summary>
+    /// 订阅的黑名单
+    /// </summary>
+    public static Dictionary<string, SubscribeObj> Subscribes { get; } = new();
     /// <summary>
     /// 目前应用的规则
     /// </summary>
-    public static ServerRule NowRule { get; set; }
+    public static ServerRuleObj NowRule { get; set; }
 
     /// <summary>
     /// 是否自动踢出违规玩家

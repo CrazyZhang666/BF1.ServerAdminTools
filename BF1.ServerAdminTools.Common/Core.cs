@@ -1,6 +1,7 @@
 ﻿using BF1.ServerAdminTools.Common.API;
 using BF1.ServerAdminTools.Common.API.BF1Server;
 using BF1.ServerAdminTools.Common.API.BF1Server.RespJson;
+using BF1.ServerAdminTools.Common.API.GT;
 using BF1.ServerAdminTools.Common.Chat;
 using BF1.ServerAdminTools.Common.Data;
 using BF1.ServerAdminTools.Common.Helper;
@@ -282,6 +283,18 @@ public static class Core
         }
 
         return result;
+    }
+
+    public static async Task<bool> InitServerDetailed() 
+    {
+        var res = await GTAPI.GetServerDetailed(Globals.Config.GameId);
+        if (res.IsSuccess)
+        {
+            Globals.ServerDetailed = res.Obj;
+            Globals.ServerDetailed.currentMap = ChsUtil.ToSimplifiedChinese(Globals.ServerDetailed.currentMap);
+        }
+
+        return res.IsSuccess;
     }
 
     public static void AddLog2SQLite(DataShell sheetName, BreakRuleInfo info)

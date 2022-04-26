@@ -107,7 +107,7 @@ namespace BF1.ServerAdminTools.Common
             else
                 Core.LogError($"中文聊天指针分配失败");
 
-            Tasks.Start();
+            //Tasks.Start();
         }
 
         private void Window_Main_Closing(object sender, CancelEventArgs e)

@@ -3,11 +3,6 @@ using BF1.ServerAdminTools.Common.API.BF1Server;
 using BF1.ServerAdminTools.Common.Data;
 using BF1.ServerAdminTools.Common.Utils;
 using BF1.ServerAdminTools.Wpf.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BF1.ServerAdminTools.Wpf.Tasks;
 
@@ -46,7 +41,7 @@ internal class TaskCheckRule
     public static void StartCheck() 
     {
         bool other = false;
-        ServerRule rule = DataSave.NowRule;
+        ServerRuleObj rule = DataSave.NowRule;
         if (DataSave.NowRule.ScoreOtherRule != 0 &&
             Math.Abs(Globals.ServerHook.Team1Score - Globals.ServerHook.Team2Score)
                 > DataSave.NowRule.ScoreOtherRule)
@@ -93,7 +88,7 @@ internal class TaskCheckRule
         }
     }
 
-    public static void CheckPlayerIsBreakRule(PlayerData playerData, ServerRule rule)
+    public static void CheckPlayerIsBreakRule(PlayerData playerData, ServerRuleObj rule)
     {
         if (rule == null || DataSave.NowRule == null)
             return;

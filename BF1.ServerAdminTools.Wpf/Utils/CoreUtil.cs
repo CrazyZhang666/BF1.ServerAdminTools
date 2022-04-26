@@ -103,12 +103,4 @@ public static class CoreUtil
         TimeSpan secondSpan = new TimeSpan(endTime.Ticks - startTime.Ticks);
         return secondSpan.TotalSeconds;
     }
-
-    /// <summary>
-    /// 刷新DNS缓存
-    /// </summary>
-    public static void FlushDNSCache()
-    {
-        Core.DnsFlushResolverCache();
-    }
 }

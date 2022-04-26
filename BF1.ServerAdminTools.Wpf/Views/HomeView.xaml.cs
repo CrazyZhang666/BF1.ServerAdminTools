@@ -24,7 +24,8 @@ namespace BF1.ServerAdminTools.Common.Views
             //    });
             //});
 
-            TextBox_Change.Text = @"### 2022.4.23
+            TextBox_Change.Text = 
+@"### 2022.4.23
 - 修复生涯问题
 - 修改逻辑
 - 修改登录

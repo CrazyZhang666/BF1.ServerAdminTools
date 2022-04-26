@@ -17,52 +17,30 @@
         </Grid.ColumnDefinitions>
         <!--  ################################  -->
         <StackPanel Grid.Column="0">
-            <TextBlock  Style="{StaticResource TextBlockStyle_Title}" Text="获取SessionId" />
+            <TextBlock Style="{StaticResource TextBlockStyle_Title}" Text="获取SessionId" />
             <TextBlock
                 Margin="5"
                 Foreground="Green"
                 Text="提示：点击登录即可打开网页自动登录，可将Cookie填入下方的输入框以使用特定的Cookie登录"
                 TextWrapping="Wrap" />
-            <!--<TextBlock
-                Margin="5"
-                Foreground="Red"
-                Text="警告：除非需要更换账号或者修复Code获取失败，否则获取玩家账号信息功能只需要点一次，因为每次点击都会刷新remid、sid和sessionId"
-                TextWrapping="Wrap" />
-            <Button
-                x:Name="Button_GetPlayerSessionID"
-                Click="Button_GetPlayerSessionID_Click"
-                Content="获取玩家账号信息（仅第一次使用需要）"
-                Style="{StaticResource ButtonStyle_Web}" />-->
-            <!--  ################################  -->
             <TextBlock Margin="5" Text="Remid (可选)" />
             <TextBox
-                    x:Name="TextBox_Remid"
-                    Height="45"
-                    TextWrapping="Wrap"
-                    Margin="5">
-            </TextBox>
+                x:Name="TextBox_Remid"
+                Height="45"
+                Margin="5"
+                TextWrapping="Wrap" />
             <TextBlock Margin="5" Text="Sid (可选)" />
             <TextBox
-                    x:Name="TextBox_Sid"
-                    Height="45"
-                    TextWrapping="Wrap"
-                    Margin="5">
-            </TextBox>
-            <!--<TextBlock
-                x:Name="TextBlock_CheckSessionIdStatus"
+                x:Name="TextBox_Sid"
+                Height="45"
                 Margin="5"
-                Padding="5,30,5,30"
-                Background="Orange"
-                FontSize="16"
-                Foreground="White"
-                Text="等待玩家操作"
-                TextAlignment="Center" />-->
+                TextWrapping="Wrap" />
             <Button
                 x:Name="Button_Login"
-                Click="Button_RefreshPlayerSessionId_Click"
-                FontSize="20"
                 Padding="5,15,5,15"
-                Content="登录"
+                Click="Button_RefreshPlayerSessionId_Click"
+                Content="获取/登录"
+                FontSize="20"
                 Style="{StaticResource ButtonStyle_Web}" />
             <TextBlock Margin="5">
                 <Run>
@@ -81,7 +59,6 @@
                 Text="提示：右侧表格如果没有加载出来，可以点击右键菜单更新"
                 TextWrapping="Wrap" />
         </StackPanel>
-        <!--  ################################  -->
         <Grid Grid.Column="1">
             <UniformGrid Rows="2">
                 <ScottPlot:WpfPlot x:Name="WpfPlot_Main1" Margin="5,5,5,2.5" />

@@ -205,4 +205,124 @@
             </Setter.Value>
         </Setter>
     </Style>
+    <!--  Combox  -->
+    <Style x:Key="ComboBox1" TargetType="{x:Type ComboBox}">
+        <Setter Property="SnapsToDevicePixels" Value="true" />
+        <Setter Property="OverridesDefaultStyle" Value="true" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+        <Setter Property="ScrollViewer.CanContentScroll" Value="true" />
+        <Setter Property="ItemContainerStyle">
+            <Setter.Value>
+                <!--  ComBoxItem  -->
+                <Style TargetType="ComboBoxItem">
+                    <Setter Property="MinHeight" Value="22" />
+                    <Setter Property="MinWidth" Value="60" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ComboBoxItem">
+                                <Border
+                                    Name="Back"
+                                    Background="Transparent"
+                                    BorderBrush="#331E88E5"
+                                    BorderThickness="0,0,0,0">
+                                    <TextBlock
+                                        Margin="3,0,3,0"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        Foreground="Black"
+                                        Text="{Binding Content.Name, RelativeSource={RelativeSource TemplatedParent}}" />
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="Back" Property="Background" Value="#33FFFFFF" />
+                                    </Trigger>
+                                    <!--  下拉框背景色  -->
+                                    <Trigger Property="IsHighlighted" Value="True">
+                                        <Setter TargetName="Back" Property="Background" Value="#FF1E88E5" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ComboBox">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.7*" />
+                            <ColumnDefinition Width="0.3*" MaxWidth="30" />
+                        </Grid.ColumnDefinitions>
+                        <!--  文字区域背景和边线样式  -->
+                        <Rectangle Fill="Transparent" />
+                        <TextBox
+                            Grid.Column="0"
+                            Margin="5,0,0,0"
+                            VerticalAlignment="Center"
+                            Background="Transparent"
+                            BorderBrush="#5EBDD300"
+                            BorderThickness="0"
+                            Foreground="Black"
+                            IsReadOnly="{TemplateBinding IsReadOnly}"
+                            Text="{TemplateBinding Text}" />
+                        <Border
+                            Grid.Column="0"
+                            BorderBrush="#CC1E88E5"
+                            BorderThickness="2"
+                            CornerRadius="1,0,0,1" />
+                        <!--  右侧下拉button设置  -->
+                        <Border
+                            Grid.Column="1"
+                            Background="#11898989"
+                            BorderBrush="#CC1E88E5"
+                            BorderThickness="0,2,2,2"
+                            CornerRadius="0,1,1,0">
+                            <ToggleButton
+                                BorderBrush="#FF1E88E5"
+                                BorderThickness="3"
+                                ClickMode="Press"
+                                IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                Style="{StaticResource ComboxStyleBtn}" />
+                        </Border>
+                        <!--  弹出popup整体设置  -->
+                        <Popup
+                            x:Name="Popup"
+                            AllowsTransparency="True"
+                            Focusable="False"
+                            IsOpen="{TemplateBinding IsDropDownOpen}"
+                            Placement="Bottom"
+                            PopupAnimation="Slide">
+                            <!--  弹出popup边框  -->
+                            <Border
+                                x:Name="DropDown"
+                                MinWidth="{TemplateBinding ActualWidth}"
+                                MaxHeight="{TemplateBinding MaxDropDownHeight}"
+                                BorderBrush="#CC1E88E5"
+                                BorderThickness="1,0,1,1"
+                                CornerRadius="1"
+                                SnapsToDevicePixels="True">
+                                <!--  下拉幕布边界背景设置 MaxHeight="{TemplateBinding MaxDropDownHeight}"  -->
+                                <ScrollViewer
+                                    Margin="0,0,0,0"
+                                    BorderBrush="#AA1E88E5"
+                                    BorderThickness="2"
+                                    HorizontalScrollBarVisibility="Auto"
+                                    SnapsToDevicePixels="True"
+                                    VerticalScrollBarVisibility="Auto">
+                                    <!--  StackPanel 用于显示子级，方法是将 IsItemsHost 设置为 True  -->
+                                    <StackPanel
+                                        Background="#FFF4F4F5"
+                                        IsItemsHost="True"
+                                        KeyboardNavigation.DirectionalNavigation="Contained" />
+                                </ScrollViewer>
+                            </Border>
+                        </Popup>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>
