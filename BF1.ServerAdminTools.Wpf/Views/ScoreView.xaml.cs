@@ -333,27 +333,27 @@ namespace BF1.ServerAdminTools.Common.Views
             {
                 if (_dataGridSelcContent.IsOK)
                 {
-                    MainWindow._SetOperatingState(2, $"正在踢出玩家 {_dataGridSelcContent.Name} 中...");
+                    MainWindow.SetOperatingState(2, $"正在踢出玩家 {_dataGridSelcContent.Name} 中...");
 
                     var result = await ServerAPI.AdminKickPlayer(_dataGridSelcContent.PersonaId.ToString(), reason);
 
                     if (result.IsSuccess)
                     {
-                        MainWindow._SetOperatingState(1, $"踢出玩家 {_dataGridSelcContent.Name} 成功  |  耗时: {result.ExecTime:0.00} 秒");
+                        MainWindow.SetOperatingState(1, $"踢出玩家 {_dataGridSelcContent.Name} 成功  |  耗时: {result.ExecTime:0.00} 秒");
                     }
                     else
                     {
-                        MainWindow._SetOperatingState(3, $"踢出玩家 {_dataGridSelcContent.Name} 失败 {result.Message}  |  耗时: {result.ExecTime:0.00} 秒");
+                        MainWindow.SetOperatingState(3, $"踢出玩家 {_dataGridSelcContent.Name} 失败 {result.Message}  |  耗时: {result.ExecTime:0.00} 秒");
                     }
                 }
                 else
                 {
-                    MainWindow._SetOperatingState(2, "请选择正确的玩家");
+                    MainWindow.SetOperatingState(2, "请选择正确的玩家");
                 }
             }
             else
             {
-                MainWindow._SetOperatingState(2, "请先获取玩家SessionID");
+                MainWindow.SetOperatingState(2, "请先获取玩家SessionID");
             }
         }
 
@@ -371,12 +371,12 @@ namespace BF1.ServerAdminTools.Common.Views
                 }
                 else
                 {
-                    MainWindow._SetOperatingState(2, "请选择正确的玩家");
+                    MainWindow.SetOperatingState(2, "请选择正确的玩家");
                 }
             }
             else
             {
-                MainWindow._SetOperatingState(2, "请先获取玩家SessionID");
+                MainWindow.SetOperatingState(2, "请先获取玩家SessionID");
             }
         }
 
@@ -411,27 +411,27 @@ namespace BF1.ServerAdminTools.Common.Views
             {
                 if (_dataGridSelcContent.IsOK)
                 {
-                    MainWindow._SetOperatingState(2, $"正在更换玩家 {_dataGridSelcContent.Name} 队伍中...");
+                    MainWindow.SetOperatingState(2, $"正在更换玩家 {_dataGridSelcContent.Name} 队伍中...");
 
                     var result = await ServerAPI.AdminMovePlayer(_dataGridSelcContent.PersonaId.ToString(), _dataGridSelcContent.TeamID.ToString());
 
                     if (result.IsSuccess)
                     {
-                        MainWindow._SetOperatingState(1, $"更换玩家 {_dataGridSelcContent.Name} 队伍成功  |  耗时: {result.ExecTime:0.00} 秒");
+                        MainWindow.SetOperatingState(1, $"更换玩家 {_dataGridSelcContent.Name} 队伍成功  |  耗时: {result.ExecTime:0.00} 秒");
                     }
                     else
                     {
-                        MainWindow._SetOperatingState(3, $"更换玩家 {_dataGridSelcContent.Name} 队伍失败 {result.Message}  |  耗时: {result.ExecTime:0.00} 秒");
+                        MainWindow.SetOperatingState(3, $"更换玩家 {_dataGridSelcContent.Name} 队伍失败 {result.Message}  |  耗时: {result.ExecTime:0.00} 秒");
                     }
                 }
                 else
                 {
-                    MainWindow._SetOperatingState(2, "请选择正确的玩家，操作取消");
+                    MainWindow.SetOperatingState(2, "请选择正确的玩家，操作取消");
                 }
             }
             else
             {
-                MainWindow._SetOperatingState(2, "请先获取玩家SessionID后，再执行本操作");
+                MainWindow.SetOperatingState(2, "请先获取玩家SessionID后，再执行本操作");
             }
         }
 
@@ -441,11 +441,11 @@ namespace BF1.ServerAdminTools.Common.Views
             {
                 // 复制玩家ID（无队标）
                 Clipboard.SetText(_dataGridSelcContent.Name);
-                MainWindow._SetOperatingState(1, $"复制玩家ID {_dataGridSelcContent.Name} 到剪切板成功");
+                MainWindow.SetOperatingState(1, $"复制玩家ID {_dataGridSelcContent.Name} 到剪切板成功");
             }
             else
             {
-                MainWindow._SetOperatingState(2, "请选择正确的玩家，操作取消");
+                MainWindow.SetOperatingState(2, "请选择正确的玩家，操作取消");
             }
         }
 
@@ -455,11 +455,11 @@ namespace BF1.ServerAdminTools.Common.Views
             {
                 // 复制玩家数字ID
                 Clipboard.SetText(_dataGridSelcContent.PersonaId.ToString());
-                MainWindow._SetOperatingState(1, $"复制玩家数字ID {_dataGridSelcContent.PersonaId} 到剪切板成功");
+                MainWindow.SetOperatingState(1, $"复制玩家数字ID {_dataGridSelcContent.PersonaId} 到剪切板成功");
             }
             else
             {
-                MainWindow._SetOperatingState(2, "请选择正确的玩家，操作取消");
+                MainWindow.SetOperatingState(2, "请选择正确的玩家，操作取消");
             }
         }
 
@@ -468,12 +468,12 @@ namespace BF1.ServerAdminTools.Common.Views
             if (_dataGridSelcContent.IsOK)
             {
                 // 查询玩家战绩
-                MainWindow._TabControlSelect(1);
+                MainWindow.TabControlSelect(1);
                 QueryView._QuickQueryPalyer(_dataGridSelcContent.Name);
             }
             else
             {
-                MainWindow._SetOperatingState(2, "请选择正确的玩家，操作取消");
+                MainWindow.SetOperatingState(2, "请选择正确的玩家，操作取消");
             }
         }
 
@@ -485,11 +485,11 @@ namespace BF1.ServerAdminTools.Common.Views
                 string playerName = _dataGridSelcContent.Name;
 
                 ProcessUtils.OpenLink(@"https://battlefieldtracker.com/bf1/profile/pc/" + playerName);
-                MainWindow._SetOperatingState(1, $"查询玩家（{_dataGridSelcContent.Name}）战绩成功，请前往浏览器查看");
+                MainWindow.SetOperatingState(1, $"查询玩家（{_dataGridSelcContent.Name}）战绩成功，请前往浏览器查看");
             }
             else
             {
-                MainWindow._SetOperatingState(2, "请选择正确的玩家，操作取消");
+                MainWindow.SetOperatingState(2, "请选择正确的玩家，操作取消");
             }
         }
 
@@ -501,11 +501,11 @@ namespace BF1.ServerAdminTools.Common.Views
                 string playerName = _dataGridSelcContent.Name;
 
                 ProcessUtils.OpenLink(@"https://gametools.network/stats/pc/name/" + playerName + "?game=bf1");
-                MainWindow._SetOperatingState(1, $"查询玩家（{_dataGridSelcContent.Name}）战绩成功，请前往浏览器查看");
+                MainWindow.SetOperatingState(1, $"查询玩家（{_dataGridSelcContent.Name}）战绩成功，请前往浏览器查看");
             }
             else
             {
-                MainWindow._SetOperatingState(2, "请选择正确的玩家，操作取消");
+                MainWindow.SetOperatingState(2, "请选择正确的玩家，操作取消");
             }
         }
 
@@ -518,7 +518,7 @@ namespace BF1.ServerAdminTools.Common.Views
                 CollectionViewSource.GetDefaultView(DataGrid_Team1.ItemsSource).SortDescriptions.Clear();
                 CollectionViewSource.GetDefaultView(DataGrid_Team2.ItemsSource).SortDescriptions.Clear();
 
-                MainWindow._SetOperatingState(1, "清理得分板标题排序成功（默认为玩家得分从高到低排序）");
+                MainWindow.SetOperatingState(1, "清理得分板标题排序成功（默认为玩家得分从高到低排序）");
             }));
         }
 
@@ -531,12 +531,12 @@ namespace BF1.ServerAdminTools.Common.Views
                 if (item.IsChecked)
                 {
                     DataSave.IsShowCHSWeaponName = true;
-                    MainWindow._SetOperatingState(1, $"当前得分板正在显示中文武器名称");
+                    MainWindow.SetOperatingState(1, $"当前得分板正在显示中文武器名称");
                 }
                 else
                 {
                     DataSave.IsShowCHSWeaponName = false;
-                    MainWindow._SetOperatingState(1, $"当前得分板正在显示英文武器名称");
+                    MainWindow.SetOperatingState(1, $"当前得分板正在显示英文武器名称");
                 }
             }
         }

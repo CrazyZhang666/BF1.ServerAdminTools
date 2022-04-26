@@ -16,11 +16,11 @@ namespace BF1.ServerAdminTools.Common
         /// <summary>
         /// 主窗口全局提示信息委托
         /// </summary>
-        public static Action<int, string> _SetOperatingState;
+        public static Action<int, string> SetOperatingState;
         /// <summary>
         /// 主窗口选项卡控件选择委托
         /// </summary>
-        public static Action<int> _TabControlSelect;
+        public static Action<int> TabControlSelect;
 
         public delegate void ClosingDispose();
         public static event ClosingDispose ClosingDisposeEvent;
@@ -43,9 +43,9 @@ namespace BF1.ServerAdminTools.Common
             InitializeComponent();
 
             // 提示信息委托
-            _SetOperatingState = SetOperatingState;
+            SetOperatingState = FSetOperatingState;
             // TabControl 选择切换委托
-            _TabControlSelect = TabControlSelect;
+            TabControlSelect = FTabControlSelect;
 
             blur = new BlurUtils(this);
             BG();
@@ -159,7 +159,7 @@ namespace BF1.ServerAdminTools.Common
         /// </summary>
         /// <param name="index">绿色信息1，灰色警告2，红色错误3</param>
         /// <param name="str">消息内容</param>
-        private void SetOperatingState(int index, string str)
+        private void FSetOperatingState(int index, string str)
         {
             if (index == 1)
             {
@@ -187,7 +187,7 @@ namespace BF1.ServerAdminTools.Common
 
         ///////////////////////////////////////////////////////
 
-        private void TabControlSelect(int index)
+        private void FTabControlSelect(int index)
         {
             TabControl_Main.SelectedIndex = index;
         }

@@ -18,8 +18,8 @@ public record SubscribeCacheObj
 
 public record SubscribeObj
 {
-    public DateTime UpdateTime { get; set; }
-    public DateTime LastTime { get; set; }
+    public string UpdateTime { get; set; }
+    public string LastTime { get; set; }
     public string Url { get; set; }
     public List<PlayerItem> Players { get; set; }
 }

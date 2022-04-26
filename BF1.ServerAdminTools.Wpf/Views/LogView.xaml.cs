@@ -205,19 +205,19 @@ namespace BF1.ServerAdminTools.Common.Views
         private void MenuItem_ClearKickOKLog_Click(object sender, RoutedEventArgs e)
         {
             TextBox_KickOKLog.Clear();
-            MainWindow._SetOperatingState(1, "清空踢人成功日志成功");
+            MainWindow.SetOperatingState(1, "清空踢人成功日志成功");
         }
 
         private void MenuItem_ClearKickNOLog_Click(object sender, RoutedEventArgs e)
         {
             TextBox_KickNOLog.Clear();
-            MainWindow._SetOperatingState(1, "清空踢人失败日志成功");
+            MainWindow.SetOperatingState(1, "清空踢人失败日志成功");
         }
 
         private void MenuItem_ClearChangeTeamLog_Click(object sender, RoutedEventArgs e)
         {
             TextBox_ChangeTeamLog.Clear();
-            MainWindow._SetOperatingState(1, "清空更换队伍日志成功");
+            MainWindow.SetOperatingState(1, "清空更换队伍日志成功");
         }
     }
 }

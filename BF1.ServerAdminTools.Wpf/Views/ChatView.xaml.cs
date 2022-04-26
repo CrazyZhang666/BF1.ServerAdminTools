@@ -147,11 +147,11 @@ namespace BF1.ServerAdminTools.Common.Views
 
             if (string.IsNullOrEmpty(msg))
             {
-                MainWindow._SetOperatingState(2, "聊天框内容为空，操作取消");
+                MainWindow.SetOperatingState(2, "聊天框内容为空，操作取消");
                 return;
             }
 
-            MainWindow._SetOperatingState(2, Core.SendText(msg));
+            MainWindow.SetOperatingState(2, Core.SendText(msg));
         }
 
         private void TextBox_InputMsg_TextChanged(object sender, TextChangedEventArgs e)
@@ -244,12 +244,12 @@ namespace BF1.ServerAdminTools.Common.Views
                 timerAutoSendMsg.Interval = Slider_AutoSendMsg.Value * 1000 * 60;
                 timerAutoSendMsg.Start();
 
-                MainWindow._SetOperatingState(1, "已启用定时发送指定文本功能");
+                MainWindow.SetOperatingState(1, "已启用定时发送指定文本功能");
             }
             else
             {
                 timerAutoSendMsg.Stop();
-                MainWindow._SetOperatingState(1, "已关闭定时发送指定文本功能");
+                MainWindow.SetOperatingState(1, "已关闭定时发送指定文本功能");
             }
         }
 
@@ -258,12 +258,12 @@ namespace BF1.ServerAdminTools.Common.Views
             if (CheckBox_ActiveNoAFK.IsChecked == true)
             {
                 timerNoAFK.Start();
-                MainWindow._SetOperatingState(1, "已启用游戏内挂机防踢功能");
+                MainWindow.SetOperatingState(1, "已启用游戏内挂机防踢功能");
             }
             else
             {
                 timerNoAFK.Stop();
-                MainWindow._SetOperatingState(1, "已关闭游戏内挂机防踢功能");
+                MainWindow.SetOperatingState(1, "已关闭游戏内挂机防踢功能");
             }
         }
     }

@@ -154,7 +154,7 @@ namespace BF1.ServerAdminTools.Common.Views
             DataSave.Config.AutoRun = AutoRun.IsChecked == true;
             ConfigUtils.SaveConfig();
 
-            MainWindow._SetOperatingState(1, "设置成功");
+            MainWindow.SetOperatingState(1, "设置成功");
             if (NettyCore.State)
                 try
                 {

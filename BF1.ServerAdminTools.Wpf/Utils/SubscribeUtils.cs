@@ -62,7 +62,7 @@ internal static class SubscribeUtils
                 Url = url,
                 Players = obj.Players,
                 LastTime = obj.Time,
-                UpdateTime = DateTime.Now
+                UpdateTime = DateTime.Now.ToString()
             };
 
             DataSave.Subscribes.UrlList.Add(url);
@@ -76,6 +76,41 @@ internal static class SubscribeUtils
         { }
 
         return res;
+    }
+
+    public static async Task UpdateAll() 
+    {
+        IsEdit = true;
+        DataSave.SubscribeCache.Cache.Clear();
+        foreach (var url in DataSave.Subscribes.UrlList)
+        {
+            try
+            {
+                var req = new RestRequest(url);
+                var res1 = await client.ExecuteGetAsync(req);
+                var obj = JsonUtils.JsonDese<HttpSubscribe>(res1.Content);
+
+                if (obj == null || obj.Players == null)
+                {
+                    continue;
+                }
+
+                var obj1 = new SubscribeObj()
+                {
+                    Url = url,
+                    Players = obj.Players,
+                    LastTime = obj.Time,
+                    UpdateTime = DateTime.Now.ToString()
+                };
+
+                DataSave.SubscribeCache.Cache.Add(obj1);
+                
+            }
+            catch
+            { }
+        }
+        IsEdit = false;
+        ConfigUtils.SaveSubscribeCache();
     }
 
     public static void Delete(string url)
@@ -135,7 +170,7 @@ internal static class SubscribeUtils
 public record HttpSubscribe
 { 
     public List<PlayerItem> Players { get; set; }
-    public DateTime Time { get; set; }
+    public string Time { get; set; }
 }
 
 public record RespSubscribe

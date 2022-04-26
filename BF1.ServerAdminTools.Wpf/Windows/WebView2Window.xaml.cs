@@ -57,7 +57,7 @@ namespace BF1.ServerAdminTools.Common.Windows
 
             if (cookies == null)
             {
-                MainWindow._SetOperatingState(3, $"登录成功，获取Cookie失败，请尝试清除缓存");
+                MainWindow.SetOperatingState(3, $"登录成功，获取Cookie失败，请尝试清除缓存");
                 return;
             }
 
@@ -82,7 +82,7 @@ namespace BF1.ServerAdminTools.Common.Windows
                 }
             }
 
-            MainWindow._SetOperatingState(1, $"登录完成，正在获取SessionId，Code为{code}");
+            MainWindow.SetOperatingState(1, $"登录完成，正在获取SessionId，Code为{code}");
 
             this.Close();
 
@@ -93,11 +93,11 @@ namespace BF1.ServerAdminTools.Common.Windows
                 var envIdViaAuthCode = JsonUtils.JsonDese<EnvIdViaAuthCode>(result.Message);
                 Globals.Config.SessionId = envIdViaAuthCode.result.sessionId;
                 Core.SaveConfig();
-                MainWindow._SetOperatingState(1, $"获取SessionID成功:{Globals.Config.SessionId}  |  耗时: {result.ExecTime:0.00} 秒");
+                MainWindow.SetOperatingState(1, $"获取SessionID成功:{Globals.Config.SessionId}  |  耗时: {result.ExecTime:0.00} 秒");
             }
             else
             {
-                MainWindow._SetOperatingState(3, $"获取SessionID失败 {result.Message}  |  耗时: {result.ExecTime:0.00} 秒");
+                MainWindow.SetOperatingState(3, $"获取SessionID失败 {result.Message}  |  耗时: {result.ExecTime:0.00} 秒");
             }
         }
 

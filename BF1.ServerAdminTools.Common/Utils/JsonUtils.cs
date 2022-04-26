@@ -24,14 +24,7 @@ public static class JsonUtils
     /// <returns></returns>
     public static T JsonDese<T>(string result)
     {
-        try
-        {
             return JsonSerializer.Deserialize<T>(result, Options1);
-        }
-        catch
-        {
-            return default;
-        }
     }
 
     /// <summary>

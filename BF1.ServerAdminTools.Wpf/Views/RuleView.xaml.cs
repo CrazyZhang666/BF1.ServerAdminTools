@@ -58,6 +58,11 @@ namespace BF1.ServerAdminTools.Common.Views
                 MapRuleList.Items.Add(new MapRuleModel { Map = item.Key, Name = rule.Name });
             }
 
+            foreach (var item in DataSave.SubscribeCache.Cache)
+            {
+                SubscribeBlackList.Items.Add(item);
+            }
+
             DataSave.NowRule = DataSave.Rules["default"];
 
             LoadRule();
@@ -254,7 +259,7 @@ namespace BF1.ServerAdminTools.Common.Views
                 var wi = ListWeaponInfo.SelectedItem as WeaponInfoModel;
                 if (string.IsNullOrEmpty(wi.Chinese))
                 {
-                    MainWindow._SetOperatingState(2, "请不要把分类项添加到限制武器列表");
+                    MainWindow.SetOperatingState(2, "请不要把分类项添加到限制武器列表");
                     return;
                 }
 
@@ -289,16 +294,16 @@ namespace BF1.ServerAdminTools.Common.Views
                         BreakWeaponInfo.SelectedIndex = count - 1;
                     }
 
-                    MainWindow._SetOperatingState(1, "添加限制武器成功");
+                    MainWindow.SetOperatingState(1, "添加限制武器成功");
                 }
                 else
                 {
-                    MainWindow._SetOperatingState(2, "当前限制武器已存在，请不要重复添加");
+                    MainWindow.SetOperatingState(2, "当前限制武器已存在，请不要重复添加");
                 }
             }
             else
             {
-                MainWindow._SetOperatingState(2, "请选择正确的内容");
+                MainWindow.SetOperatingState(2, "请选择正确的内容");
             }
         }
 
@@ -329,11 +334,11 @@ namespace BF1.ServerAdminTools.Common.Views
 
                 ListWeaponInfo.SelectedIndex = index1;
 
-                MainWindow._SetOperatingState(1, "移除限制武器成功");
+                MainWindow.SetOperatingState(1, "移除限制武器成功");
             }
             else
             {
-                MainWindow._SetOperatingState(2, "请选择正确的内容");
+                MainWindow.SetOperatingState(2, "请选择正确的内容");
             }
         }
 
@@ -354,7 +359,7 @@ namespace BF1.ServerAdminTools.Common.Views
 
             ListWeaponInfo.SelectedIndex = index;
 
-            MainWindow._SetOperatingState(1, "清空限制武器列表成功");
+            MainWindow.SetOperatingState(1, "清空限制武器列表成功");
         }
 
         private void AppendLog(string msg)
@@ -584,7 +589,7 @@ namespace BF1.ServerAdminTools.Common.Views
                 AppendLog($"限制等级规则设置不正确");
                 AppendLog("");
 
-                MainWindow._SetOperatingState(3, $"限制等级规则设置不正确");
+                MainWindow.SetOperatingState(3, $"限制等级规则设置不正确");
 
                 return;
             }
@@ -627,7 +632,7 @@ namespace BF1.ServerAdminTools.Common.Views
             AppendLog($"成功提交当前规则，请重新启动自动踢人功能");
             AppendLog("");
 
-            MainWindow._SetOperatingState(1, $"应用当前规则成功，请点击<查询当前规则>检验规则是否正确");
+            MainWindow.SetOperatingState(1, $"应用当前规则成功，请点击<查询当前规则>检验规则是否正确");
 
             ConfigUtils.SaveRule();
         }
@@ -722,7 +727,7 @@ namespace BF1.ServerAdminTools.Common.Views
                 AppendLog("\n");
             }
 
-            MainWindow._SetOperatingState(1, $"查询当前规则成功，请点击<检查违规玩家>测试是否正确");
+            MainWindow.SetOperatingState(1, $"查询当前规则成功，请点击<检查违规玩家>测试是否正确");
         }
 
         private bool isRun;
@@ -745,7 +750,7 @@ namespace BF1.ServerAdminTools.Common.Views
 
             if (!Globals.IsGameRun || !Globals.IsToolInit)
             {
-                MainWindow._SetOperatingState(3, $"运行环境检查失败");
+                MainWindow.SetOperatingState(3, $"运行环境检查失败");
                 AppendLog("运行环境检查失败");
                 AppendLog("");
                 return;
@@ -834,7 +839,7 @@ namespace BF1.ServerAdminTools.Common.Views
             }
             AppendLog("\n");
 
-            MainWindow._SetOperatingState(1, $"检查违规玩家成功，如果符合规则就可以勾选<激活自动踢出违规玩家>了");
+            MainWindow.SetOperatingState(1, $"检查违规玩家成功，如果符合规则就可以勾选<激活自动踢出违规玩家>了");
 
             isRun = false;
         }
@@ -859,18 +864,18 @@ namespace BF1.ServerAdminTools.Common.Views
                 {
                     BlackList.Items.Add(TextBox_BlackList_PlayerName.Text);
 
-                    MainWindow._SetOperatingState(1, $"添加 {TextBox_BlackList_PlayerName.Text} 到黑名单列表成功");
+                    MainWindow.SetOperatingState(1, $"添加 {TextBox_BlackList_PlayerName.Text} 到黑名单列表成功");
                     TextBox_BlackList_PlayerName.Text = "";
                 }
                 else
                 {
-                    MainWindow._SetOperatingState(2, $"该项 {TextBox_BlackList_PlayerName.Text} 已经存在了，请不要重复添加");
+                    MainWindow.SetOperatingState(2, $"该项 {TextBox_BlackList_PlayerName.Text} 已经存在了，请不要重复添加");
                     TextBox_BlackList_PlayerName.Text = "";
                 }
             }
             else
             {
-                MainWindow._SetOperatingState(2, $"待添加黑名单玩家ID为空，添加操作取消");
+                MainWindow.SetOperatingState(2, $"待添加黑名单玩家ID为空，添加操作取消");
             }
         }
 
@@ -880,12 +885,12 @@ namespace BF1.ServerAdminTools.Common.Views
 
             if (BlackList.SelectedIndex != -1)
             {
-                MainWindow._SetOperatingState(1, $"从黑名单列表删除（{BlackList.SelectedItem}）成功");
+                MainWindow.SetOperatingState(1, $"从黑名单列表删除（{BlackList.SelectedItem}）成功");
                 BlackList.Items.Remove(BlackList.SelectedItem);
             }
             else
             {
-                MainWindow._SetOperatingState(2, $"请正确选中你要删除的玩家ID或自定义黑名单列表为空，删除操作取消");
+                MainWindow.SetOperatingState(2, $"请正确选中你要删除的玩家ID或自定义黑名单列表为空，删除操作取消");
             }
         }
 
@@ -918,13 +923,13 @@ namespace BF1.ServerAdminTools.Common.Views
                     BlackList.Items.Add(name);
                 }
 
-                MainWindow._SetOperatingState(1, "导入黑名单列表成功");
+                MainWindow.SetOperatingState(1, "导入黑名单列表成功");
             }
             catch (Exception ex)
             {
                 MsgBoxUtils.ErrorMsgBox("导入黑名单时发生错误");
                 Core.LogError("导入黑名单发生错误", ex);
-                MainWindow._SetOperatingState(1, "导入黑名单列表发生错误");
+                MainWindow.SetOperatingState(1, "导入黑名单列表发生错误");
                 return;
             }
         }
@@ -937,7 +942,7 @@ namespace BF1.ServerAdminTools.Common.Views
             DataSave.NowRule.Custom_BlackList.Clear();
             BlackList.Items.Clear();
 
-            MainWindow._SetOperatingState(1, $"清空黑名单列表成功");
+            MainWindow.SetOperatingState(1, $"清空黑名单列表成功");
         }
 
         private void Button_Add_WhiteList_Click(object sender, RoutedEventArgs e)
@@ -960,19 +965,19 @@ namespace BF1.ServerAdminTools.Common.Views
                 {
                     WhiteList.Items.Add(TextBox_WhiteList_PlayerName.Text);
 
-                    MainWindow._SetOperatingState(1, $"添加 {TextBox_WhiteList_PlayerName.Text} 到白名单列表成功");
+                    MainWindow.SetOperatingState(1, $"添加 {TextBox_WhiteList_PlayerName.Text} 到白名单列表成功");
 
                     TextBox_WhiteList_PlayerName.Text = "";
                 }
                 else
                 {
-                    MainWindow._SetOperatingState(2, $"该项 {TextBox_WhiteList_PlayerName.Text} 已经存在了，请不要重复添加");
+                    MainWindow.SetOperatingState(2, $"该项 {TextBox_WhiteList_PlayerName.Text} 已经存在了，请不要重复添加");
                     TextBox_WhiteList_PlayerName.Text = "";
                 }
             }
             else
             {
-                MainWindow._SetOperatingState(2, $"待添加白名单玩家ID为空，添加操作取消");
+                MainWindow.SetOperatingState(2, $"待添加白名单玩家ID为空，添加操作取消");
             }
         }
 
@@ -982,12 +987,12 @@ namespace BF1.ServerAdminTools.Common.Views
 
             if (WhiteList.SelectedIndex != -1)
             {
-                MainWindow._SetOperatingState(1, $"从白名单列表删除（{WhiteList.SelectedItem}）成功");
+                MainWindow.SetOperatingState(1, $"从白名单列表删除（{WhiteList.SelectedItem}）成功");
                 WhiteList.Items.Remove(WhiteList.SelectedItem);
             }
             else
             {
-                MainWindow._SetOperatingState(2, $"请正确选中你要删除的玩家ID或自定义白名单列表为空，删除操作取消");
+                MainWindow.SetOperatingState(2, $"请正确选中你要删除的玩家ID或自定义白名单列表为空，删除操作取消");
             }
         }
 
@@ -1020,13 +1025,13 @@ namespace BF1.ServerAdminTools.Common.Views
                     WhiteList.Items.Add(name);
                 }
 
-                MainWindow._SetOperatingState(1, "导入白名单列表成功");
+                MainWindow.SetOperatingState(1, "导入白名单列表成功");
             }
             catch (Exception ex)
             {
                 MsgBoxUtils.ErrorMsgBox("导入白名单时发生错误");
                 Core.LogError("导入白名单发生错误", ex);
-                MainWindow._SetOperatingState(1, "导入白名单列表发生错误");
+                MainWindow.SetOperatingState(1, "导入白名单列表发生错误");
                 return;
             }
         }
@@ -1039,7 +1044,7 @@ namespace BF1.ServerAdminTools.Common.Views
             DataSave.NowRule.Custom_WhiteList.Clear();
             WhiteList.Items.Clear();
 
-            MainWindow._SetOperatingState(1, $"清空白名单列表成功");
+            MainWindow.SetOperatingState(1, $"清空白名单列表成功");
         }
 
         /// <summary>
@@ -1050,7 +1055,7 @@ namespace BF1.ServerAdminTools.Common.Views
         {
             RuleLog.Clear();
 
-            MainWindow._SetOperatingState(2, $"正在检查环境...");
+            MainWindow.SetOperatingState(2, $"正在检查环境...");
 
             AppendLog("===== 操作时间 =====");
             AppendLog("");
@@ -1085,7 +1090,7 @@ namespace BF1.ServerAdminTools.Common.Views
             if (!isApplyRule)
             {
                 AppendLog("❌ 玩家没有正确应用规则，请点击应用当前规则");
-                MainWindow._SetOperatingState(2, $"环境检查未通过");
+                MainWindow.SetOperatingState(2, $"环境检查未通过");
                 return false;
             }
             AppendLog("✔ 玩家已正确应用规则");
@@ -1095,7 +1100,7 @@ namespace BF1.ServerAdminTools.Common.Views
             if (string.IsNullOrEmpty(Globals.Config.SessionId))
             {
                 AppendLog("❌ SessionId为空，操作取消");
-                MainWindow._SetOperatingState(2, $"环境检查未通过");
+                MainWindow.SetOperatingState(2, $"环境检查未通过");
                 return false;
             }
             AppendLog("✔ SessionId 检查正确");
@@ -1106,7 +1111,7 @@ namespace BF1.ServerAdminTools.Common.Views
             if (!result.IsSuccess)
             {
                 AppendLog("❌ SessionId 已过期，请刷新SessionId");
-                MainWindow._SetOperatingState(2, $"环境检查未通过");
+                MainWindow.SetOperatingState(2, $"环境检查未通过");
                 return false;
             }
             AppendLog("✔ SessionId 检查有效");
@@ -1116,7 +1121,7 @@ namespace BF1.ServerAdminTools.Common.Views
             if (string.IsNullOrEmpty(Globals.Config.GameId))
             {
                 AppendLog("❌ GameId 为空，请先进入服务器");
-                MainWindow._SetOperatingState(2, $"环境检查未通过");
+                MainWindow.SetOperatingState(2, $"环境检查未通过");
                 return false;
             }
             AppendLog("✔ GameId检查正确");
@@ -1129,7 +1134,7 @@ namespace BF1.ServerAdminTools.Common.Views
                 if (Globals.Server_AdminList.Count == 0)
                 {
                     AppendLog("❌ 服务器管理员列表 为空");
-                    MainWindow._SetOperatingState(2, $"环境检查未通过");
+                    MainWindow.SetOperatingState(2, $"环境检查未通过");
                     return false;
                 }
             }
@@ -1143,7 +1148,7 @@ namespace BF1.ServerAdminTools.Common.Views
             if (!Globals.Server_Admin2List.Contains(playerName))
             {
                 AppendLog("❌ 玩家不是当前服务器管理，请确认服务器是否选择正确");
-                MainWindow._SetOperatingState(2, $"环境检查未通过");
+                MainWindow.SetOperatingState(2, $"环境检查未通过");
                 return false;
             }
             AppendLog("✔ 已确认玩家为当前服务器管理");
@@ -1163,7 +1168,7 @@ namespace BF1.ServerAdminTools.Common.Views
                     AppendLog("环境检查完毕，自动踢人已开启");
 
                     DataSave.AutoKickBreakPlayer = true;
-                    MainWindow._SetOperatingState(1, $"自动踢人开启成功");
+                    MainWindow.SetOperatingState(1, $"自动踢人开启成功");
                     await Task.Run(() =>
                     {
                         Thread.Sleep(500);
@@ -1180,7 +1185,7 @@ namespace BF1.ServerAdminTools.Common.Views
             {
                 DataSave.AutoKickBreakPlayer = false;
                 RunAutoKick.IsChecked = false;
-                MainWindow._SetOperatingState(1, $"自动踢人关闭成功");
+                MainWindow.SetOperatingState(1, $"自动踢人关闭成功");
             }
         }
 
@@ -1210,13 +1215,43 @@ namespace BF1.ServerAdminTools.Common.Views
 
                 TaskKick.Kick();
 
-                MainWindow._SetOperatingState(1, "执行手动踢人操作成功，请查看日志了解执行结果");
+                MainWindow.SetOperatingState(1, "执行手动踢人操作成功，请查看日志了解执行结果");
             }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
+        private bool IsRun1 = false;
 
+        private async void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (IsRun1)
+                return;
+
+            MainWindow.SetOperatingState(1, "开始更新订阅");
+            IsRun1 = true;
+            await SubscribeUtils.UpdateAll();
+            SubscribeBlackList.Items.Clear();
+            foreach (var item in DataSave.SubscribeCache.Cache)
+            {
+                SubscribeBlackList.Items.Add(item);
+            }
+
+            MainWindow.SetOperatingState(1, "订阅更新完成");
+            IsRun1 = false;
+        }
+
+        private void See_Subscribe(object sender, RoutedEventArgs e) 
+        {
+            if (IsRun1)
+                return;
+
+            if (SubscribeBlackList.SelectedItem is not SubscribeObj item)
+                return;
+
+            BanListInfo.Items.Clear();
+            foreach (var item1 in item.Players)
+            {
+                BanListInfo.Items.Add(item1);
+            }
         }
     }
 }

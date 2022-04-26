@@ -35,7 +35,9 @@
                     <ListView
                         Name="RuleList"
                         Grid.Column="0"
-                        Margin="5,30,5,496"
+                        Height="380"
+                        Margin="5,30,5,0"
+                        VerticalAlignment="Top"
                         Background="Transparent"
                         BorderBrush="#1E88E5"
                         ScrollViewer.VerticalScrollBarVisibility="Visible"
@@ -212,7 +214,7 @@
                                             <Setter Property="IsSnapToTickEnabled" Value="True" />
                                         </Style>
                                     </StackPanel.Resources>
-                                    <TextBlock Text="{Binding ElementName=Slider_MaxKill, Path=Value, StringFormat=玩家最高击杀 : {0:0}, FallbackValue='玩家最高击杀 :'}" />
+                                    <TextBlock Text="{Binding ElementName=MaxKill, Path=Value, StringFormat=玩家最高击杀 : {0:0}, FallbackValue='玩家最高击杀 :'}" />
                                     <Slider
                                         x:Name="MaxKill"
                                         Margin="5,0,5,0"
@@ -221,7 +223,7 @@
                                         TickFrequency="1"
                                         TickPlacement="None" />
                                     <TextBlock />
-                                    <TextBlock Text="{Binding ElementName=Slider_KDFlag, Path=Value, StringFormat=计算玩家KD的最低击杀数 : {0:0}, FallbackValue='计算玩家KD的最低击杀数 :'}" />
+                                    <TextBlock Text="{Binding ElementName=KDFlag, Path=Value, StringFormat=计算玩家KD的最低击杀数 : {0:0}, FallbackValue='计算玩家KD的最低击杀数 :'}" />
                                     <Slider
                                         x:Name="KDFlag"
                                         Margin="5,0,5,0"
@@ -229,7 +231,7 @@
                                         Minimum="0"
                                         TickFrequency="1"
                                         TickPlacement="None" />
-                                    <TextBlock Text="{Binding ElementName=Slider_MaxKD, Path=Value, StringFormat=玩家最高KD : {0:0.00}, FallbackValue='玩家最高KD :'}" />
+                                    <TextBlock Text="{Binding ElementName=MaxKD, Path=Value, StringFormat=玩家最高KD : {0:0.00}, FallbackValue='玩家最高KD :'}" />
                                     <Slider
                                         x:Name="MaxKD"
                                         Margin="5,0,5,0"
@@ -238,7 +240,7 @@
                                         TickFrequency="0.01"
                                         TickPlacement="None" />
                                     <TextBlock />
-                                    <TextBlock Text="{Binding ElementName=Slider_KPMFlag, Path=Value, StringFormat=计算玩家KPM的最低击杀数 : {0:0}, FallbackValue='计算玩家KPM的最低击杀数 :'}" />
+                                    <TextBlock Text="{Binding ElementName=KPMFlag, Path=Value, StringFormat=计算玩家KPM的最低击杀数 : {0:0}, FallbackValue='计算玩家KPM的最低击杀数 :'}" />
                                     <Slider
                                         x:Name="KPMFlag"
                                         Margin="5,0,5,0"
@@ -246,7 +248,7 @@
                                         Minimum="0"
                                         TickFrequency="1"
                                         TickPlacement="None" />
-                                    <TextBlock Text="{Binding ElementName=Slider_MaxKPM, Path=Value, StringFormat=玩家最高KPM : {0:0.00}, FallbackValue='玩家最高KPM :'}" />
+                                    <TextBlock Text="{Binding ElementName=MaxKPM, Path=Value, StringFormat=玩家最高KPM : {0:0.00}, FallbackValue='玩家最高KPM :'}" />
                                     <Slider
                                         x:Name="MaxKPM"
                                         Margin="5,0,5,0"
@@ -255,7 +257,7 @@
                                         TickFrequency="0.01"
                                         TickPlacement="None" />
                                     <TextBlock />
-                                    <TextBlock Text="{Binding ElementName=Slider_MinRank, Path=Value, StringFormat=玩家最低等级 : {0:0}, FallbackValue='玩家最低击等级 :'}" />
+                                    <TextBlock Text="{Binding ElementName=MinRank, Path=Value, StringFormat=玩家最低等级 : {0:0}, FallbackValue='玩家最低击等级 :'}" />
                                     <Slider
                                         x:Name="MinRank"
                                         Margin="5,0,5,0"
@@ -263,7 +265,7 @@
                                         Minimum="0"
                                         TickFrequency="1"
                                         TickPlacement="None" />
-                                    <TextBlock Text="{Binding ElementName=Slider_MaxRank, Path=Value, StringFormat=玩家最高等级 : {0:0}, FallbackValue='玩家最高等级 :'}" />
+                                    <TextBlock Text="{Binding ElementName=MaxRank, Path=Value, StringFormat=玩家最高等级 : {0:0}, FallbackValue='玩家最高等级 :'}" />
                                     <Slider
                                         x:Name="MaxRank"
                                         Margin="5,0,5,0"
@@ -295,7 +297,7 @@
                                         <Setter Property="IsSnapToTickEnabled" Value="True" />
                                     </Style>
                                 </StackPanel.Resources>
-                                <TextBlock Text="{Binding ElementName=Slider_LifeMaxKD, Path=Value, StringFormat=最高生涯KD : {0:0.00}, FallbackValue='最高生涯KD :'}" />
+                                <TextBlock Text="{Binding ElementName=LifeMaxKD, Path=Value, StringFormat=最高生涯KD : {0:0.00}, FallbackValue='最高生涯KD :'}" />
                                 <Slider
                                     x:Name="LifeMaxKD"
                                     Margin="5,0,5,0"
@@ -303,7 +305,7 @@
                                     Minimum="0"
                                     TickFrequency="0.01"
                                     TickPlacement="None" />
-                                <TextBlock Text="{Binding ElementName=Slider_LifeMaxKPM, Path=Value, StringFormat=最高生涯KPM : {0:0.00}, FallbackValue='最高生涯KPM :'}" />
+                                <TextBlock Text="{Binding ElementName=LifeMaxKPM, Path=Value, StringFormat=最高生涯KPM : {0:0.00}, FallbackValue='最高生涯KPM :'}" />
                                 <Slider
                                     x:Name="LifeMaxKPM"
                                     Margin="5,0,5,0"
@@ -312,7 +314,7 @@
                                     TickFrequency="0.01"
                                     TickPlacement="None" />
                                 <TextBlock />
-                                <TextBlock Text="{Binding ElementName=Slider_LifeMaxWeaponStar, Path=Value, StringFormat=最高生涯武器星数 : {0:0}, FallbackValue='最高生涯武器星数 :'}" />
+                                <TextBlock Text="{Binding ElementName=LifeMaxWeaponStar, Path=Value, StringFormat=最高生涯武器星数 : {0:0}, FallbackValue='最高生涯武器星数 :'}" />
                                 <Slider
                                     x:Name="LifeMaxWeaponStar"
                                     Margin="5,0,5,0"
@@ -320,7 +322,7 @@
                                     Minimum="0"
                                     TickFrequency="1"
                                     TickPlacement="None" />
-                                <TextBlock Text="{Binding ElementName=Slider_LifeMaxVehicleStar, Path=Value, StringFormat=最高生涯载具星数 : {0:0}, FallbackValue='最高生涯载具星数 :'}" />
+                                <TextBlock Text="{Binding ElementName=LifeMaxVehicleStar, Path=Value, StringFormat=最高生涯载具星数 : {0:0}, FallbackValue='最高生涯载具星数 :'}" />
                                 <Slider
                                     x:Name="LifeMaxVehicleStar"
                                     Margin="5,0,5,0"
@@ -332,7 +334,7 @@
                                 <TextBlock Foreground="Green" TextWrapping="Wrap">
                                     提示：生涯KD和KPM是玩家只要进入服务器就开始查询计算
                                 </TextBlock>
-                                <TextBlock Text="{Binding ElementName=Slider_ScoreSwitchMap, Path=Value, StringFormat=分差达到 : {0:0} 后自动换图, FallbackValue='分差达到 : 后自动换图'}" />
+                                <TextBlock Text="{Binding ElementName=ScoreSwitchMap, Path=Value, StringFormat=分差达到 : {0:0} 后自动换图, FallbackValue='分差达到 : 后自动换图'}" />
                                 <Slider
                                     x:Name="ScoreSwitchMap"
                                     Margin="5,0,5,0"
@@ -340,7 +342,7 @@
                                     Minimum="0"
                                     TickFrequency="1"
                                     TickPlacement="None" />
-                                <TextBlock Text="{Binding ElementName=Slider_ScoreNotSwitchMap, Path=Value, StringFormat=分数达到 : {0:0} 后不再换图, FallbackValue='分数达到 : 后不再换图'}" />
+                                <TextBlock Text="{Binding ElementName=ScoreNotSwitchMap, Path=Value, StringFormat=分数达到 : {0:0} 后不再换图, FallbackValue='分数达到 : 后不再换图'}" />
                                 <Slider
                                     x:Name="ScoreNotSwitchMap"
                                     Margin="5,0,5,0"
@@ -348,7 +350,7 @@
                                     Minimum="0"
                                     TickFrequency="1"
                                     TickPlacement="None" />
-                                <TextBlock Text="{Binding ElementName=Slider_ScoreStartSwitchMap, Path=Value, StringFormat=劣势方分数达到 : {0:0} 后开始判断, FallbackValue='劣势方分数达到 : 后开始判断'}" />
+                                <TextBlock Text="{Binding ElementName=ScoreStartSwitchMap, Path=Value, StringFormat=劣势方分数达到 : {0:0} 后开始判断, FallbackValue='劣势方分数达到 : 后开始判断'}" />
                                 <Slider
                                     x:Name="ScoreStartSwitchMap"
                                     Margin="5,0,5,0"
@@ -374,7 +376,7 @@
                                         GroupName="SwitchMapSelect" />
                                 </WrapPanel>
                                 <TextBlock />
-                                <TextBlock Text="{Binding ElementName=Slider_SocreOtherRule, Path=Value, StringFormat=分差达到 : {0:0} 后劣势方使用其他规则, FallbackValue='分差达到 : 后劣势方使用其他规则'}" />
+                                <TextBlock Text="{Binding ElementName=SocreOtherRule, Path=Value, StringFormat=分差达到 : {0:0} 后劣势方使用其他规则, FallbackValue='分差达到 : 后劣势方使用其他规则'}" />
                                 <Slider
                                     x:Name="SocreOtherRule"
                                     Margin="5,0,5,0"
@@ -611,6 +613,7 @@
                                 <ContextMenu>
                                     <MenuItem Click="Add_Subscribe" Header="添加" />
                                     <MenuItem Click="Delete_Subscribe" Header="删除" />
+                                    <MenuItem Click="See_Subscribe" Header="查看" />
                                 </ContextMenu>
                             </ListView.ContextMenu>
                         </ListView>
@@ -621,6 +624,29 @@
                                 Style="{StaticResource ButtonStyle_Web}" />
                         </StackPanel>
                     </StackPanel>
+                    <ListBox
+                        x:Name="BanListInfo"
+                        Grid.Column="1"
+                        Margin="5,5,0,5"
+                        Style="{StaticResource ListBoxStyle_WebList}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <DockPanel Height="40" LastChildFill="True">
+                                    <StackPanel VerticalAlignment="Center" DockPanel.Dock="Right">
+                                        <TextBlock
+                                            Margin="0"
+                                            VerticalAlignment="Bottom"
+                                            FontWeight="Bold"
+                                            Text="{Binding Name}" />
+                                        <TextBlock
+                                            Margin="0,3,0,0"
+                                            VerticalAlignment="Top"
+                                            Text="{Binding Reason}" />
+                                    </StackPanel>
+                                </DockPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
                 </Grid>
             </TabItem>
         </TabControl>

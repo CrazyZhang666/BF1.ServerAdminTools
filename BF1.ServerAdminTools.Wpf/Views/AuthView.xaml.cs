@@ -79,12 +79,12 @@ namespace BF1.ServerAdminTools.Common.Views
 
             if (string.IsNullOrEmpty(Globals.Config.Remid) && string.IsNullOrEmpty(Globals.Config.Sid))
             {
-                MainWindow._SetOperatingState(2, $"Cookie不存在，进行网页登录");
+                MainWindow.SetOperatingState(2, $"Cookie不存在，进行网页登录");
                 WebLogin();
                 return;
             }
 
-            MainWindow._SetOperatingState(1, "正在获取AuthCode");
+            MainWindow.SetOperatingState(1, "正在获取AuthCode");
 
             string url = "https://accounts.ea.com/connect/auth?response_type=code&locale=zh_CN&client_id=sparta-backend-as-user-pc";
             var options = new RestClientOptions(url)
@@ -104,7 +104,7 @@ namespace BF1.ServerAdminTools.Common.Views
             var response = await client.ExecuteGetAsync(request);
             if (response.StatusCode != HttpStatusCode.Redirect)
             {
-                MainWindow._SetOperatingState(3, $"EA连接失败{response.StatusCode}");
+                MainWindow.SetOperatingState(3, $"EA连接失败{response.StatusCode}");
             }
 
             string location = response.Headers.ToList()
@@ -114,7 +114,7 @@ namespace BF1.ServerAdminTools.Common.Views
             if (location.Contains("http://127.0.0.1/success?code="))
             {
                 string code = location.Replace("http://127.0.0.1/success?code=", "");
-                MainWindow._SetOperatingState(1, $"正在获取SessionId，Code为{code}");
+                MainWindow.SetOperatingState(1, $"正在获取SessionId，Code为{code}");
 
                 if (response.Cookies["remid"] != null)
                 {
@@ -134,17 +134,17 @@ namespace BF1.ServerAdminTools.Common.Views
                 {
                     var envIdViaAuthCode = JsonUtils.JsonDese<EnvIdViaAuthCode>(result.Message);
                     Globals.Config.SessionId = envIdViaAuthCode.result.sessionId;
-                    MainWindow._SetOperatingState(1, $"获取SessionID成功  |  耗时: {result.ExecTime:0.00} 秒");
+                    MainWindow.SetOperatingState(1, $"获取SessionID成功  |  耗时: {result.ExecTime:0.00} 秒");
                     Core.SaveConfig();
                 }
                 else
                 {
-                    MainWindow._SetOperatingState(3, $"获取SessionID失败 {result.Message}  |  耗时: {result.ExecTime:0.00} 秒");
+                    MainWindow.SetOperatingState(3, $"获取SessionID失败 {result.Message}  |  耗时: {result.ExecTime:0.00} 秒");
                 }
             }
             else
             {
-                MainWindow._SetOperatingState(2, $"Cookie已失效，进行网页登录");
+                MainWindow.SetOperatingState(2, $"Cookie已失效，进行网页登录");
                 WebLogin();
             }
         }
@@ -176,7 +176,7 @@ namespace BF1.ServerAdminTools.Common.Views
             }
             else
             {
-                MainWindow._SetOperatingState(3, "未安装WebView2对应依赖，请安装依赖或手动获取Cookie");
+                MainWindow.SetOperatingState(3, "未安装WebView2对应依赖，请安装依赖或手动获取Cookie");
                 return;
             }
         }
@@ -250,11 +250,11 @@ namespace BF1.ServerAdminTools.Common.Views
 
                 wpfPlot.Refresh();
 
-                MainWindow._SetOperatingState(1, $"获取战地1玩家人数成功  |  耗时: {result.ExecTime:0.00} 秒");
+                MainWindow.SetOperatingState(1, $"获取战地1玩家人数成功  |  耗时: {result.ExecTime:0.00} 秒");
             }
             else
             {
-                MainWindow._SetOperatingState(3, $"获取战地1玩家人数失败  |  耗时: {result.ExecTime:0.00} 秒");
+                MainWindow.SetOperatingState(3, $"获取战地1玩家人数失败  |  耗时: {result.ExecTime:0.00} 秒");
             }
         }
 
@@ -277,7 +277,7 @@ namespace BF1.ServerAdminTools.Common.Views
 
         private void UpdateData1(object sender, RoutedEventArgs e)
         {
-            MainWindow._SetOperatingState(2, $"正在更新表格数据中...");
+            MainWindow.SetOperatingState(2, $"正在更新表格数据中...");
             UpdateWpfPlot(WpfPlot_Main1, "Asia");
         }
 
@@ -304,7 +304,7 @@ namespace BF1.ServerAdminTools.Common.Views
 
         private void UpdateData2(object sender, RoutedEventArgs e)
         {
-            MainWindow._SetOperatingState(2, $"正在更新表格数据中...");
+            MainWindow.SetOperatingState(2, $"正在更新表格数据中...");
             UpdateWpfPlot(WpfPlot_Main2, "ALL");
         }
 
