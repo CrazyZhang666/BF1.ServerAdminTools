@@ -100,7 +100,7 @@ public static class GTAPI
                 respContent.IsSuccess = true;
                 respContent.Message = response.Content;
 
-                respContent.Obj = JsonUtil.JsonDese<AllPlayerData>(respContent.Message);
+                respContent.Obj = JsonUtils.JsonDese<AllPlayerData>(respContent.Message);
             }
             else
             {
@@ -147,7 +147,7 @@ public static class GTAPI
                 respContent.IsSuccess = true;
                 respContent.Message = response.Content;
 
-                respContent.Obj = JsonUtil.JsonDese<ServerInfos>(respContent.Message);
+                respContent.Obj = JsonUtils.JsonDese<ServerInfos>(respContent.Message);
             }
             else
             {
@@ -194,7 +194,7 @@ public static class GTAPI
                 respContent.IsSuccess = true;
                 respContent.Message = response.Content;
 
-                respContent.Obj = JsonUtil.JsonDese<ServerInfos.ServersItem>(respContent.Message);
+                respContent.Obj = JsonUtils.JsonDese<ServerInfos.ServersItem>(respContent.Message);
             }
             else
             {
@@ -244,7 +244,7 @@ public static class GTAPI
                 respContent.IsSuccess = true;
                 respContent.Message = response.Content;
 
-                respContent.Obj = JsonUtil.JsonDese<StatusArray>(respContent.Message);
+                respContent.Obj = JsonUtils.JsonDese<StatusArray>(respContent.Message);
             }
             else
             {

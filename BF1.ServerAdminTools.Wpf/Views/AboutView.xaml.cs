@@ -14,13 +14,13 @@ namespace BF1.ServerAdminTools.Common.Views
 
         private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
         {
-            ProcessUtil.OpenLink(e.Uri.OriginalString);
+            ProcessUtils.OpenLink(e.Uri.OriginalString);
             e.Handled = true;
         }
 
         private void TextBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            ProcessUtil.OpenLink("https://afdian.net/@crazyzhang");
+            ProcessUtils.OpenLink("https://afdian.net/@crazyzhang");
         }
     }
 }

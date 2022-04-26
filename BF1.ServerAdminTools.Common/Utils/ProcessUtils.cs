@@ -1,6 +1,6 @@
 ﻿namespace BF1.ServerAdminTools.Common.Utils;
 
-public static class ProcessUtil
+public static class ProcessUtils
 {
     /// <summary>
     /// 判断程序是否运行

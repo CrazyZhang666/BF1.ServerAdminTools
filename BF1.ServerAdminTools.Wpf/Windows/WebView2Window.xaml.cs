@@ -90,7 +90,7 @@ namespace BF1.ServerAdminTools.Common.Windows
 
             if (result.IsSuccess)
             {
-                var envIdViaAuthCode = JsonUtil.JsonDese<EnvIdViaAuthCode>(result.Message);
+                var envIdViaAuthCode = JsonUtils.JsonDese<EnvIdViaAuthCode>(result.Message);
                 Globals.Config.SessionId = envIdViaAuthCode.result.sessionId;
                 Core.SaveConfig();
                 MainWindow._SetOperatingState(1, $"获取SessionID成功:{Globals.Config.SessionId}  |  耗时: {result.ExecTime:0.00} 秒");

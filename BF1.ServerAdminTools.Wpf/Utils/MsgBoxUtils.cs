@@ -1,6 +1,6 @@
 ﻿namespace BF1.ServerAdminTools.Common.Utils;
 
-public static class MsgBoxUtil
+public static class MsgBoxUtils
 {
     /// <summary>
     /// 通用信息弹窗，Information

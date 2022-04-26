@@ -88,12 +88,12 @@ namespace BF1.ServerAdminTools.Common
 
         public void Info(string data)
         {
-            MsgBoxUtil.InformationMsgBox(data);
+            MsgBoxUtils.InformationMsgBox(data);
         }
 
         public void Error(string data, Exception e)
         {
-            MsgBoxUtil.ErrorMsgBox(data, e);
+            MsgBoxUtils.ErrorMsgBox(data, e);
         }
     }
 }

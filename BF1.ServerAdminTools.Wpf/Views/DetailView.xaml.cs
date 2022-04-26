@@ -120,8 +120,8 @@ namespace BF1.ServerAdminTools.Common.Views
                     ListBox_Map.Items.Add(new Map()
                     {
                         mapImage = ImageData.GetTempImagePath(item.mapImage, "maps"),
-                        mapPrettyName = ChsUtil.ToSimplifiedChinese(item.mapPrettyName),
-                        modePrettyName = ChsUtil.ToSimplifiedChinese(item.modePrettyName)
+                        mapPrettyName = ChsUtils.ToSimplifiedChinese(item.mapPrettyName),
+                        modePrettyName = ChsUtils.ToSimplifiedChinese(item.modePrettyName)
                     });
                 }
 
@@ -188,7 +188,7 @@ namespace BF1.ServerAdminTools.Common.Views
 
         private async void Button_GetFullServerDetails_Click(object sender, RoutedEventArgs e)
         {
-            AudioUtil.ClickSound();
+            AudioUtils.ClickSound();
 
             await Load();
         }
@@ -238,7 +238,7 @@ namespace BF1.ServerAdminTools.Common.Views
 
         private async void Button_RemoveSelectedAdmin_Click(object sender, RoutedEventArgs e)
         {
-            AudioUtil.ClickSound();
+            AudioUtils.ClickSound();
 
             ListItem currListItem = ListBox_Admin.SelectedItem as ListItem;
 
@@ -259,7 +259,7 @@ namespace BF1.ServerAdminTools.Common.Views
 
         private async void Button_AddNewAdmin_Click(object sender, RoutedEventArgs e)
         {
-            AudioUtil.ClickSound();
+            AudioUtils.ClickSound();
 
             MainWindow._SetOperatingState(2, $"正在增加服务器管理员 {TextBox_NewAdminName.Text} 中...");
 
@@ -278,7 +278,7 @@ namespace BF1.ServerAdminTools.Common.Views
 
         private async void Button_RemoveSelectedVIP_Click(object sender, RoutedEventArgs e)
         {
-            AudioUtil.ClickSound();
+            AudioUtils.ClickSound();
 
             ListItem currListItem = ListBox_VIP.SelectedItem as ListItem;
 
@@ -299,7 +299,7 @@ namespace BF1.ServerAdminTools.Common.Views
 
         private async void Button_AddNewVIP_Click(object sender, RoutedEventArgs e)
         {
-            AudioUtil.ClickSound();
+            AudioUtils.ClickSound();
 
             MainWindow._SetOperatingState(2, $"正在增加服务器VIP {TextBox_NewVIPName.Text} 中...");
 
@@ -318,7 +318,7 @@ namespace BF1.ServerAdminTools.Common.Views
 
         private async void Button_RemoveSelectedBAN_Click(object sender, RoutedEventArgs e)
         {
-            AudioUtil.ClickSound();
+            AudioUtils.ClickSound();
 
             ListItem currListItem = ListBox_BAN.SelectedItem as ListItem;
 
@@ -339,7 +339,7 @@ namespace BF1.ServerAdminTools.Common.Views
 
         private async void Button_AddNewBAN_Click(object sender, RoutedEventArgs e)
         {
-            AudioUtil.ClickSound();
+            AudioUtils.ClickSound();
 
             MainWindow._SetOperatingState(2, $"正在增加服务器BAN {TextBox_NewBANName.Text} 中...");
 
@@ -358,7 +358,7 @@ namespace BF1.ServerAdminTools.Common.Views
 
         private async void Button_KickSelectedSpectator_Click(object sender, RoutedEventArgs e)
         {
-            AudioUtil.ClickSound();
+            AudioUtils.ClickSound();
 
             if (!string.IsNullOrEmpty(Globals.Config.SessionId))
             {
@@ -366,7 +366,7 @@ namespace BF1.ServerAdminTools.Common.Views
 
                 MainWindow._SetOperatingState(2, $"正在踢出玩家 {info.Name} 中...");
 
-                var reason = ChsUtil.ToTraditionalChinese(TextBox_KickSelectedSpectatorReason.Text);
+                var reason = ChsUtils.ToTraditionalChinese(TextBox_KickSelectedSpectatorReason.Text);
 
                 if (reason == "@Kick")
                 {
@@ -393,7 +393,7 @@ namespace BF1.ServerAdminTools.Common.Views
 
         private void Button_RefreshSpectatorList_Click(object sender, RoutedEventArgs e)
         {
-            AudioUtil.ClickSound();
+            AudioUtils.ClickSound();
 
             ListBox_Spectator.Items.Clear();
 
@@ -412,7 +412,7 @@ namespace BF1.ServerAdminTools.Common.Views
 
         private async void Button_GetServerDetails_Click(object sender, RoutedEventArgs e)
         {
-            AudioUtil.ClickSound();
+            AudioUtils.ClickSound();
 
             if (!string.IsNullOrEmpty(Globals.Config.SessionId))
             {
@@ -451,7 +451,7 @@ namespace BF1.ServerAdminTools.Common.Views
 
         private async void Button_UpdateServer_Click(object sender, RoutedEventArgs e)
         {
-            AudioUtil.ClickSound();
+            AudioUtils.ClickSound();
 
             if (!isGetServerDetailsOK)
             {
@@ -552,7 +552,7 @@ namespace BF1.ServerAdminTools.Common.Views
 
         private void Button_SetServerDetails2Traditional_Click(object sender, RoutedEventArgs e)
         {
-            AudioUtil.ClickSound();
+            AudioUtils.ClickSound();
 
             var serverDescription = TextBox_ServerDescription.Text.Trim();
 
@@ -562,7 +562,7 @@ namespace BF1.ServerAdminTools.Common.Views
                 return;
             }
 
-            TextBox_ServerDescription.Text = ChsUtil.ToTraditionalChinese(serverDescription);
+            TextBox_ServerDescription.Text = ChsUtils.ToTraditionalChinese(serverDescription);
 
             MainWindow._SetOperatingState(1, $"转换服务器描述文本为繁体中文成功");
         }

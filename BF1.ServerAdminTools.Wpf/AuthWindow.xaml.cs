@@ -17,15 +17,15 @@ namespace BF1.ServerAdminTools.Common
 
         private void Window_Auth_Loaded(object sender, RoutedEventArgs e)
         {
-            TextBlock_VersionInfo.Text = CoreUtil.ClientVersionInfo.ToString();
-            TextBlock_BuildDate.Text = CoreUtil.ClientBuildTime.ToString();
+            TextBlock_VersionInfo.Text = CoreUtils.ClientVersionInfo.ToString();
+            TextBlock_BuildDate.Text = CoreUtils.ClientBuildTime.ToString();
 
             Task.Run(() =>
             {
                 UpdateState("欢迎来到《BATTLEFIELD 1》...");
                 Core.LogInfo("开始初始化程序...");
-                Core.LogInfo($"当前程序版本号 {CoreUtil.ClientVersionInfo}");
-                Core.LogInfo($"当前程序最后编译时间 {CoreUtil.ClientBuildTime}");
+                Core.LogInfo($"当前程序版本号 {CoreUtils.ClientVersionInfo}");
+                Core.LogInfo($"当前程序最后编译时间 {CoreUtils.ClientBuildTime}");
 
                 Core.DnsFlushResolverCache();
                 Core.LogInfo("刷新DNS缓存成功");
@@ -45,14 +45,14 @@ namespace BF1.ServerAdminTools.Common
                 UpdateState("正在为您营造个性化体验...");
 
                 Core.ConfigInit();
-                ConfigUtil.Init();
-                ConfigUtil.LoadAll();
+                ConfigUtils.Init();
+                ConfigUtils.LoadAll();
                 Core.SQLInit();
 
                 ImageData.InitDict();
                 Core.LogInfo("本地图片缓存库初始化成功");
 
-                ChsUtil.ToTraditionalChinese("免费，跨平台，开源！");
+                ChsUtils.ToTraditionalChinese("免费，跨平台，开源！");
                 Core.LogInfo("简繁翻译库初始化成功");
 
                 ////////////////////////////////////////////////////////////////////
@@ -63,58 +63,7 @@ namespace BF1.ServerAdminTools.Common
                 {
                     UpdateState("正在检测版本更新...");
                     Core.LogInfo($"正在检测版本更新...");
-
-                    // 获取版本更新
-                    var webConfig = HttpUtil.HttpClientGET(CoreUtil.Config_Address).Result;
-                    if (!string.IsNullOrEmpty(webConfig))
-                    {
-                        var updateInfo = JsonUtil.JsonDese<UpdateInfo>(webConfig);
-
-                        CoreUtil.ServerVersionInfo = new Version(updateInfo.Version);
-
-                        if (CoreUtil.ServerVersionInfo > CoreUtil.ClientVersionInfo)
-                        {
-                            Core.LogInfo($"发现新版本 {CoreUtil.ServerVersionInfo}");
-
-                            CoreUtil.Notice_Address = updateInfo.Address.Notice;
-                            CoreUtil.Change_Address = updateInfo.Address.Change;
-
-                            Application.Current.Dispatcher.BeginInvoke(() =>
-                            {
-                                this.Hide();
-                            });
-
-                            if (MessageBox.Show($"检测到新版本已发布，是否立即前往更新？                                        " +
-                                $"\n\n{updateInfo.Latest.Date}\n{updateInfo.Latest.Change}\n\n强烈建议大家使用最新版本！点否退出程序",
-                                "发现新版本", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
-                            {
-                                isNew = true;
-                                Application.Current.Dispatcher.Invoke(() =>
-                                {
-                                    var UpdateWindow = new UpdateWindow(updateInfo);
-                                    UpdateWindow.Owner = MainWindow.ThisMainWindow;
-                                    UpdateWindow.ShowDialog();
-
-                                    this.Close();
-                                });
-                            }
-                            else
-                            {
-                                Application.Current.Shutdown();
-                            }
-                        }
-                        else
-                        {
-                            UpdateState("连线中...");
-                            Core.LogInfo($"当前已是最新版本 {CoreUtil.ServerVersionInfo}");
-                        }
-                    }
-                    else
-                    {
-                        UpdateState("获取新版本信息失败！");
-                    }
-
-
+                    Update(ref isNew);
                 }
                 catch (Exception ex)
                 {
@@ -140,6 +89,60 @@ namespace BF1.ServerAdminTools.Common
             {
                 TextBlock_State.Text = msg;
             });
+        }
+
+        private void Update(ref bool isNew)
+        {
+            // 获取版本更新
+            var webConfig = HttpUtil.HttpClientGET(CoreUtils.Config_Address).Result;
+            if (string.IsNullOrEmpty(webConfig))
+            {
+                UpdateState("获取新版本信息失败！");
+                return;
+            }
+            var updateInfo = JsonUtils.JsonDese<UpdateInfo>(webConfig);
+            if (updateInfo == null)
+            {
+                return;
+            }
+            CoreUtils.ServerVersionInfo = new Version(updateInfo.Version);
+
+            if (CoreUtils.ServerVersionInfo > CoreUtils.ClientVersionInfo)
+            {
+                Core.LogInfo($"发现新版本 {CoreUtils.ServerVersionInfo}");
+
+                CoreUtils.Notice_Address = updateInfo.Address.Notice;
+                CoreUtils.Change_Address = updateInfo.Address.Change;
+
+                Application.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    this.Hide();
+                });
+
+                if (MessageBox.Show($"检测到新版本已发布，是否立即前往更新？                                        " +
+                    $"\n\n{updateInfo.Latest.Date}\n{updateInfo.Latest.Change}\n\n强烈建议大家使用最新版本！点否退出程序",
+                    "发现新版本", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
+                {
+                    isNew = true;
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        var UpdateWindow = new UpdateWindow(updateInfo);
+                        UpdateWindow.Owner = MainWindow.ThisMainWindow;
+                        UpdateWindow.ShowDialog();
+
+                        this.Close();
+                    });
+                }
+                else
+                {
+                    Application.Current.Shutdown();
+                }
+            }
+            else
+            {
+                UpdateState("连线中...");
+                Core.LogInfo($"当前已是最新版本 {CoreUtils.ServerVersionInfo}");
+            }
         }
     }
 }

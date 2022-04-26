@@ -70,7 +70,7 @@ namespace BF1.ServerAdminTools.Common.Views
 
         private async void Button_RefreshPlayerSessionId_Click(object sender, RoutedEventArgs e)
         {
-            AudioUtil.ClickSound();
+            AudioUtils.ClickSound();
 
             if (string.IsNullOrEmpty(TextBox_Remid.Text)) TextBox_Remid.Text = Globals.Config.Remid;
             else Globals.Config.Remid = TextBox_Remid.Text;
@@ -132,7 +132,7 @@ namespace BF1.ServerAdminTools.Common.Views
 
                 if (result.IsSuccess)
                 {
-                    var envIdViaAuthCode = JsonUtil.JsonDese<EnvIdViaAuthCode>(result.Message);
+                    var envIdViaAuthCode = JsonUtils.JsonDese<EnvIdViaAuthCode>(result.Message);
                     Globals.Config.SessionId = envIdViaAuthCode.result.sessionId;
                     MainWindow._SetOperatingState(1, $"获取SessionID成功  |  耗时: {result.ExecTime:0.00} 秒");
                     Core.SaveConfig();
@@ -151,7 +151,7 @@ namespace BF1.ServerAdminTools.Common.Views
 
         private void WebLogin()
         {
-            if (CoreUtil.IsWebView2DependencyInstalled())
+            if (CoreUtils.IsWebView2DependencyInstalled())
             {
                 if (WebView2Window == null)
                 {
@@ -183,7 +183,7 @@ namespace BF1.ServerAdminTools.Common.Views
 
         private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
         {
-            ProcessUtil.OpenLink(e.Uri.OriginalString);
+            ProcessUtils.OpenLink(e.Uri.OriginalString);
             e.Handled = true;
         }
 

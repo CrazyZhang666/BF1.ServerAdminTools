@@ -14,7 +14,7 @@ internal class ConfigUtils
     public static void Load()
     {
         if (File.Exists(FileLocal))
-            Config = JsonUtil.JsonDese<ConfigNettyObj>(File.ReadAllText(FileLocal));
+            Config = JsonUtils.JsonDese<ConfigNettyObj>(File.ReadAllText(FileLocal));
         else
         {
             Save(Config = new()
@@ -28,6 +28,6 @@ internal class ConfigUtils
     public static void Save(ConfigNettyObj obj)
     {
         Config = obj;
-        FileUtil.WriteFile(FileLocal, JsonUtil.JsonSeri(Config));
+        FileUtils.WriteFile(FileLocal, JsonUtils.JsonSeri(Config));
     }
 }

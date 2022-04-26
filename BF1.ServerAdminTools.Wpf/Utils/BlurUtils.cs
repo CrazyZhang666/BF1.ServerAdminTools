@@ -3,7 +3,7 @@ using System.Windows.Interop;
 
 namespace BF1.ServerAdminTools.Wpf.Utils;
 
-public class BlurUtil
+public class BlurUtils
 {
     private readonly Window _window;
 
@@ -11,7 +11,7 @@ public class BlurUtil
     /// 创建 <see cref="WindowAccentCompositor"/> 的一个新实例。
     /// </summary>
     /// <param name="window">要创建模糊特效的窗口实例。</param>
-    public BlurUtil(Window window) => _window = window ?? throw new ArgumentNullException(nameof(window));
+    public BlurUtils(Window window) => _window = window ?? throw new ArgumentNullException(nameof(window));
 
     public void Composite(bool open)
     {

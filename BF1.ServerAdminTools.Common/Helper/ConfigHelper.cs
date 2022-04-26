@@ -49,7 +49,7 @@ internal static class ConfigHelper
 
     public static void SaveConfig()
     {
-        FileUtil.WriteFile(ConfigLocal.SettingFile, JsonUtil.JsonSeri(Globals.Config));
+        FileUtils.WriteFile(ConfigLocal.SettingFile, JsonUtils.JsonSeri(Globals.Config));
     }
 
     public static void LoadConfig()
@@ -62,11 +62,11 @@ internal static class ConfigHelper
             {
                 AudioIndex = 3
             };
-            File.WriteAllText(ConfigLocal.SettingFile, JsonUtil.JsonSeri(Globals.Config));
+            File.WriteAllText(ConfigLocal.SettingFile, JsonUtils.JsonSeri(Globals.Config));
         }
         else
         {
-            Globals.Config = JsonUtil.JsonDese<ConfigObj>(File.ReadAllText(ConfigLocal.SettingFile));
+            Globals.Config = JsonUtils.JsonDese<ConfigObj>(File.ReadAllText(ConfigLocal.SettingFile));
         }
     }
 }

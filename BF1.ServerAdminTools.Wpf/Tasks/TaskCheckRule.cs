@@ -3,6 +3,7 @@ using BF1.ServerAdminTools.Common.API.BF1Server;
 using BF1.ServerAdminTools.Common.Data;
 using BF1.ServerAdminTools.Common.Utils;
 using BF1.ServerAdminTools.Wpf.Data;
+using BF1.ServerAdminTools.Wpf.Utils;
 
 namespace BF1.ServerAdminTools.Wpf.Tasks;
 
@@ -95,6 +96,48 @@ internal class TaskCheckRule
 
         if (TaskKick.IsHave(playerData.PersonaId))
             return;
+
+        //白名单
+        if (DataSave.NowRule.Custom_WhiteList.Contains(playerData.Name))
+            return;
+
+        //管理员
+        if (Globals.RspInfo != null)
+        {
+            if (Globals.RspInfo.owner?.personaId == playerData.PersonaId.ToString())
+                return;
+            if (Globals.RspInfo.adminList != null)
+                if (Globals.RspInfo.adminList.FindIndex(a => a.personaId == playerData.PersonaId.ToString()) != -1)
+                    return;
+        }
+        
+        //黑名单
+        if (DataSave.NowRule.Custom_BlackList.Contains(playerData.Name))
+        {
+            TaskKick.AddKick(new BreakRuleInfo
+            {
+                Name = playerData.Name,
+                PersonaId = playerData.PersonaId,
+                Reason = $"You have been ban on this server",
+                Type = BreakType.Server_Black_List
+            });
+
+            return;
+        }
+
+        //订阅黑名单
+        if (SubscribeUtils.Check(playerData.PersonaId, playerData.Name))
+        {
+            TaskKick.AddKick(new BreakRuleInfo
+            {
+                Name = playerData.Name,
+                PersonaId = playerData.PersonaId,
+                Reason = $"You have been ban on this server",
+                Type = BreakType.Server_Black_List
+            });
+
+            return;
+        }
 
         // 限制玩家击杀
         if (playerData.Kill > rule.MaxKill && rule.MaxKill != 0)
@@ -290,7 +333,7 @@ internal class TaskCheckRule
                 {
                     Name = playerData.Name,
                     PersonaId = playerData.PersonaId,
-                    Reason = $"Weapon Limit {PlayerUtil.GetWeaponShortTxt(item)}",
+                    Reason = $"Weapon Limit {PlayerUtils.GetWeaponShortTxt(item)}",
                     Type = BreakType.Weapon_Limit
                 });
 

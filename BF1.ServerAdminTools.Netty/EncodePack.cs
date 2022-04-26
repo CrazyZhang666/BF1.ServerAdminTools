@@ -68,7 +68,7 @@ internal static class EncodePack
                 .WriteString(Globals.ServerDetailed.teams.teamOne.image)
                 .WriteString(Globals.ServerDetailed.teams.teamTwo.key)
                 .WriteString(Globals.ServerDetailed.teams.teamTwo.image)
-                .WriteString(ChsUtil.ToSimplifiedChinese(Globals.ServerDetailed.mode));
+                .WriteString(ChsUtils.ToSimplifiedChinese(Globals.ServerDetailed.mode));
         }
         else
         {
@@ -175,7 +175,7 @@ internal static class EncodePack
         buff.WriteInt(Globals.ServerInfo.rotation.Count);
         foreach (var item in Globals.ServerInfo.rotation)
         {
-            buff.WriteString(ChsUtil.ToSimplifiedChinese(item.mapPrettyName));
+            buff.WriteString(ChsUtils.ToSimplifiedChinese(item.mapPrettyName));
         }
     }
 

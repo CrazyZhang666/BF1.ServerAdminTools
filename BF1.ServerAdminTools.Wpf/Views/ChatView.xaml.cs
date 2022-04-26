@@ -102,10 +102,10 @@ namespace BF1.ServerAdminTools.Common.Views
         private void TimerAutoSendMsg_Elapsed(object? sender, ElapsedEventArgs e)
         {
             if (!Globals.IsGameRun)
-                MsgBoxUtil.ErrorMsgBox("游戏还未启动");
+                MsgBoxUtils.ErrorMsgBox("游戏还未启动");
 
             if (!Globals.IsToolInit)
-                MsgBoxUtil.ErrorMsgBox("工具还未正常初始化");
+                MsgBoxUtils.ErrorMsgBox("工具还未正常初始化");
 
             SetIMEState();
             Thread.Sleep(50);
@@ -130,13 +130,13 @@ namespace BF1.ServerAdminTools.Common.Views
 
         private void SendChsMessage(object sender, RoutedEventArgs e)
         {
-            AudioUtil.ClickSound();
+            AudioUtils.ClickSound();
 
             if (!Globals.IsGameRun)
-                MsgBoxUtil.ErrorMsgBox("游戏还未启动");
+                MsgBoxUtils.ErrorMsgBox("游戏还未启动");
 
             if (!Globals.IsToolInit)
-                MsgBoxUtil.ErrorMsgBox("工具还未正常初始化");
+                MsgBoxUtils.ErrorMsgBox("工具还未正常初始化");
 
             SetIMEState();
             Thread.Sleep(20);
@@ -156,7 +156,7 @@ namespace BF1.ServerAdminTools.Common.Views
 
         private void TextBox_InputMsg_TextChanged(object sender, TextChangedEventArgs e)
         {
-            TextBlock_TxtLength.Text = $"当前文本长度 : {PlayerUtil.GetStrLength(TextBox_InputMsg.Text)} 字符";
+            TextBlock_TxtLength.Text = $"当前文本长度 : {PlayerUtils.GetStrLength(TextBox_InputMsg.Text)} 字符";
 
             defaultMsg[RadioButtonWhoIsChecked()] = TextBox_InputMsg.Text;
         }

@@ -1,6 +1,6 @@
 ﻿namespace BF1.ServerAdminTools.Common.Utils;
 
-public static class JsonUtil
+public static class JsonUtils
 {
     private static JsonSerializerOptions Options1 = new()
     {

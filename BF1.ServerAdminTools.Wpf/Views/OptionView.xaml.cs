@@ -14,9 +14,9 @@ namespace BF1.ServerAdminTools.Common.Views
         {
             InitializeComponent();
 
-            AudioUtil.ClickSoundIndex = Globals.Config.AudioIndex;
+            AudioUtils.ClickSoundIndex = Globals.Config.AudioIndex;
 
-            switch (AudioUtil.ClickSoundIndex)
+            switch (AudioUtils.ClickSoundIndex)
             {
                 case 0:
                     RadioButton_ClickAudioSelect0.IsChecked = true;
@@ -57,7 +57,7 @@ namespace BF1.ServerAdminTools.Common.Views
                 catch (Exception ex)
                 {
                     Core.LogError("Netty服务器启动出错", ex);
-                    MsgBoxUtil.ErrorMsgBox("Netty服务器启动出错", ex);
+                    MsgBoxUtils.ErrorMsgBox("Netty服务器启动出错", ex);
                 }
             }
             if (DataSave.Config.Window_A)
@@ -68,7 +68,7 @@ namespace BF1.ServerAdminTools.Common.Views
 
         private void MainWindow_ClosingDisposeEvent()
         {
-            Globals.Config.AudioIndex = AudioUtil.ClickSoundIndex;
+            Globals.Config.AudioIndex = AudioUtils.ClickSoundIndex;
         }
 
         private void RadioButton_ClickAudioSelect_Click(object sender, RoutedEventArgs e)
@@ -78,27 +78,27 @@ namespace BF1.ServerAdminTools.Common.Views
             switch (str)
             {
                 case "无":
-                    AudioUtil.ClickSoundIndex = 0;
+                    AudioUtils.ClickSoundIndex = 0;
                     break;
                 case "提示音1":
-                    AudioUtil.ClickSoundIndex = 1;
-                    AudioUtil.ClickSound();
+                    AudioUtils.ClickSoundIndex = 1;
+                    AudioUtils.ClickSound();
                     break;
                 case "提示音2":
-                    AudioUtil.ClickSoundIndex = 2;
-                    AudioUtil.ClickSound();
+                    AudioUtils.ClickSoundIndex = 2;
+                    AudioUtils.ClickSound();
                     break;
                 case "提示音3":
-                    AudioUtil.ClickSoundIndex = 3;
-                    AudioUtil.ClickSound();
+                    AudioUtils.ClickSoundIndex = 3;
+                    AudioUtils.ClickSound();
                     break;
                 case "提示音4":
-                    AudioUtil.ClickSoundIndex = 4;
-                    AudioUtil.ClickSound();
+                    AudioUtils.ClickSoundIndex = 4;
+                    AudioUtils.ClickSound();
                     break;
                 case "提示音5":
-                    AudioUtil.ClickSoundIndex = 5;
-                    AudioUtil.ClickSound();
+                    AudioUtils.ClickSoundIndex = 5;
+                    AudioUtils.ClickSound();
                     break;
             }
         }
@@ -107,41 +107,41 @@ namespace BF1.ServerAdminTools.Common.Views
         {
             if (!Core.IsGameRun())
             {
-                MsgBoxUtil.ErrorMsgBox("没有检测到游戏进程");
+                MsgBoxUtils.ErrorMsgBox("没有检测到游戏进程");
                 return;
             }
 
             if (!Core.HookInit())
             {
                 Core.LogError("战地1内存模块初始化失败");
-                MsgBoxUtil.ErrorMsgBox("战地1内存模块初始化失败");
+                MsgBoxUtils.ErrorMsgBox("战地1内存模块初始化失败");
                 return;
             }
 
             Core.LogInfo("战地1内存模块初始化成功");
-            MsgBoxUtil.InformationMsgBox("检测到游戏运行");
+            MsgBoxUtils.InformationMsgBox("检测到游戏运行");
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(Server_Port.Text))
             {
-                MsgBoxUtil.ErrorMsgBox("端口号为空");
+                MsgBoxUtils.ErrorMsgBox("端口号为空");
                 return;
             }
             if (!int.TryParse(Server_Port.Text, out var port))
             {
-                MsgBoxUtil.ErrorMsgBox("端口号错误");
+                MsgBoxUtils.ErrorMsgBox("端口号错误");
                 return;
             }
             if (string.IsNullOrWhiteSpace(Server_Key.Text))
             {
-                MsgBoxUtil.ErrorMsgBox("服务器密钥为空");
+                MsgBoxUtils.ErrorMsgBox("服务器密钥为空");
                 return;
             }
             if (!long.TryParse(Server_Key.Text, out var key))
             {
-                MsgBoxUtil.ErrorMsgBox("服务器密钥错误");
+                MsgBoxUtils.ErrorMsgBox("服务器密钥错误");
                 return;
             }
 
@@ -152,7 +152,7 @@ namespace BF1.ServerAdminTools.Common.Views
             });
 
             DataSave.Config.AutoRun = AutoRun.IsChecked == true;
-            ConfigUtil.SaveConfig();
+            ConfigUtils.SaveConfig();
 
             MainWindow._SetOperatingState(1, "设置成功");
             if (NettyCore.State)
@@ -163,7 +163,7 @@ namespace BF1.ServerAdminTools.Common.Views
                 catch (Exception ex)
                 {
                     Core.LogError("Netty服务器关闭出错", ex);
-                    MsgBoxUtil.ErrorMsgBox("Netty服务器关闭出错", ex);
+                    MsgBoxUtils.ErrorMsgBox("Netty服务器关闭出错", ex);
                 }
         }
 
@@ -179,7 +179,7 @@ namespace BF1.ServerAdminTools.Common.Views
                 catch (Exception ex)
                 {
                     Core.LogError("Netty服务器关闭出错", ex);
-                    MsgBoxUtil.ErrorMsgBox("Netty服务器关闭出错", ex);
+                    MsgBoxUtils.ErrorMsgBox("Netty服务器关闭出错", ex);
                 }
             }
             else
@@ -192,19 +192,19 @@ namespace BF1.ServerAdminTools.Common.Views
                 catch (Exception ex)
                 {
                     Core.LogError("Netty服务器启动出错", ex);
-                    MsgBoxUtil.ErrorMsgBox("Netty服务器启动出错", ex);
+                    MsgBoxUtils.ErrorMsgBox("Netty服务器启动出错", ex);
                 }
             }
         }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            var file = FileSelectUtil.FileSelectPic();
+            var file = FileSelectUtils.FileSelectPic();
             if (file == null)
                 return;
 
             DataSave.Config.Bg = file;
-            ConfigUtil.SaveConfig();
+            ConfigUtils.SaveConfig();
 
             MainWindow.BG();
         }
@@ -212,7 +212,7 @@ namespace BF1.ServerAdminTools.Common.Views
         private void Button_Click_4(object sender, RoutedEventArgs e)
         {
             DataSave.Config.Bg = "";
-            ConfigUtil.SaveConfig();
+            ConfigUtils.SaveConfig();
 
             MainWindow.BG();
         }
@@ -221,7 +221,7 @@ namespace BF1.ServerAdminTools.Common.Views
         {
             DataSave.Config.Window_O = Window_O.IsChecked == true;
             DataSave.Config.Bg_O = (int)Slider_BG_O.Value;
-            ConfigUtil.SaveConfig();
+            ConfigUtils.SaveConfig();
 
             MainWindow.BG();
         }
@@ -229,7 +229,7 @@ namespace BF1.ServerAdminTools.Common.Views
         private void Button_Click_6(object sender, RoutedEventArgs e)
         {
             DataSave.Config.Window_A = Window_A.IsChecked == true;
-            ConfigUtil.SaveConfig();
+            ConfigUtils.SaveConfig();
             if (DataSave.Config.Window_A)
             {
                 GameWindow.Start();

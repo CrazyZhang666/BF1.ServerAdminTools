@@ -25,7 +25,7 @@ namespace BF1.ServerAdminTools.Common.Windows
         {
             MainWindow._SetOperatingState(2, $"正在踢出玩家 {PlayerName} 中...");
 
-            var reason = ChsUtil.ToTraditionalChinese(TextBox_CustomReason.Text.Trim());
+            var reason = ChsUtils.ToTraditionalChinese(TextBox_CustomReason.Text.Trim());
 
             if (reason == "@Kick")
             {

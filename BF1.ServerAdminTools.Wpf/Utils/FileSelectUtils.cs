@@ -1,6 +1,6 @@
 ﻿namespace BF1.ServerAdminTools.Common.Utils;
 
-public static class FileSelectUtil
+public static class FileSelectUtils
 {
     public static string? FileSelect()
     {

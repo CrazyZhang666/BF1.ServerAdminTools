@@ -2,7 +2,7 @@
 
 namespace BF1.ServerAdminTools.Common.Utils;
 
-public class ChsUtil
+public class ChsUtils
 {
     /// <summary>
     /// 字符串简体转繁体

@@ -595,8 +595,8 @@
                                 <GridView>
                                     <GridViewColumn
                                         Width="200"
-                                        DisplayMemberBinding="{Binding Name}"
-                                        Header="订阅名字" />
+                                        DisplayMemberBinding="{Binding Url}"
+                                        Header="订阅地址" />
                                     <GridViewColumn
                                         Width="200"
                                         DisplayMemberBinding="{Binding LastTime}"
@@ -605,10 +605,6 @@
                                         Width="200"
                                         DisplayMemberBinding="{Binding UpdateTime}"
                                         Header="最后刷新时间" />
-                                    <GridViewColumn
-                                        Width="200"
-                                        DisplayMemberBinding="{Binding Url}"
-                                        Header="订阅地址" />
                                 </GridView>
                             </ListView.View>
                             <ListView.ContextMenu>

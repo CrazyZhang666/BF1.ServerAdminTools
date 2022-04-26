@@ -45,7 +45,7 @@ namespace BF1.ServerAdminTools.Common.Views
 
         private void QuickQueryPlayerData(string playerName)
         {
-            AudioUtil.ClickSound();
+            AudioUtils.ClickSound();
 
             QueryModel.PlayerName = playerName;
             QueryPlayer();
@@ -53,7 +53,7 @@ namespace BF1.ServerAdminTools.Common.Views
 
         private async void QueryPlayer()
         {
-            AudioUtil.ClickSound();
+            AudioUtils.ClickSound();
 
             if (!string.IsNullOrEmpty(QueryModel.PlayerName))
             {
@@ -88,7 +88,7 @@ namespace BF1.ServerAdminTools.Common.Views
                     QueryModel.UserName = all.userName;
                     QueryModel.Rank = $"等级 : {all.rank}";
                     QueryModel.RankImg = all.rankImg;
-                    QueryModel.PlayerTime = $"游戏时间 : {PlayerUtil.GetPlayTime(all.secondsPlayed)}";
+                    QueryModel.PlayerTime = $"游戏时间 : {PlayerUtils.GetPlayTime(all.secondsPlayed)}";
 
                     Update(all);
 
@@ -135,7 +135,7 @@ namespace BF1.ServerAdminTools.Common.Views
 
                 AddPlayerInfo($"步兵KD : {all.infantryKillDeath}");
                 AddPlayerInfo($"步兵KPM : {all.infantryKillsPerMinute}");
-                AddPlayerInfo($"最佳兵种 : {ChsUtil.ToSimplifiedChinese(all.bestClass)}");
+                AddPlayerInfo($"最佳兵种 : {ChsUtils.ToSimplifiedChinese(all.bestClass)}");
 
                 AddPlayerInfo("");
 
@@ -166,10 +166,10 @@ namespace BF1.ServerAdminTools.Common.Views
                 {
                     if (item.kills != 0)
                     {
-                        item.weaponName = ChsUtil.ToSimplifiedChinese(item.weaponName);
+                        item.weaponName = ChsUtils.ToSimplifiedChinese(item.weaponName);
                         item.image = ImageData.GetTempImagePath(item.image, "weapons2");
-                        item.star = PlayerUtil.GetKillStar(item.kills);
-                        item.time = PlayerUtil.GetPlayTime(item.timeEquipped);
+                        item.star = PlayerUtils.GetKillStar(item.kills);
+                        item.time = PlayerUtils.GetPlayTime(item.timeEquipped);
 
                         Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
                         {
@@ -185,10 +185,10 @@ namespace BF1.ServerAdminTools.Common.Views
                 {
                     if (item.kills != 0)
                     {
-                        item.vehicleName = ChsUtil.ToSimplifiedChinese(item.vehicleName);
+                        item.vehicleName = ChsUtils.ToSimplifiedChinese(item.vehicleName);
                         item.image = ImageData.GetTempImagePath(item.image, "vehicles2");
-                        item.star = PlayerUtil.GetKillStar(item.kills);
-                        item.time = PlayerUtil.GetPlayTime(item.timeIn);
+                        item.star = PlayerUtils.GetKillStar(item.kills);
+                        item.time = PlayerUtils.GetPlayTime(item.timeIn);
 
                         Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
                         {

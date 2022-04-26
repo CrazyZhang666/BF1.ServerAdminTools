@@ -74,7 +74,7 @@ internal class TaskKick
                     continue;
                 }
                 // 如果超过15秒还在服务器
-                if (CoreUtil.DiffSeconds(item.Value.Time, DateTime.Now) > 30)
+                if (CoreUtils.DiffSeconds(item.Value.Time, DateTime.Now) > 30)
                 {
                     remove.Add(item.Key);
                 }

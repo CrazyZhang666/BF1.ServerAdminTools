@@ -2,7 +2,7 @@
 
 namespace BF1.ServerAdminTools.Common.Utils;
 
-public static class FileUtil
+public static class FileUtils
 {
     public static void WriteFile(string file, string data)
     {

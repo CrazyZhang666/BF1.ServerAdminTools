@@ -27,7 +27,7 @@ namespace BF1.ServerAdminTools.Common.Windows
 
         private void Button_OK_Click(object sender, RoutedEventArgs e)
         {
-            AudioUtil.ClickSound();
+            AudioUtils.ClickSound();
 
             this.DialogResult = true;
             this.Close();

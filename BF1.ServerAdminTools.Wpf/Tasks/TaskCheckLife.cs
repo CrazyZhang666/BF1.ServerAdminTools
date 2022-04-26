@@ -55,7 +55,7 @@ internal static class TaskCheckLife
                 catch (Exception e)
                 {
                     Core.LogError("生涯数据获取错误", e);
-                    MsgBoxUtil.ErrorMsgBox("生涯数据获取错误", e);
+                    MsgBoxUtils.ErrorMsgBox("生涯数据获取错误", e);
                 }
                 Thread.Sleep(20000);
             }

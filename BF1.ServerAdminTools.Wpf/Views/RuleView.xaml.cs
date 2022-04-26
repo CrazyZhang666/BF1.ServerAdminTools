@@ -8,6 +8,7 @@ using BF1.ServerAdminTools.Common.Windows;
 using BF1.ServerAdminTools.Wpf.Data;
 using BF1.ServerAdminTools.Wpf.Models;
 using BF1.ServerAdminTools.Wpf.Tasks;
+using BF1.ServerAdminTools.Wpf.Utils;
 using BF1.ServerAdminTools.Wpf.Windows;
 
 namespace BF1.ServerAdminTools.Common.Views
@@ -18,6 +19,7 @@ namespace BF1.ServerAdminTools.Common.Views
     public partial class RuleView : UserControl
     {
         public static Action? CloseRunCheck;
+        public static Action? UpdateRule;
         /// <summary>
         /// 是否执行应用规则
         /// </summary>
@@ -29,7 +31,8 @@ namespace BF1.ServerAdminTools.Common.Views
 
             MainWindow.ClosingDisposeEvent += MainWindow_ClosingDisposeEvent;
 
-            CloseRunCheck = CloseRunAutoKick;
+            CloseRunCheck = FCloseRunKick;
+            UpdateRule = FUpdateRule;
 
             // 添加武器信息列表
             foreach (var item in WeaponData.AllWeaponInfo)
@@ -60,9 +63,14 @@ namespace BF1.ServerAdminTools.Common.Views
             LoadRule();
         }
 
-        private void CloseRunAutoKick()
+        private void FCloseRunKick()
         {
             Dispatcher.Invoke(() => RunAutoKick.IsChecked = false);
+        }
+
+        private void FUpdateRule() 
+        {
+            Dispatcher.Invoke(() => LoadRule());
         }
 
         private void LoadRule()
@@ -146,7 +154,7 @@ namespace BF1.ServerAdminTools.Common.Views
                 BreakWeaponInfo.Items.Add(new WeaponInfoModel()
                 {
                     English = item,
-                    Chinese = PlayerUtil.GetWeaponChsName(item)
+                    Chinese = PlayerUtils.GetWeaponChsName(item)
                 });
             }
 
@@ -236,7 +244,7 @@ namespace BF1.ServerAdminTools.Common.Views
 
         private void Button_BreakWeaponInfo_Add_Click(object sender, RoutedEventArgs e)
         {
-            AudioUtil.ClickSound();
+            AudioUtils.ClickSound();
 
             bool isContains = false;
 
@@ -296,7 +304,7 @@ namespace BF1.ServerAdminTools.Common.Views
 
         private void Button_BreakWeaponInfo_Remove_Click(object sender, RoutedEventArgs e)
         {
-            AudioUtil.ClickSound();
+            AudioUtils.ClickSound();
 
             int index1 = ListWeaponInfo.SelectedIndex;
             int index2 = BreakWeaponInfo.SelectedIndex;
@@ -331,7 +339,7 @@ namespace BF1.ServerAdminTools.Common.Views
 
         private void Button_BreakWeaponInfo_Clear_Click(object sender, RoutedEventArgs e)
         {
-            AudioUtil.ClickSound();
+            AudioUtils.ClickSound();
 
             int index = ListWeaponInfo.SelectedIndex;
 
@@ -373,7 +381,7 @@ namespace BF1.ServerAdminTools.Common.Views
 
             DataSave.Rules.Add(name.ToLower(), rule);
             RuleList.Items.Add(rule);
-            ConfigUtil.SaveRule(rule);
+            ConfigUtils.SaveRule(rule);
 
             LoadRule();
 
@@ -421,7 +429,7 @@ namespace BF1.ServerAdminTools.Common.Views
 
             DataSave.Rules.Remove(name);
             RuleList.Items.Remove(item);
-            ConfigUtil.DeleteRule(name);
+            ConfigUtils.DeleteRule(name);
 
             RuleList.SelectedItem = null;
         }
@@ -435,7 +443,7 @@ namespace BF1.ServerAdminTools.Common.Views
 
             if (Globals.ServerDetailed == null)
             {
-                MsgBoxUtil.WarningMsgBox("服务器地图获取失败");
+                MsgBoxUtils.WarningMsgBox("服务器地图获取失败");
                 return;
             }
 
@@ -462,7 +470,8 @@ namespace BF1.ServerAdminTools.Common.Views
             else
             {
                 DataSave.Config.MapRule.Add(map, name);
-                ConfigUtil.SaveConfig();
+                MapRuleList.Items.Add(new MapRuleModel { Map = map, Name = rule.Name });
+                ConfigUtils.SaveConfig();
             }
 
             TaskMapRule.NeedPause = false;
@@ -476,7 +485,8 @@ namespace BF1.ServerAdminTools.Common.Views
             TaskMapRule.NeedPause = true;
 
             DataSave.Config.MapRule.Remove(item.Map);
-            ConfigUtil.SaveConfig();
+            ConfigUtils.SaveConfig();
+            MapRuleList.Items.Remove(item);
 
             TaskMapRule.NeedPause = false;
         }
@@ -497,14 +507,38 @@ namespace BF1.ServerAdminTools.Common.Views
 
             DataSave.Config.MapRule[map] = rule.Name.ToLower();
             item.Name = rule.Name;
-            ConfigUtil.SaveConfig();
+            ConfigUtils.SaveConfig();
 
             TaskMapRule.NeedPause = false;
         }
 
+        private async void Add_Subscribe(object sender, RoutedEventArgs e)
+        {
+            var url = new InputWindow("订阅地址", "请输入订阅黑名单的网址").Set();
+            if (string.IsNullOrWhiteSpace(url))
+                return;
+            var res = await SubscribeUtils.Add(url);
+            if (res.OK == false)
+            {
+                MsgBoxUtils.WarningMsgBox("订阅信息获取失败");
+                return;
+            }
+
+            SubscribeBlackList.Items.Add(res.obj);
+        }
+
+        private void Delete_Subscribe(object sender, RoutedEventArgs e)
+        {
+            if (SubscribeBlackList.SelectedItem is not SubscribeObj item)
+                return;
+
+            SubscribeUtils.Delete(item.Url);
+            SubscribeBlackList.Items.Remove(item);
+        }
+
         private void Button_ApplyRule_Click(object sender, RoutedEventArgs e)
         {
-            AudioUtil.ClickSound();
+            AudioUtils.ClickSound();
 
             RuleLog.Clear();
 
@@ -595,12 +629,12 @@ namespace BF1.ServerAdminTools.Common.Views
 
             MainWindow._SetOperatingState(1, $"应用当前规则成功，请点击<查询当前规则>检验规则是否正确");
 
-            ConfigUtil.SaveRule();
+            ConfigUtils.SaveRule();
         }
 
         private void Button_QueryRule_Click(object sender, RoutedEventArgs e)
         {
-            AudioUtil.ClickSound();
+            AudioUtils.ClickSound();
 
             RuleLog.Clear();
 
@@ -695,7 +729,7 @@ namespace BF1.ServerAdminTools.Common.Views
 
         private async void Button_CheckBreakRulePlayer_Click(object sender, RoutedEventArgs e)
         {
-            AudioUtil.ClickSound();
+            AudioUtils.ClickSound();
 
             if (isRun)
                 return;
@@ -807,7 +841,7 @@ namespace BF1.ServerAdminTools.Common.Views
 
         private void Button_Add_BlackList_Click(object sender, RoutedEventArgs e)
         {
-            AudioUtil.ClickSound();
+            AudioUtils.ClickSound();
 
             if (TextBox_BlackList_PlayerName.Text != "")
             {
@@ -842,7 +876,7 @@ namespace BF1.ServerAdminTools.Common.Views
 
         private void Button_Remove_BlackList_Click(object sender, RoutedEventArgs e)
         {
-            AudioUtil.ClickSound();
+            AudioUtils.ClickSound();
 
             if (BlackList.SelectedIndex != -1)
             {
@@ -857,9 +891,9 @@ namespace BF1.ServerAdminTools.Common.Views
 
         private void Button_Input_BlackList_Click(object sender, RoutedEventArgs e)
         {
-            AudioUtil.ClickSound();
+            AudioUtils.ClickSound();
 
-            var res = FileSelectUtil.FileSelect();
+            var res = FileSelectUtils.FileSelect();
             if (res == null)
             {
                 return;
@@ -888,7 +922,7 @@ namespace BF1.ServerAdminTools.Common.Views
             }
             catch (Exception ex)
             {
-                MsgBoxUtil.ErrorMsgBox("导入黑名单时发生错误");
+                MsgBoxUtils.ErrorMsgBox("导入黑名单时发生错误");
                 Core.LogError("导入黑名单发生错误", ex);
                 MainWindow._SetOperatingState(1, "导入黑名单列表发生错误");
                 return;
@@ -897,7 +931,7 @@ namespace BF1.ServerAdminTools.Common.Views
 
         private void Button_Clear_BlackList_Click(object sender, RoutedEventArgs e)
         {
-            AudioUtil.ClickSound();
+            AudioUtils.ClickSound();
 
             // 清空黑名单列表
             DataSave.NowRule.Custom_BlackList.Clear();
@@ -908,7 +942,7 @@ namespace BF1.ServerAdminTools.Common.Views
 
         private void Button_Add_WhiteList_Click(object sender, RoutedEventArgs e)
         {
-            AudioUtil.ClickSound();
+            AudioUtils.ClickSound();
 
             if (TextBox_WhiteList_PlayerName.Text != "")
             {
@@ -944,7 +978,7 @@ namespace BF1.ServerAdminTools.Common.Views
 
         private void Button_Remove_WhiteList_Click(object sender, RoutedEventArgs e)
         {
-            AudioUtil.ClickSound();
+            AudioUtils.ClickSound();
 
             if (WhiteList.SelectedIndex != -1)
             {
@@ -959,9 +993,9 @@ namespace BF1.ServerAdminTools.Common.Views
 
         private void Button_Input_WhiteList_Click(object sender, RoutedEventArgs e)
         {
-            AudioUtil.ClickSound();
+            AudioUtils.ClickSound();
 
-            var res = FileSelectUtil.FileSelect();
+            var res = FileSelectUtils.FileSelect();
             if (res == null)
             {
                 return;
@@ -990,7 +1024,7 @@ namespace BF1.ServerAdminTools.Common.Views
             }
             catch (Exception ex)
             {
-                MsgBoxUtil.ErrorMsgBox("导入白名单时发生错误");
+                MsgBoxUtils.ErrorMsgBox("导入白名单时发生错误");
                 Core.LogError("导入白名单发生错误", ex);
                 MainWindow._SetOperatingState(1, "导入白名单列表发生错误");
                 return;
@@ -999,7 +1033,7 @@ namespace BF1.ServerAdminTools.Common.Views
 
         private void Button_Clear_WhiteList_Click(object sender, RoutedEventArgs e)
         {
-            AudioUtil.ClickSound();
+            AudioUtils.ClickSound();
 
             // 清空白名单列表
             DataSave.NowRule.Custom_WhiteList.Clear();
@@ -1103,7 +1137,7 @@ namespace BF1.ServerAdminTools.Common.Views
 
             AppendLog("");
             AppendLog("正在检查 玩家是否为当前服务器管理...");
-            var welcomeMsg = JsonUtil.JsonDese<WelcomeMsg>(result.Message);
+            var welcomeMsg = JsonUtils.JsonDese<WelcomeMsg>(result.Message);
             var firstMessage = welcomeMsg.result.firstMessage;
             string playerName = firstMessage.Substring(0, firstMessage.IndexOf("，"));
             if (!Globals.Server_Admin2List.Contains(playerName))
@@ -1152,20 +1186,20 @@ namespace BF1.ServerAdminTools.Common.Views
 
         private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
         {
-            ProcessUtil.OpenLink(e.Uri.OriginalString);
+            ProcessUtils.OpenLink(e.Uri.OriginalString);
             e.Handled = true;
         }
 
         private void Button_OpenConfigurationFolder_Click(object sender, RoutedEventArgs e)
         {
-            AudioUtil.ClickSound();
+            AudioUtils.ClickSound();
 
-            ProcessUtil.OpenLink(ConfigLocal.Base);
+            ProcessUtils.OpenLink(ConfigLocal.Base);
         }
 
         private async void Button_ManualKickBreakRulePlayer_Click(object sender, RoutedEventArgs e)
         {
-            AudioUtil.ClickSound();
+            AudioUtils.ClickSound();
 
             // 检查自动踢人环境
             if (await CheckKickEnv())

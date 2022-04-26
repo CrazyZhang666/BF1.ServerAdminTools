@@ -2,7 +2,7 @@
 
 namespace BF1.ServerAdminTools.Common.Utils;
 
-public static class AudioUtil
+public static class AudioUtils
 {
     public static SoundPlayer SP_Click_01 = new(Properties.Resources.Click_01);
     public static SoundPlayer SP_Click_02 = new(Properties.Resources.Click_02);

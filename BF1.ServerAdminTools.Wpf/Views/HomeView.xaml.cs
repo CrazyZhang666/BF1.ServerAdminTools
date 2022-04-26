@@ -86,7 +86,7 @@ namespace BF1.ServerAdminTools.Common.Views
                 TextBox_Notice.Text = "加载中...";
             });
 
-            string notice = await HttpUtil.HttpClientGET(CoreUtil.Notice_Address);
+            string notice = await HttpUtil.HttpClientGET(CoreUtils.Notice_Address);
 
             Dispatcher.Invoke(() =>
             {

@@ -2,7 +2,7 @@
 
 namespace BF1.ServerAdminTools.Common.Utils;
 
-public static class CoreUtil
+public static class CoreUtils
 {
     /// <summary>
     /// 主窗口标题

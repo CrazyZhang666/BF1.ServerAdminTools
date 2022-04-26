@@ -36,7 +36,7 @@ namespace BF1.ServerAdminTools.Common.Views
 
         private async void QueryServer()
         {
-            AudioUtil.ClickSound();
+            AudioUtils.ClickSound();
 
             if (!string.IsNullOrEmpty(ServerModel.ServerName))
             {
@@ -57,8 +57,8 @@ namespace BF1.ServerAdminTools.Common.Views
 
                     foreach (var item in servers.servers)
                     {
-                        item.mode = ChsUtil.ToSimplifiedChinese(item.mode);
-                        item.currentMap = ChsUtil.ToSimplifiedChinese(item.currentMap);
+                        item.mode = ChsUtils.ToSimplifiedChinese(item.mode);
+                        item.currentMap = ChsUtils.ToSimplifiedChinese(item.currentMap);
                         item.url = ImageData.GetTempImagePath(item.url, "maps");
                         item.platform = new Random().Next(25, 45).ToString();
 

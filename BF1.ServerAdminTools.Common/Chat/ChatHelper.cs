@@ -84,7 +84,7 @@ internal static class ChatHelper
         // 挂起战地1进程
         NtProc.SuspendProcess(MemoryHook.GetProcessId());
 
-        msg = ChsUtil.ToTraditionalChinese(ChsUtil.ToDBC(msg).Trim());
+        msg = ChsUtils.ToTraditionalChinese(ChsUtils.ToDBC(msg).Trim());
         var length = GetStrLength(msg);
         MemoryHook.WriteStringUTF8(ChatMsg.GetAllocateMemoryAddress(), null, msg);
 

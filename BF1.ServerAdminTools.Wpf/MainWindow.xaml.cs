@@ -28,7 +28,7 @@ namespace BF1.ServerAdminTools.Common
 
         public static MainWindow ThisMainWindow;
 
-        public BlurUtil blur;
+        public BlurUtils blur;
 
         public MainModel MainModel { get; set; }
 
@@ -47,7 +47,7 @@ namespace BF1.ServerAdminTools.Common
             // TabControl 选择切换委托
             _TabControlSelect = TabControlSelect;
 
-            blur = new BlurUtil(this);
+            blur = new BlurUtils(this);
             BG();
         }
 
@@ -81,7 +81,7 @@ namespace BF1.ServerAdminTools.Common
 
             ////////////////////////////////
 
-            Title = CoreUtil.MainAppWindowName + CoreUtil.ClientVersionInfo + "预览版 - 最后编译时间 : " + File.GetLastWriteTime(Process.GetCurrentProcess().MainModule.FileName);
+            Title = CoreUtils.MainAppWindowName + CoreUtils.ClientVersionInfo + "预览版 - 最后编译时间 : " + File.GetLastWriteTime(Process.GetCurrentProcess().MainModule.FileName);
 
             // 获取当前时间，存储到对于变量中
             Origin_DateTime = DateTime.Now;
@@ -107,7 +107,7 @@ namespace BF1.ServerAdminTools.Common
             else
                 Core.LogError($"中文聊天指针分配失败");
 
-            //Tasks.Start();
+            Tasks.Start();
         }
 
         private void Window_Main_Closing(object sender, CancelEventArgs e)
@@ -116,7 +116,7 @@ namespace BF1.ServerAdminTools.Common
             ClosingDisposeEvent();
             Core.LogInfo($"调用关闭事件成功");
             Core.SaveConfig();
-            ConfigUtil.SaveAll();
+            ConfigUtils.SaveAllRule();
             Core.SQLClose();
             Core.MsgFreeMemory();
             Core.HookClose();
@@ -137,7 +137,7 @@ namespace BF1.ServerAdminTools.Common
             while (true)
             {
                 // 获取软件运行时间
-                MainModel.AppRunTime = "运行时间 : " + CoreUtil.ExecDateDiff(Origin_DateTime, DateTime.Now);
+                MainModel.AppRunTime = "运行时间 : " + CoreUtils.ExecDateDiff(Origin_DateTime, DateTime.Now);
 
                 if (Globals.IsGameRun)
                 {
@@ -145,7 +145,7 @@ namespace BF1.ServerAdminTools.Common
                     {
                         Globals.IsToolInit = false;
                         Globals.IsGameRun = false;
-                        MsgBoxUtil.WarningMsgBox("游戏已退出，功能已关闭");
+                        MsgBoxUtils.WarningMsgBox("游戏已退出，功能已关闭");
                     }
                 }
 
@@ -180,7 +180,7 @@ namespace BF1.ServerAdminTools.Common
 
         private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
         {
-            ProcessUtil.OpenLink(e.Uri.OriginalString);
+            ProcessUtils.OpenLink(e.Uri.OriginalString);
             e.Handled = true;
         }
         #endregion

@@ -73,7 +73,7 @@ public static class Core
     /// <returns>运行结果</returns>
     public static bool IsGameRun()
     {
-        return ProcessUtil.IsAppRun(Globals.TargetAppName);
+        return ProcessUtils.IsAppRun(Globals.TargetAppName);
     }
 
     /// <summary>
@@ -291,7 +291,7 @@ public static class Core
         if (res.IsSuccess)
         {
             Globals.ServerDetailed = res.Obj;
-            Globals.ServerDetailed.currentMap = ChsUtil.ToSimplifiedChinese(Globals.ServerDetailed.currentMap);
+            Globals.ServerDetailed.currentMap = ChsUtils.ToSimplifiedChinese(Globals.ServerDetailed.currentMap);
         }
 
         return res.IsSuccess;

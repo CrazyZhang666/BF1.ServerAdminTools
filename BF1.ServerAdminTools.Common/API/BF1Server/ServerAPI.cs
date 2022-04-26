@@ -78,11 +78,11 @@ public static class ServerAPI
                 respContent.IsSuccess = true;
                 respContent.Message = response.Content;
 
-                respContent.Obj = JsonUtil.JsonDese<WelcomeMsg>(respContent.Message);
+                respContent.Obj = JsonUtils.JsonDese<WelcomeMsg>(respContent.Message);
             }
             else
             {
-                var respError = JsonUtil.JsonDese<RespError>(response.Content);
+                var respError = JsonUtils.JsonDese<RespError>(response.Content);
 
                 respContent.Message = $"{respError?.error.code} {respError?.error.message}";
             }
@@ -137,7 +137,7 @@ public static class ServerAPI
             }
             else
             {
-                var respError = JsonUtil.JsonDese<RespError>(response.Content);
+                var respError = JsonUtils.JsonDese<RespError>(response.Content);
 
                 respContent.Message = $"{respError.error.code} {respError.error.message}";
             }
@@ -195,7 +195,7 @@ public static class ServerAPI
             }
             else
             {
-                var respError = JsonUtil.JsonDese<RespError>(response.Content);
+                var respError = JsonUtils.JsonDese<RespError>(response.Content);
 
                 respContent.Message = $"{respError.error.code} {respError.error.message}";
             }
@@ -255,7 +255,7 @@ public static class ServerAPI
             }
             else
             {
-                var respError = JsonUtil.JsonDese<RespError>(response.Content);
+                var respError = JsonUtils.JsonDese<RespError>(response.Content);
 
                 respContent.Message = $"{respError.error.code} {respError.error.message}";
             }
@@ -312,7 +312,7 @@ public static class ServerAPI
             }
             else
             {
-                var respError = JsonUtil.JsonDese<RespError>(response.Content);
+                var respError = JsonUtils.JsonDese<RespError>(response.Content);
 
                 respContent.Message = $"{respError.error.code} {respError.error.message}";
             }
@@ -366,11 +366,11 @@ public static class ServerAPI
                 respContent.IsSuccess = true;
                 respContent.Message = response.Content;
 
-                respContent.Obj = JsonUtil.JsonDese<FullServerDetails>(respContent.Message);
+                respContent.Obj = JsonUtils.JsonDese<FullServerDetails>(respContent.Message);
             }
             else
             {
-                var respError = JsonUtil.JsonDese<RespError>(response.Content);
+                var respError = JsonUtils.JsonDese<RespError>(response.Content);
 
                 respContent.Message = $"{respError.error.code} {respError.error.message}";
             }
@@ -427,7 +427,7 @@ public static class ServerAPI
             }
             else
             {
-                var respError = JsonUtil.JsonDese<RespError>(response.Content);
+                var respError = JsonUtils.JsonDese<RespError>(response.Content);
 
                 respContent.Message = $"{respError.error.code} {respError.error.message}";
             }
@@ -478,11 +478,11 @@ public static class ServerAPI
                 respContent.IsSuccess = true;
                 respContent.Message = response.Content;
 
-                respContent.Obj = JsonUtil.JsonDese<GetWeaponsByPersonaId>(respContent.Message);
+                respContent.Obj = JsonUtils.JsonDese<GetWeaponsByPersonaId>(respContent.Message);
             }
             else
             {
-                var respError = JsonUtil.JsonDese<RespError>(response.Content);
+                var respError = JsonUtils.JsonDese<RespError>(response.Content);
 
                 respContent.Message = $"{respError.error.code} {respError.error.message}";
             }
@@ -533,11 +533,11 @@ public static class ServerAPI
                 respContent.IsSuccess = true;
                 respContent.Message = response.Content;
 
-                respContent.Obj = JsonUtil.JsonDese<GetVehiclesByPersonaId>(respContent.Message);
+                respContent.Obj = JsonUtils.JsonDese<GetVehiclesByPersonaId>(respContent.Message);
             }
             else
             {
-                var respError = JsonUtil.JsonDese<RespError>(response.Content);
+                var respError = JsonUtils.JsonDese<RespError>(response.Content);
 
                 respContent.Message = $"{respError.error.code} {respError.error.message}";
             }
@@ -588,11 +588,11 @@ public static class ServerAPI
                 respContent.IsSuccess = true;
                 respContent.Message = response.Content;
 
-                respContent.Obj = JsonUtil.JsonDese<DetailedStatsByPersonaId>(respContent.Message);
+                respContent.Obj = JsonUtils.JsonDese<DetailedStatsByPersonaId>(respContent.Message);
             }
             else
             {
-                var respError = JsonUtil.JsonDese<RespError>(response.Content);
+                var respError = JsonUtils.JsonDese<RespError>(response.Content);
 
                 respContent.Message = $"{respError.error.code} {respError.error.message}";
             }
@@ -649,7 +649,7 @@ public static class ServerAPI
             }
             else
             {
-                var respError = JsonUtil.JsonDese<RespError>(response.Content);
+                var respError = JsonUtils.JsonDese<RespError>(response.Content);
 
                 respContent.Message = $"{respError.error.code} {respError.error.message}";
             }
@@ -706,7 +706,7 @@ public static class ServerAPI
             }
             else
             {
-                var respError = JsonUtil.JsonDese<RespError>(response.Content);
+                var respError = JsonUtils.JsonDese<RespError>(response.Content);
 
                 respContent.Message = $"{respError.error.code} {respError.error.message}";
             }
@@ -763,7 +763,7 @@ public static class ServerAPI
             }
             else
             {
-                var respError = JsonUtil.JsonDese<RespError>(response.Content);
+                var respError = JsonUtils.JsonDese<RespError>(response.Content);
 
                 respContent.Message = $"{respError.error.code} {respError.error.message}";
             }
@@ -820,7 +820,7 @@ public static class ServerAPI
             }
             else
             {
-                var respError = JsonUtil.JsonDese<RespError>(response.Content);
+                var respError = JsonUtils.JsonDese<RespError>(response.Content);
 
                 respContent.Message = $"{respError.error.code} {respError.error.message}";
             }
@@ -877,7 +877,7 @@ public static class ServerAPI
             }
             else
             {
-                var respError = JsonUtil.JsonDese<RespError>(response.Content);
+                var respError = JsonUtils.JsonDese<RespError>(response.Content);
 
                 respContent.Message = $"{respError.error.code} {respError.error.message}";
             }
@@ -931,11 +931,11 @@ public static class ServerAPI
                 respContent.IsSuccess = true;
                 respContent.Message = response.Content;
 
-                respContent.Obj = JsonUtil.JsonDese<ServerDetails>(respContent.Message);
+                respContent.Obj = JsonUtils.JsonDese<ServerDetails>(respContent.Message);
             }
             else
             {
-                var respError = JsonUtil.JsonDese<RespError>(response.Content);
+                var respError = JsonUtils.JsonDese<RespError>(response.Content);
 
                 respContent.Message = $"{respError.error.code} {respError.error.message}";
             }
@@ -979,7 +979,7 @@ public static class ServerAPI
             }
             else
             {
-                var respError = JsonUtil.JsonDese<RespError>(response.Content);
+                var respError = JsonUtils.JsonDese<RespError>(response.Content);
 
                 respContent.Message = $"{respError.error.code} {respError.error.message}";
             }
@@ -1033,11 +1033,11 @@ public static class ServerAPI
                 respContent.IsSuccess = true;
                 respContent.Message = response.Content;
 
-                respContent.Obj = JsonUtil.JsonDese<EnvIdViaAuthCode>(respContent.Message);
+                respContent.Obj = JsonUtils.JsonDese<EnvIdViaAuthCode>(respContent.Message);
             }
             else
             {
-                var respError = JsonUtil.JsonDese<RespError>(response.Content);
+                var respError = JsonUtils.JsonDese<RespError>(response.Content);
 
                 respContent.Message = $"{respError.error.code} {respError.error.message}";
             }
@@ -1091,11 +1091,11 @@ public static class ServerAPI
                 respContent.IsSuccess = true;
                 respContent.Message = response.Content;
 
-                respContent.Obj = JsonUtil.JsonDese<CareerForOwnedGamesByPersonaId>(respContent.Message);
+                respContent.Obj = JsonUtils.JsonDese<CareerForOwnedGamesByPersonaId>(respContent.Message);
             }
             else
             {
-                var respError = JsonUtil.JsonDese<RespError>(response.Content);
+                var respError = JsonUtils.JsonDese<RespError>(response.Content);
 
                 respContent.Message = $"{respError.error.code} {respError.error.message}";
             }

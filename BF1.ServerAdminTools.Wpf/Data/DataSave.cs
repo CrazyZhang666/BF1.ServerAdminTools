@@ -11,7 +11,11 @@ public static class DataSave
     /// <summary>
     /// 订阅的黑名单
     /// </summary>
-    public static Dictionary<string, SubscribeObj> Subscribes { get; } = new();
+    public static SubscribeConfigObj Subscribes { get; set; }
+    /// <summary>
+    /// 订阅黑名单的缓存
+    /// </summary>
+    public static SubscribeCacheObj SubscribeCache { get; set; }
     /// <summary>
     /// 目前应用的规则
     /// </summary>

@@ -15,5 +15,6 @@ internal static class Tasks
         TaskCheckRule.Start();
         TaskKick.Start();
         TaskCheckState.Start();
+        TaskMapRule.Start();
     }
 }

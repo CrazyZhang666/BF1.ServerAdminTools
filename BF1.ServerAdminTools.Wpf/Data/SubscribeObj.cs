@@ -6,9 +6,18 @@ using System.Threading.Tasks;
 
 namespace BF1.ServerAdminTools.Wpf.Data;
 
+public record SubscribeConfigObj
+{ 
+    public List<string> UrlList { get; set; }
+}
+
+public record SubscribeCacheObj
+{
+    public List<SubscribeObj> Cache { get; set; }
+}
+
 public record SubscribeObj
 {
-    public string Name { get; set; }
     public DateTime UpdateTime { get; set; }
     public DateTime LastTime { get; set; }
     public string Url { get; set; }

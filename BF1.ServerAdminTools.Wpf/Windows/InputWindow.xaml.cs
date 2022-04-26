@@ -7,7 +7,7 @@
     {
         public string Value { get; set; }
 
-        public InputWindow(string title, string text, string value)
+        public InputWindow(string title, string text, string value = "")
         {
             InitializeComponent();
 
