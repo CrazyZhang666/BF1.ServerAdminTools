@@ -21,7 +21,7 @@ internal class WindowImgTests : IMsgCall
     }
 
     [Test]
-    public async Task TestPic()
+    public void TestPic()
     {
         Core.Init(this);
         var res = Core.HookInit();
@@ -33,7 +33,7 @@ internal class WindowImgTests : IMsgCall
     }
 
     [Test]
-    public async Task TestToM()
+    public void TestToM()
     {
         Core.Init(this);
         var res = Core.HookInit();
@@ -44,7 +44,7 @@ internal class WindowImgTests : IMsgCall
     }
 
     [Test]
-    public async Task TestToServerList()
+    public void TestToServerList()
     {
         Core.Init(this);
         var res = Core.HookInit();
@@ -55,7 +55,7 @@ internal class WindowImgTests : IMsgCall
     }
 
     [Test]
-    public async Task TestToServerList1()
+    public void TestToServerList1()
     {
         Core.Init(this);
         var res = Core.HookInit();
@@ -66,7 +66,7 @@ internal class WindowImgTests : IMsgCall
     }
 
     [Test]
-    public async Task TestToServer()
+    public void TestToServer()
     {
         Core.Init(this);
         var res = Core.HookInit();
@@ -77,7 +77,7 @@ internal class WindowImgTests : IMsgCall
     }
 
     [Test]
-    public async Task TestJoinServer()
+    public void TestJoinServer()
     {
         Core.Init(this);
         var res = Core.HookInit();
@@ -88,7 +88,7 @@ internal class WindowImgTests : IMsgCall
     }
 
     [Test]
-    public async Task TestCV1()
+    public void TestCV1()
     {
         Core.Init(this);
         var res = Core.HookInit();
@@ -99,7 +99,7 @@ internal class WindowImgTests : IMsgCall
     }
 
     [Test]
-    public async Task TestCV2()
+    public void TestCV2()
     {
         Core.Init(this);
         var res = Core.HookInit();
@@ -110,7 +110,7 @@ internal class WindowImgTests : IMsgCall
     }
 
     [Test]
-    public async Task TestCV3()
+    public void TestCV3()
     {
         Core.Init(this);
         var res = Core.HookInit();
@@ -121,7 +121,7 @@ internal class WindowImgTests : IMsgCall
     }
 
     [Test]
-    public async Task TestJoin() 
+    public void TestJoin() 
     {
         Core.Init(this);
         var res = Core.HookInit();
@@ -179,7 +179,7 @@ internal class WindowImgTests : IMsgCall
     }
 
     [Test]
-    public async Task TestCV4()
+    public void TestCV4()
     {
         Core.Init(this);
         var res = Core.HookInit();
@@ -199,7 +199,7 @@ internal class WindowImgTests : IMsgCall
     }
 
     [Test]
-    public async Task TestCV5()
+    public void TestCV5()
     {
         Core.Init(this);
         var res = Core.HookInit();
@@ -218,7 +218,7 @@ internal class WindowImgTests : IMsgCall
         } while (a < 5);
     }
     [Test]
-    public async Task TestCV6()
+    public void TestCV6()
     {
         Core.Init(this);
         var res = Core.HookInit();
@@ -237,7 +237,7 @@ internal class WindowImgTests : IMsgCall
         } while (a < 5);
     }
     [Test]
-    public async Task TestCV7()
+    public void TestCV7()
     {
         Core.Init(this);
         var res = Core.HookInit();
@@ -256,7 +256,7 @@ internal class WindowImgTests : IMsgCall
         } while (a < 5);
     }
     [Test]
-    public async Task TestCV8()
+    public void TestCV8()
     {
         Core.Init(this);
         var res = Core.HookInit();
@@ -267,7 +267,7 @@ internal class WindowImgTests : IMsgCall
     }
 
     [Test]
-    public async Task TestCheck() 
+    public void TestCheck() 
     {
         Core.Init(this);
         var res = Core.HookInit();

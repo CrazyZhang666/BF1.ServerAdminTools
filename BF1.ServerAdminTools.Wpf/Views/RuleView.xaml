@@ -619,6 +619,7 @@
                         </ListView>
                         <StackPanel>
                             <Button
+                                x:Name="UpdateSubscribe"
                                 Click="Button_Click"
                                 Content="更新黑名单"
                                 Style="{StaticResource ButtonStyle_Web}" />

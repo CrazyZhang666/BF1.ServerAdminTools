@@ -3,13 +3,7 @@ using BF1.ServerAdminTools.Common.API.BF1Server;
 using BF1.ServerAdminTools.Common.Data;
 using BF1.ServerAdminTools.Common.Utils;
 using BF1.ServerAdminTools.Common.Views;
-using BF1.ServerAdminTools.Wpf.Data;
-using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BF1.ServerAdminTools.Wpf.Tasks;
 
@@ -24,7 +18,7 @@ internal class TaskKick
     /// </summary>
     private static ConcurrentDictionary<long, BreakRuleInfo> NowKick { get; } = new();
 
-    public static void Start() 
+    public static void Start()
     {
         new Thread(Run)
         {
@@ -33,7 +27,7 @@ internal class TaskKick
         }.Start();
     }
 
-    public static void AddKick(BreakRuleInfo info) 
+    public static void AddKick(BreakRuleInfo info)
     {
         if (NeedKick.ContainsKey(info.PersonaId))
             return;
@@ -46,7 +40,7 @@ internal class TaskKick
         return NeedKick.ContainsKey(id) || NowKick.ContainsKey(id);
     }
 
-    public static void Kick() 
+    public static void Kick()
     {
         Parallel.ForEachAsync(NeedKick, KickItem).Wait();
         NeedKick.Clear();
@@ -87,8 +81,8 @@ internal class TaskKick
         }
     }
 
-    private static async ValueTask KickItem(KeyValuePair<long, BreakRuleInfo> item, 
-        CancellationToken state) 
+    private static async ValueTask KickItem(KeyValuePair<long, BreakRuleInfo> item,
+        CancellationToken state)
     {
         if (state.IsCancellationRequested)
             return;

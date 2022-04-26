@@ -1,18 +1,13 @@
 ﻿using BF1.ServerAdminTools.Common;
 using BF1.ServerAdminTools.Common.Data;
 using BF1.ServerAdminTools.Common.Views;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BF1.ServerAdminTools.Wpf.Tasks;
 
 internal class TaskMapRule
 {
     public static bool NeedPause;
-    public static void Start() 
+    public static void Start()
     {
         new Thread(Run)
         {
@@ -21,7 +16,7 @@ internal class TaskMapRule
         }.Start();
     }
 
-    private static void Run() 
+    private static void Run()
     {
         while (true)
         {

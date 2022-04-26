@@ -8,7 +8,7 @@ namespace BF1.ServerAdminTools.Wpf.Tasks;
 internal static class TaskCheckLife
 {
     public static bool NeedPause;
-    public static void Start() 
+    public static void Start()
     {
         new Thread(AutoKickLifeBreakPlayer)
         {
@@ -103,15 +103,15 @@ internal static class TaskCheckLife
 
         var res1 = ServerAPI.GetWeaponsByPersonaId(data.PersonaId.ToString()).Result;
 
-        if(res1.IsSuccess)
-        foreach (var item in res1.Obj.result)
-        {
-            foreach (var item1 in item.weapons)
+        if (res1.IsSuccess)
+            foreach (var item in res1.Obj.result)
             {
-                if (weaponStar < (int)item1.stats.values.kills)
-                    weaponStar = (int)item1.stats.values.kills;
+                foreach (var item1 in item.weapons)
+                {
+                    if (weaponStar < (int)item1.stats.values.kills)
+                        weaponStar = (int)item1.stats.values.kills;
+                }
             }
-        }
 
         var res2 = ServerAPI.GetVehiclesByPersonaId(data.PersonaId.ToString()).Result;
 

@@ -17,8 +17,8 @@ namespace BF1.ServerAdminTools.Common.Views
         private Dictionary<long, PlayerData> Player_Team1 = new();
         private Dictionary<long, PlayerData> Player_Team2 = new();
 
-        private Dictionary<long, PlayerData>  New_Player_Team1 = new();
-        private Dictionary<long, PlayerData>  New_Player_Team2 = new();
+        private Dictionary<long, PlayerData> New_Player_Team1 = new();
+        private Dictionary<long, PlayerData> New_Player_Team2 = new();
 
         public LogView()
         {
@@ -44,7 +44,7 @@ namespace BF1.ServerAdminTools.Common.Views
             }
         }
 
-        private void CheckPlayerChangeTeam() 
+        private void CheckPlayerChangeTeam()
         {
             if (string.IsNullOrEmpty(Globals.Config.GameId))
                 return;

@@ -1,13 +1,7 @@
 ﻿using BF1.ServerAdminTools.Common.Data;
 using BF1.ServerAdminTools.Common.Utils;
 using BF1.ServerAdminTools.Wpf.Data;
-using BF1.ServerAdminTools.Wpf.Tasks;
 using RestSharp;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BF1.ServerAdminTools.Wpf.Utils;
 
@@ -78,7 +72,7 @@ internal static class SubscribeUtils
         return res;
     }
 
-    public static async Task UpdateAll() 
+    public static async Task UpdateAll()
     {
         IsEdit = true;
         DataSave.SubscribeCache.Cache.Clear();
@@ -104,7 +98,7 @@ internal static class SubscribeUtils
                 };
 
                 DataSave.SubscribeCache.Cache.Add(obj1);
-                
+
             }
             catch
             { }
@@ -168,7 +162,7 @@ internal static class SubscribeUtils
 }
 
 public record HttpSubscribe
-{ 
+{
     public List<PlayerItem> Players { get; set; }
     public string Time { get; set; }
 }

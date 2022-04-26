@@ -15,7 +15,7 @@ internal class TaskCheckRule
     private static bool IsSwitching;
     private static readonly Random Random = new();
 
-    public static void Start() 
+    public static void Start()
     {
         new Thread(Run)
         {
@@ -39,7 +39,7 @@ internal class TaskCheckRule
         }
     }
 
-    public static void StartCheck() 
+    public static void StartCheck()
     {
         bool other = false;
         ServerRuleObj rule = DataSave.NowRule;
@@ -110,7 +110,7 @@ internal class TaskCheckRule
                 if (Globals.RspInfo.adminList.FindIndex(a => a.personaId == playerData.PersonaId.ToString()) != -1)
                     return;
         }
-        
+
         //黑名单
         if (DataSave.NowRule.Custom_BlackList.Contains(playerData.Name))
         {

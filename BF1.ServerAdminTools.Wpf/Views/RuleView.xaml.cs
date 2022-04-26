@@ -30,6 +30,7 @@ namespace BF1.ServerAdminTools.Common.Views
             InitializeComponent();
 
             MainWindow.ClosingDisposeEvent += MainWindow_ClosingDisposeEvent;
+            Loaded += RuleView_Loaded;
 
             CloseRunCheck = FCloseRunKick;
             UpdateRule = FUpdateRule;
@@ -68,12 +69,17 @@ namespace BF1.ServerAdminTools.Common.Views
             LoadRule();
         }
 
+        private void RuleView_Loaded(object sender, RoutedEventArgs e)
+        {
+            Button_Click(null, null);
+        }
+
         private void FCloseRunKick()
         {
             Dispatcher.Invoke(() => RunAutoKick.IsChecked = false);
         }
 
-        private void FUpdateRule() 
+        private void FUpdateRule()
         {
             Dispatcher.Invoke(() => LoadRule());
         }
@@ -467,7 +473,7 @@ namespace BF1.ServerAdminTools.Common.Views
                 foreach (MapRuleModel item in MapRuleList.Items)
                 {
                     if (item.Map == map)
-                    { 
+                    {
                         item.Name = rule.Name;
                     }
                 }
@@ -1226,8 +1232,9 @@ namespace BF1.ServerAdminTools.Common.Views
             if (IsRun1)
                 return;
 
-            MainWindow.SetOperatingState(1, "开始更新订阅");
             IsRun1 = true;
+            UpdateSubscribe.IsEnabled = false;
+            MainWindow.SetOperatingState(1, "开始更新订阅");
             await SubscribeUtils.UpdateAll();
             SubscribeBlackList.Items.Clear();
             foreach (var item in DataSave.SubscribeCache.Cache)
@@ -1237,9 +1244,10 @@ namespace BF1.ServerAdminTools.Common.Views
 
             MainWindow.SetOperatingState(1, "订阅更新完成");
             IsRun1 = false;
+            UpdateSubscribe.IsEnabled = true;
         }
 
-        private void See_Subscribe(object sender, RoutedEventArgs e) 
+        private void See_Subscribe(object sender, RoutedEventArgs e)
         {
             if (IsRun1)
                 return;

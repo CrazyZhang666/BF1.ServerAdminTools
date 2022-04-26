@@ -24,8 +24,13 @@ namespace BF1.ServerAdminTools.Common.Views
             //    });
             //});
 
-            TextBox_Change.Text = 
-@"### 2022.4.23
+            TextBox_Change.Text =
+@"### 2022.4.26
+- 修复多个`bf1.exe`问题
+- 新增地图规则
+- 新增黑名单订阅
+
+### 2022.4.23
 - 修复生涯问题
 - 修改逻辑
 - 修改登录

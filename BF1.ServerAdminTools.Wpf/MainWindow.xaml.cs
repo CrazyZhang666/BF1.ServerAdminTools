@@ -16,17 +16,17 @@ namespace BF1.ServerAdminTools.Common
         /// <summary>
         /// 主窗口全局提示信息委托
         /// </summary>
-        public static Action<int, string> SetOperatingState;
+        public static Action<int, string>? SetOperatingState;
         /// <summary>
         /// 主窗口选项卡控件选择委托
         /// </summary>
-        public static Action<int> TabControlSelect;
+        public static Action<int>? TabControlSelect;
 
         public delegate void ClosingDispose();
-        public static event ClosingDispose ClosingDisposeEvent;
+        public static event ClosingDispose? ClosingDisposeEvent;
 
 
-        public static MainWindow ThisMainWindow;
+        public static MainWindow? ThisMainWindow;
 
         public BlurUtils blur;
 
@@ -46,6 +46,8 @@ namespace BF1.ServerAdminTools.Common
             SetOperatingState = FSetOperatingState;
             // TabControl 选择切换委托
             TabControlSelect = FTabControlSelect;
+
+            MainModel = new MainModel();
 
             blur = new BlurUtils(this);
             BG();
@@ -75,13 +77,11 @@ namespace BF1.ServerAdminTools.Common
 
         private void Window_Main_Loaded(object sender, RoutedEventArgs e)
         {
-            MainModel = new MainModel();
-
             MainModel.AppRunTime = "运行时间 : Loading...";
 
             ////////////////////////////////
 
-            Title = CoreUtils.MainAppWindowName + CoreUtils.ClientVersionInfo + "预览版 - 最后编译时间 : " + File.GetLastWriteTime(Process.GetCurrentProcess().MainModule.FileName);
+            Title = CoreUtils.MainAppWindowName + CoreUtils.ClientVersionInfo + "- 最后编译时间 : " + File.GetLastWriteTime(Process.GetCurrentProcess().MainModule.FileName);
 
             // 获取当前时间，存储到对于变量中
             Origin_DateTime = DateTime.Now;

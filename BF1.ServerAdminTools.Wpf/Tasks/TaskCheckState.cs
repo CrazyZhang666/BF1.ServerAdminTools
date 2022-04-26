@@ -1,11 +1,6 @@
 ﻿using BF1.ServerAdminTools.Common;
 using BF1.ServerAdminTools.Common.Data;
 using BF1.ServerAdminTools.Common.Views;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BF1.ServerAdminTools.Wpf.Tasks;
 
