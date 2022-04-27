@@ -226,7 +226,7 @@ internal class NettyServer
                                 buff.WriteBoolean(false);
                                 break;
                             }
-                            var img = WindowImg.GetWindow();
+                            var img = GameWindowImg.GetWindow();
                             MemoryStream stream = new();
                             img.Save(stream, ImageFormat.Png);
                             var data = stream.ToArray();

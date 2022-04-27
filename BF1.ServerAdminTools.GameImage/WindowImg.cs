@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 namespace BF1.ServerAdminTools.GameImage;
 
-public static class WindowImg
+public static class GameWindowImg
 {
     public static Bitmap GetWindow()
     {

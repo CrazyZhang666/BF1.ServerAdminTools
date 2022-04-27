@@ -45,52 +45,52 @@ public static class WindowOpenCV
     {
         if (!Globals.IsToolInit)
             return false;
-        return FindPicFromImage(WindowImg.GetWindow(), Resource1.main1);
+        return FindPicFromImage(GameWindowImg.GetWindow(), Resource1.main1);
     }
 
     public static bool Test2()
     {
         if (!Globals.IsToolInit)
             return false;
-        return FindPicFromImage(WindowImg.GetWindow(), Resource1.main2);
+        return FindPicFromImage(GameWindowImg.GetWindow(), Resource1.main2);
     }
 
     public static bool Test3()
     {
         if (!Globals.IsToolInit)
             return false;
-        return FindPicFromImage(WindowImg.GetWindow(), Resource1.main4);
+        return FindPicFromImage(GameWindowImg.GetWindow(), Resource1.main4);
     }
 
     public static bool Error1()
     {
         if (!Globals.IsToolInit)
             return false;
-        return FindPicFromImage(WindowImg.GetWindow(), Resource1.error1);
+        return FindPicFromImage(GameWindowImg.GetWindow(), Resource1.error1);
     }
 
     public static bool Error2()
     {
         if (!Globals.IsToolInit)
             return false;
-        return FindPicFromImage(WindowImg.GetWindow(), Resource1.error2);
+        return FindPicFromImage(GameWindowImg.GetWindow(), Resource1.error2);
     }
     public static bool Error3()
     {
         if (!Globals.IsToolInit)
             return false;
-        return FindPicFromImage(WindowImg.GetWindow(), Resource1.error3);
+        return FindPicFromImage(GameWindowImg.GetWindow(), Resource1.error3);
     }
     public static bool Error4()
     {
         if (!Globals.IsToolInit)
             return false;
-        return FindPicFromImage(WindowImg.GetWindow(), Resource1.error4);
+        return FindPicFromImage(GameWindowImg.GetWindow(), Resource1.error4);
     }
     public static bool Info1()
     {
         if (!Globals.IsToolInit)
             return false;
-        return FindPicFromImage(WindowImg.GetWindow(), Resource1.info1);
+        return FindPicFromImage(GameWindowImg.GetWindow(), Resource1.info1);
     }
 }

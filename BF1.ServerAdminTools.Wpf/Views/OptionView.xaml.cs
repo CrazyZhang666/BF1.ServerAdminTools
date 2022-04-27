@@ -2,6 +2,7 @@
 using BF1.ServerAdminTools.Common.Utils;
 using BF1.ServerAdminTools.GameImage;
 using BF1.ServerAdminTools.Netty;
+using System.Drawing.Imaging;
 
 namespace BF1.ServerAdminTools.Common.Views
 {
@@ -238,6 +239,17 @@ namespace BF1.ServerAdminTools.Common.Views
             {
                 GameWindow.Pause();
             }
+        }
+
+        private void Button_Click_7(object sender, RoutedEventArgs e)
+        {
+            if (!Globals.IsGameRun || !Globals.IsToolInit)
+            {
+                MsgBoxUtils.WarningMsgBox("工具未初始化");
+                return;
+            }
+            var img = GameWindowImg.GetWindow();
+            img.Save("test.png", ImageFormat.Png);
         }
     }
 }

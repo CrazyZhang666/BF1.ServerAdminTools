@@ -28,7 +28,7 @@ internal class WindowImgTests : IMsgCall
         Assert.IsTrue(res);
         if (!res)
             return;
-        var bitmap = WindowImg.GetWindow();
+        var bitmap = GameWindowImg.GetWindow();
         bitmap.Save("test.png");
     }
 
