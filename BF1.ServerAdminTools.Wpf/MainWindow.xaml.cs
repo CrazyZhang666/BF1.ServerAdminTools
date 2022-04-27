@@ -2,6 +2,7 @@
 using BF1.ServerAdminTools.Common.Models;
 using BF1.ServerAdminTools.Common.Utils;
 using BF1.ServerAdminTools.Common.Views;
+using BF1.ServerAdminTools.GameImage;
 using BF1.ServerAdminTools.Wpf.Tasks;
 using BF1.ServerAdminTools.Wpf.Utils;
 using System.Windows.Media.Imaging;
@@ -55,24 +56,24 @@ namespace BF1.ServerAdminTools.Common
 
         public static void BG()
         {
-            if (!string.IsNullOrWhiteSpace(DataSave.Config.Bg) && File.Exists(DataSave.Config.Bg))
+            if (!string.IsNullOrWhiteSpace(DataSave.Config.Background) && File.Exists(DataSave.Config.Background))
             {
-                var image = new ImageBrush(new BitmapImage(new(DataSave.Config.Bg)))
+                var image = new ImageBrush(new BitmapImage(new(DataSave.Config.Background)))
                 {
                     Stretch = Stretch.UniformToFill,
-                    Opacity = DataSave.Config.Window_O ? (double)DataSave.Config.Bg_O / 100 : 1
+                    Opacity = DataSave.Config.WindowVacuity ? (double)DataSave.Config.BackgroudOpacity / 100 : 1
                 };
                 ThisMainWindow.Background = image;
             }
             else
             {
-                if (DataSave.Config.Window_O)
+                if (DataSave.Config.WindowVacuity)
                     ThisMainWindow.Background = Brushes.Transparent;
                 else
                     ThisMainWindow.Background = Brushes.White;
             }
 
-            ThisMainWindow.blur.Composite(DataSave.Config.Window_O);
+            ThisMainWindow.blur.Composite(DataSave.Config.WindowVacuity);
         }
 
         private void Window_Main_Loaded(object sender, RoutedEventArgs e)
@@ -112,6 +113,7 @@ namespace BF1.ServerAdminTools.Common
 
         private void Window_Main_Closing(object sender, CancelEventArgs e)
         {
+            GameWindow.Pause();
             // 关闭事件
             ClosingDisposeEvent();
             Core.LogInfo($"调用关闭事件成功");

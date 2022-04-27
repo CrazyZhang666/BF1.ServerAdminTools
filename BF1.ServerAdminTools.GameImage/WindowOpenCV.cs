@@ -41,25 +41,37 @@ public static class WindowOpenCV
         }
     }
 
+    /// <summary>
+    /// 是否在多人菜单
+    /// </summary>
+    /// <returns></returns>
     public static bool Test1()
     {
         if (!Globals.IsToolInit)
             return false;
-        return FindPicFromImage(GameWindowImg.GetWindow(), Resource1.main1);
+        return FindPicFromImage(GameWindowImg.GetWindow(), GameWindow.XY == 0 ? Resource1.main1 : Resource2.main1);
     }
 
+    /// <summary>
+    /// 是否在多人列表
+    /// </summary>
+    /// <returns></returns>
     public static bool Test2()
     {
         if (!Globals.IsToolInit)
             return false;
-        return FindPicFromImage(GameWindowImg.GetWindow(), Resource1.main2);
+        return FindPicFromImage(GameWindowImg.GetWindow(), GameWindow.XY == 0 ? Resource1.main2 : Resource2.main2);
     }
 
+    /// <summary>
+    /// 是否在服务器详细信息
+    /// </summary>
+    /// <returns></returns>
     public static bool Test3()
     {
         if (!Globals.IsToolInit)
             return false;
-        return FindPicFromImage(GameWindowImg.GetWindow(), Resource1.main4);
+        return FindPicFromImage(GameWindowImg.GetWindow(), GameWindow.XY == 0 ? Resource1.main4 : Resource2.main4);
     }
 
     public static bool Error1()
@@ -73,7 +85,7 @@ public static class WindowOpenCV
     {
         if (!Globals.IsToolInit)
             return false;
-        return FindPicFromImage(GameWindowImg.GetWindow(), Resource1.error2);
+        return FindPicFromImage(GameWindowImg.GetWindow(), GameWindow.XY == 0 ? Resource1.error2 : Resource2.error2);
     }
     public static bool Error3()
     {
@@ -87,10 +99,14 @@ public static class WindowOpenCV
             return false;
         return FindPicFromImage(GameWindowImg.GetWindow(), Resource1.error4);
     }
+    /// <summary>
+    /// 是否在观战
+    /// </summary>
+    /// <returns></returns>
     public static bool Info1()
     {
         if (!Globals.IsToolInit)
             return false;
-        return FindPicFromImage(GameWindowImg.GetWindow(), Resource1.info1);
+        return FindPicFromImage(GameWindowImg.GetWindow(), GameWindow.XY == 0 ? Resource1.info1 : Resource2.info1);
     }
 }

@@ -1,4 +1,6 @@
-﻿using BF1.ServerAdminTools.Common.Utils;
+﻿using BF1.ServerAdminTools.Common.Data;
+using BF1.ServerAdminTools.Common.Utils;
+using System.Collections.Concurrent;
 
 namespace BF1.ServerAdminTools.Common.Views
 {
@@ -7,12 +9,12 @@ namespace BF1.ServerAdminTools.Common.Views
     /// </summary>
     public partial class ChatView : UserControl
     {
-        private string[] defaultMsg = new string[10];
+        private readonly string[] defaultMsg = new string[10];
 
-        private Timer timerAutoSendMsg = new();
-        private Timer timerNoAFK = new();
+        private readonly Timer timerAutoSendMsg = new();
+        private readonly Timer timerNoAFK = new();
 
-        private List<string> queueMsg = new();
+        private readonly ConcurrentBag<string> queueMsg = new();
 
         private int queueMsgSleep = 1;
 
@@ -46,16 +48,16 @@ namespace BF1.ServerAdminTools.Common.Views
 
             this.DataContext = this;
 
-            defaultMsg[0] = Globals.Config.Msg0;
-            defaultMsg[1] = Globals.Config.Msg1;
-            defaultMsg[2] = Globals.Config.Msg2;
-            defaultMsg[3] = Globals.Config.Msg3;
-            defaultMsg[4] = Globals.Config.Msg4;
-            defaultMsg[5] = Globals.Config.Msg5;
-            defaultMsg[6] = Globals.Config.Msg6;
-            defaultMsg[7] = Globals.Config.Msg7;
-            defaultMsg[8] = Globals.Config.Msg8;
-            defaultMsg[9] = Globals.Config.Msg9;
+            defaultMsg[0] = DataSave.Config.Msg0;
+            defaultMsg[1] = DataSave.Config.Msg1;
+            defaultMsg[2] = DataSave.Config.Msg2;
+            defaultMsg[3] = DataSave.Config.Msg3;
+            defaultMsg[4] = DataSave.Config.Msg4;
+            defaultMsg[5] = DataSave.Config.Msg5;
+            defaultMsg[6] = DataSave.Config.Msg6;
+            defaultMsg[7] = DataSave.Config.Msg7;
+            defaultMsg[8] = DataSave.Config.Msg8;
+            defaultMsg[9] = DataSave.Config.Msg9;
 
             if (string.IsNullOrEmpty(defaultMsg[0]))
             {
@@ -78,16 +80,16 @@ namespace BF1.ServerAdminTools.Common.Views
         {
             defaultMsg[RadioButtonWhoIsChecked()] = TextBox_InputMsg.Text;
 
-            Globals.Config.Msg0 = defaultMsg[0];
-            Globals.Config.Msg1 = defaultMsg[1];
-            Globals.Config.Msg2 = defaultMsg[2];
-            Globals.Config.Msg3 = defaultMsg[3];
-            Globals.Config.Msg4 = defaultMsg[4];
-            Globals.Config.Msg5 = defaultMsg[5];
-            Globals.Config.Msg6 = defaultMsg[6];
-            Globals.Config.Msg7 = defaultMsg[7];
-            Globals.Config.Msg8 = defaultMsg[8];
-            Globals.Config.Msg9 = defaultMsg[9];
+            DataSave.Config.Msg0 = defaultMsg[0];
+            DataSave.Config.Msg1 = defaultMsg[1];
+            DataSave.Config.Msg2 = defaultMsg[2];
+            DataSave.Config.Msg3 = defaultMsg[3];
+            DataSave.Config.Msg4 = defaultMsg[4];
+            DataSave.Config.Msg5 = defaultMsg[5];
+            DataSave.Config.Msg6 = defaultMsg[6];
+            DataSave.Config.Msg7 = defaultMsg[7];
+            DataSave.Config.Msg8 = defaultMsg[8];
+            DataSave.Config.Msg9 = defaultMsg[9];
         }
 
         private void SetIMEState()
@@ -110,10 +112,13 @@ namespace BF1.ServerAdminTools.Common.Views
             SetIMEState();
             Thread.Sleep(50);
 
-            for (int i = 0; i < queueMsg.Count; i++)
+            while (queueMsg.Any())
             {
-                Core.SendText(queueMsg[i]);
-                Thread.Sleep(queueMsgSleep * 1000);
+                if (queueMsg.TryTake(out var item))
+                {
+                    Core.SendText(item);
+                    Thread.Sleep(queueMsgSleep * 1000);
+                }
             }
         }
 

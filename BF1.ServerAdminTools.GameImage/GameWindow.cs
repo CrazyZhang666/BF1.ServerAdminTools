@@ -1,9 +1,17 @@
-﻿namespace BF1.ServerAdminTools.GameImage;
+﻿using BF1.ServerAdminTools.Common;
+
+namespace BF1.ServerAdminTools.GameImage;
 
 public static class GameWindow
 {
     private static bool IsOut = true;
     private static bool NeedRun = false;
+    private static Thread thread;
+
+    /// <summary>
+    /// 0 1280x720 1 1024x768
+    /// </summary>
+    public static int XY = 0;
 
     public static void Pause()
     {
@@ -12,34 +20,37 @@ public static class GameWindow
 
     public static void Start()
     {
-        NeedRun = true;
-    }
-
-    static GameWindow()
-    {
-        new Thread(() =>
+        if (thread == null)
         {
-            while (true)
+            thread = new Thread(() =>
             {
-                Thread.Sleep(10000);
-                Run();
-            }
-        })
-        { 
-            Name = "GameImageThread"
-        }.Start();
+                while (true)
+                {
+                    Thread.Sleep(10000);
+                    Run();
+                }
+            })
+            {
+                Name = "GameImageThread"
+            };
+            thread.Start();
+        }
+        NeedRun = true;
     }
 
     public static void Join()
     {
         WindowMessage.ToM();
+        Thread.Sleep(5000);
         int a = 0;
         do
         {
             if (WindowOpenCV.Test1())
                 break;
             a++;
-            Thread.Sleep(1000);
+            Thread.Sleep(5000);
+            if (!NeedRun)
+                return;
         } while (a < 5);
         if (a >= 5)
         {
@@ -47,16 +58,22 @@ public static class GameWindow
         }
 
         WindowMessage.ToServerList();
-        Thread.Sleep(500);
+        Thread.Sleep(5000);
+        if (!NeedRun)
+            return;
         WindowMessage.ToServerList1();
-        Thread.Sleep(1000);
+        Thread.Sleep(5000);
+        if (!NeedRun)
+            return;
         a = 0;
         do
         {
             if (WindowOpenCV.Test2())
                 break;
             a++;
-            Thread.Sleep(1000);
+            Thread.Sleep(2000);
+            if (!NeedRun)
+                return;
         } while (a < 5);
         if (a >= 5)
         {
@@ -64,21 +81,27 @@ public static class GameWindow
         }
 
         WindowMessage.ToServer();
-        Thread.Sleep(1000);
+        Thread.Sleep(5000);
+        if (!NeedRun)
+            return;
         a = 0;
         do
         {
             if (WindowOpenCV.Test3())
                 break;
             a++;
-            Thread.Sleep(1000);
+            Thread.Sleep(5000);
+            if (!NeedRun)
+                return;
         } while (a < 5);
         if (a >= 5)
         {
             return;
         }
         WindowMessage.JoinServer();
-        Thread.Sleep(1000);
+        Thread.Sleep(5000);
+        if (!NeedRun)
+            return;
         WindowMessage.JoinServer();
         IsOut = false;
     }

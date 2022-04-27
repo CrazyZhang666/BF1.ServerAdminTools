@@ -15,40 +15,46 @@ namespace BF1.ServerAdminTools.Common.Views
         {
             InitializeComponent();
 
-            AudioUtils.ClickSoundIndex = Globals.Config.AudioIndex;
-
-            switch (AudioUtils.ClickSoundIndex)
+            switch (DataSave.Config.AudioSelect)
             {
                 case 0:
-                    RadioButton_ClickAudioSelect0.IsChecked = true;
+                    ClickAudioSelect0.IsChecked = true;
                     break;
                 case 1:
-                    RadioButton_ClickAudioSelect1.IsChecked = true;
+                    ClickAudioSelect1.IsChecked = true;
                     break;
                 case 2:
-                    RadioButton_ClickAudioSelect2.IsChecked = true;
+                    ClickAudioSelect2.IsChecked = true;
                     break;
                 case 3:
-                    RadioButton_ClickAudioSelect3.IsChecked = true;
+                    ClickAudioSelect3.IsChecked = true;
                     break;
                 case 4:
-                    RadioButton_ClickAudioSelect4.IsChecked = true;
+                    ClickAudioSelect4.IsChecked = true;
                     break;
                 case 5:
-                    RadioButton_ClickAudioSelect5.IsChecked = true;
+                    ClickAudioSelect5.IsChecked = true;
                     break;
             }
 
-            MainWindow.ClosingDisposeEvent += MainWindow_ClosingDisposeEvent;
+            switch (DataSave.Config.GameXYSelect)
+            {
+                case 0:
+                    ClickXYSelect0.IsChecked = true;
+                    break;
+                case 1:
+                    ClickXYSelect1.IsChecked = true;
+                    break;
+            }
 
             var obj = NettyCore.GetConfig();
             Server_Port.Text = obj.Port.ToString();
             Server_Key.Text = obj.ServerKey.ToString();
-            AutoRun.IsChecked = DataSave.Config.AutoRun;
-            Slider_BG_O.Value = DataSave.Config.Bg_O;
-            Window_O.IsChecked = DataSave.Config.Window_O;
-            Window_A.IsChecked = DataSave.Config.Window_A;
-            if (DataSave.Config.AutoRun)
+            AutoRun.IsChecked = DataSave.Config.AutoRunNetty;
+            Slider_BG_O.Value = DataSave.Config.BackgroudOpacity;
+            Window_O.IsChecked = DataSave.Config.WindowVacuity;
+            Window_A.IsChecked = DataSave.Config.AutoJoinServer;
+            if (DataSave.Config.AutoRunNetty)
             {
                 try
                 {
@@ -61,15 +67,10 @@ namespace BF1.ServerAdminTools.Common.Views
                     MsgBoxUtils.ErrorMsgBox("Netty服务器启动出错", ex);
                 }
             }
-            if (DataSave.Config.Window_A)
+            if (DataSave.Config.AutoJoinServer)
             {
                 GameWindow.Start();
             }
-        }
-
-        private void MainWindow_ClosingDisposeEvent()
-        {
-            Globals.Config.AudioIndex = AudioUtils.ClickSoundIndex;
         }
 
         private void RadioButton_ClickAudioSelect_Click(object sender, RoutedEventArgs e)
@@ -79,26 +80,26 @@ namespace BF1.ServerAdminTools.Common.Views
             switch (str)
             {
                 case "无":
-                    AudioUtils.ClickSoundIndex = 0;
+                    DataSave.Config.AudioSelect = 0;
                     break;
                 case "提示音1":
-                    AudioUtils.ClickSoundIndex = 1;
+                    DataSave.Config.AudioSelect = 1;
                     AudioUtils.ClickSound();
                     break;
                 case "提示音2":
-                    AudioUtils.ClickSoundIndex = 2;
+                    DataSave.Config.AudioSelect = 2;
                     AudioUtils.ClickSound();
                     break;
                 case "提示音3":
-                    AudioUtils.ClickSoundIndex = 3;
+                    DataSave.Config.AudioSelect = 3;
                     AudioUtils.ClickSound();
                     break;
                 case "提示音4":
-                    AudioUtils.ClickSoundIndex = 4;
+                    DataSave.Config.AudioSelect = 4;
                     AudioUtils.ClickSound();
                     break;
                 case "提示音5":
-                    AudioUtils.ClickSoundIndex = 5;
+                    DataSave.Config.AudioSelect = 5;
                     AudioUtils.ClickSound();
                     break;
             }
@@ -152,7 +153,7 @@ namespace BF1.ServerAdminTools.Common.Views
                 ServerKey = key
             });
 
-            DataSave.Config.AutoRun = AutoRun.IsChecked == true;
+            DataSave.Config.AutoRunNetty = AutoRun.IsChecked == true;
             ConfigUtils.SaveConfig();
 
             MainWindow.SetOperatingState(1, "设置成功");
@@ -204,7 +205,7 @@ namespace BF1.ServerAdminTools.Common.Views
             if (file == null)
                 return;
 
-            DataSave.Config.Bg = file;
+            DataSave.Config.Background = file;
             ConfigUtils.SaveConfig();
 
             MainWindow.BG();
@@ -212,33 +213,17 @@ namespace BF1.ServerAdminTools.Common.Views
 
         private void Button_Click_4(object sender, RoutedEventArgs e)
         {
-            DataSave.Config.Bg = "";
-            ConfigUtils.SaveConfig();
-
+            DataSave.Config.Background = "";
             MainWindow.BG();
+            ConfigUtils.SaveConfig();
         }
 
         private void Button_Click_5(object sender, RoutedEventArgs e)
         {
-            DataSave.Config.Window_O = Window_O.IsChecked == true;
-            DataSave.Config.Bg_O = (int)Slider_BG_O.Value;
-            ConfigUtils.SaveConfig();
-
+            DataSave.Config.WindowVacuity = Window_O.IsChecked == true;
+            DataSave.Config.BackgroudOpacity = (int)Slider_BG_O.Value;
             MainWindow.BG();
-        }
-
-        private void Button_Click_6(object sender, RoutedEventArgs e)
-        {
-            DataSave.Config.Window_A = Window_A.IsChecked == true;
             ConfigUtils.SaveConfig();
-            if (DataSave.Config.Window_A)
-            {
-                GameWindow.Start();
-            }
-            else
-            {
-                GameWindow.Pause();
-            }
         }
 
         private void Button_Click_7(object sender, RoutedEventArgs e)
@@ -250,6 +235,70 @@ namespace BF1.ServerAdminTools.Common.Views
             }
             var img = GameWindowImg.GetWindow();
             img.Save("test.png", ImageFormat.Png);
+        }
+
+        private void ClickXYSelect0_Checked(object sender, RoutedEventArgs e)
+        {
+            DataSave.Config.GameXYSelect = 0;
+            GameWindow.XY = 0;
+            ConfigUtils.SaveConfig();
+        }
+
+        private void ClickXYSelect1_Checked(object sender, RoutedEventArgs e)
+        {
+            DataSave.Config.GameXYSelect = 1;
+            GameWindow.XY = 1;
+            ConfigUtils.SaveConfig();
+        }
+
+        private void ClickAudioSelect0_Checked(object sender, RoutedEventArgs e)
+        {
+            DataSave.Config.AudioSelect = 0;
+            ConfigUtils.SaveConfig();
+        }
+
+        private void ClickAudioSelect1_Checked(object sender, RoutedEventArgs e)
+        {
+            DataSave.Config.AudioSelect = 1;
+            ConfigUtils.SaveConfig();
+        }
+
+        private void ClickAudioSelect2_Checked(object sender, RoutedEventArgs e)
+        {
+            DataSave.Config.AudioSelect = 2;
+            ConfigUtils.SaveConfig();
+        }
+
+        private void ClickAudioSelect3_Checked(object sender, RoutedEventArgs e)
+        {
+            DataSave.Config.AudioSelect = 3;
+            ConfigUtils.SaveConfig();
+        }
+
+        private void ClickAudioSelect4_Checked(object sender, RoutedEventArgs e)
+        {
+            DataSave.Config.AudioSelect = 4;
+            ConfigUtils.SaveConfig();
+        }
+
+        private void ClickAudioSelect5_Checked(object sender, RoutedEventArgs e)
+        {
+            DataSave.Config.AudioSelect = 5;
+            ConfigUtils.SaveConfig();
+        }
+
+        private void Button_Click_6(object sender, RoutedEventArgs e)
+        {
+            DataSave.Config.AutoJoinServer = Window_A.IsChecked == true;
+            if (DataSave.Config.AutoJoinServer)
+            {
+                GameWindow.Start();
+            }
+            else
+            {
+                GameWindow.Pause();
+            }
+            ConfigUtils.SaveConfig();
         }
     }
 }

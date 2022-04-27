@@ -23,39 +23,39 @@
             <GroupBox Header="按键音">
                 <WrapPanel>
                     <RadioButton
-                        x:Name="RadioButton_ClickAudioSelect0"
+                        x:Name="ClickAudioSelect0"
                         Margin="5"
-                        Click="RadioButton_ClickAudioSelect_Click"
+                        Checked="ClickAudioSelect0_Checked"
                         Content="无"
                         GroupName="ClickAudioSelect" />
                     <RadioButton
-                        x:Name="RadioButton_ClickAudioSelect1"
+                        x:Name="ClickAudioSelect1"
                         Margin="5"
-                        Click="RadioButton_ClickAudioSelect_Click"
+                        Checked="ClickAudioSelect1_Checked"
                         Content="提示音1"
                         GroupName="ClickAudioSelect" />
                     <RadioButton
-                        x:Name="RadioButton_ClickAudioSelect2"
+                        x:Name="ClickAudioSelect2"
                         Margin="5"
-                        Click="RadioButton_ClickAudioSelect_Click"
+                        Checked="ClickAudioSelect2_Checked"
                         Content="提示音2"
                         GroupName="ClickAudioSelect" />
                     <RadioButton
-                        x:Name="RadioButton_ClickAudioSelect3"
+                        x:Name="ClickAudioSelect3"
                         Margin="5"
-                        Click="RadioButton_ClickAudioSelect_Click"
+                        Checked="ClickAudioSelect3_Checked"
                         Content="提示音3"
                         GroupName="ClickAudioSelect" />
                     <RadioButton
-                        x:Name="RadioButton_ClickAudioSelect4"
+                        x:Name="ClickAudioSelect4"
                         Margin="5"
-                        Click="RadioButton_ClickAudioSelect_Click"
+                        Checked="ClickAudioSelect4_Checked"
                         Content="提示音4"
                         GroupName="ClickAudioSelect" />
                     <RadioButton
-                        x:Name="RadioButton_ClickAudioSelect5"
+                        x:Name="ClickAudioSelect5"
                         Margin="5"
-                        Click="RadioButton_ClickAudioSelect_Click"
+                        Checked="ClickAudioSelect5_Checked"
                         Content="提示音5"
                         GroupName="ClickAudioSelect" />
                 </WrapPanel>
@@ -78,26 +78,44 @@
                             VerticalAlignment="Center"
                             Content="启用掉线自动重连" />
                         <TextBlock
-                            Width="500"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             TextWrapping="Wrap">
-                            注意：若要启动，需要将游戏设置窗口化运行，且分辨率为1280X720，该操作会自动加入第一个收藏的服务器，请先回到主界面再启动
+                            注意：若要启动，需要将游戏设置窗口化运行，该操作会自动加入第一个收藏的服务器，请先回到主界面再启动
                         </TextBlock>
 
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label
+                            Margin="5,0,5,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Content="游戏分辨率" />
+                        <RadioButton
+                            x:Name="ClickXYSelect0"
+                            Margin="5"
+                            Checked="ClickXYSelect0_Checked"
+                            Content="1280x720"
+                            GroupName="ClickXYSelect" />
+                        <RadioButton
+                            x:Name="ClickXYSelect1"
+                            Margin="5"
+                            Checked="ClickXYSelect1_Checked"
+                            Content="1024x768"
+                            GroupName="ClickXYSelect" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Button
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center"
-                            Click="Button_Click_6"
                             Content="设置"
-                            Style="{StaticResource ButtonStyle_Web}" />
+                            Style="{StaticResource ButtonStyle_Web}" Click="Button_Click_6" />
                         <Button
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center"
+                            Click="Button_Click_7"
                             Content="获取截屏"
-                            Style="{StaticResource ButtonStyle_Web}" Click="Button_Click_7" />
+                            Style="{StaticResource ButtonStyle_Web}" />
                     </StackPanel>
                 </StackPanel>
             </GroupBox>

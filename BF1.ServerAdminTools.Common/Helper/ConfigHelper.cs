@@ -58,10 +58,7 @@ internal static class ConfigHelper
         Directory.CreateDirectory(ConfigLocal.Log);
         if (!File.Exists(ConfigLocal.SettingFile))
         {
-            Globals.Config = new()
-            {
-                AudioIndex = 3
-            };
+            Globals.Config = new();
             File.WriteAllText(ConfigLocal.SettingFile, JsonUtils.JsonSeri(Globals.Config));
         }
         else

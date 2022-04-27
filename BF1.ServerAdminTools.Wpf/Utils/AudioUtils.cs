@@ -1,4 +1,5 @@
-﻿using System.Media;
+﻿using BF1.ServerAdminTools.Common.Data;
+using System.Media;
 
 namespace BF1.ServerAdminTools.Common.Utils;
 
@@ -12,15 +13,12 @@ public static class AudioUtils
 
     public static SoundPlayer SP_DownloadOK = new(Properties.Resources.DownloadOK);
 
-    // 按钮提示音
-    public static int ClickSoundIndex = 3;
-
     /// <summary>
     /// 按钮点击音效
     /// </summary>
     public static void ClickSound()
     {
-        switch (ClickSoundIndex)
+        switch (DataSave.Config.AudioSelect)
         {
             case 0:
                 break;

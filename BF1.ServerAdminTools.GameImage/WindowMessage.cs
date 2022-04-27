@@ -63,33 +63,75 @@ public static class WindowMessage
             Thread.Sleep(300);
         }
     }
+    /// <summary>
+    /// 打开多人
+    /// </summary>
     public static void ToM()
     {
         ToMain();
-        Click(160, 80);
+        if (GameWindow.XY == 0)
+            Click(160, 80);
+        else if (GameWindow.XY == 1)
+            Click(150, 165);
     }
+    /// <summary>
+    /// 预览服务器
+    /// </summary>
     public static void ToServerList()
     {
-        Click(650, 250);
+        if (GameWindow.XY == 0)
+            Click(650, 250);
+        else if (GameWindow.XY == 1)
+            Click(500, 300);
     }
+    /// <summary>
+    /// 最爱服务器
+    /// </summary>
     public static void ToServerList1()
     {
-        Click(150, 134);
+        if (GameWindow.XY == 0)
+            Click(150, 134);
+        else if (GameWindow.XY == 1)
+            Click(115, 200);
     }
+    /// <summary>
+    /// 选择服务器
+    /// </summary>
     public static void ToServer()
     {
-        Click(300, 200);
+        if (GameWindow.XY == 0)
+            Click(300, 200);
+        else if (GameWindow.XY == 1)
+            Click(250, 254);
     }
+    /// <summary>
+    /// 加入观战位
+    /// </summary>
     public static void JoinServer()
     {
-        Click(400, 290);
+        if (GameWindow.XY == 0)
+            Click(400, 290);
+        else if (GameWindow.XY == 1)
+            Click(350, 330);
     }
+    /// <summary>
+    /// 点击确认
+    /// </summary>
     public static void Ok()
     {
-        Click(650, 440);
+        if (GameWindow.XY == 0)
+            Click(650, 440);
+        else if (GameWindow.XY == 1)
+            Click(500, 350);
     }
+    /// <summary>
+    /// 点击上线
+    /// </summary>
     public static void Online()
     {
-        Click(650, 450);
+        if (GameWindow.XY == 0)
+            Click(650, 450);
+        else if (GameWindow.XY == 1)
+            Click(500, 360);
     }
 }

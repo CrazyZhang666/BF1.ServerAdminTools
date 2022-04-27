@@ -119,16 +119,22 @@
                     </DockPanel>
                     <DockPanel Grid.Column="2" LastChildFill="True">
                         <StackPanel DockPanel.Dock="Bottom">
+                            <Label Content="SQLite数据库查询软件下载" />
                             <TextBlock Margin="5">
                                 <Run>
-                                    SQLite数据库查询软件下载
+                                    sqliteexpert
                                 </Run>
-                                <Hyperlink NavigateUri="https://download.sqlitebrowser.org/DB.Browser.for.SQLite-3.12.2-win64.msi" RequestNavigate="Hyperlink_RequestNavigate">
-                                    👉 点我下载安装
+                                <Hyperlink NavigateUri="http://www.sqliteexpert.com/download.html" RequestNavigate="Hyperlink_RequestNavigate">
+                                    👉 点我下载
                                 </Hyperlink>
-                                <TextBlock.ToolTip>
-                                    https://download.sqlitebrowser.org/DB.Browser.for.SQLite-3.12.2-win64.msi
-                                </TextBlock.ToolTip>
+                            </TextBlock>
+                            <TextBlock Margin="5">
+                                <Run>
+                                    sqlitestudio
+                                </Run>
+                                <Hyperlink NavigateUri="https://sqlitestudio.pl/" RequestNavigate="Hyperlink_RequestNavigate">
+                                    👉 点我下载
+                                </Hyperlink>
                             </TextBlock>
                             <Button
                                 x:Name="Button_OpenConfigurationFolder"

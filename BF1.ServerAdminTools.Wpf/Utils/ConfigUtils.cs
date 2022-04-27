@@ -74,9 +74,11 @@ internal static class ConfigUtils
         {
             DataSave.Config = new()
             {
-                AutoRun = true,
-                Bg_O = 20,
-                Window_O = true
+                MapRule = new(),
+                AudioSelect = 3,
+                AutoRunNetty = true,
+                BackgroudOpacity = 20,
+                WindowVacuity = true
             };
             FileUtils.WriteFile(Self, JsonUtils.JsonSeri(DataSave.NowRule));
         }
