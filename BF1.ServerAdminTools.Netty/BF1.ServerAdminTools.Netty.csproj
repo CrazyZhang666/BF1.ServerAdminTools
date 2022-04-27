@@ -26,6 +26,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BF1.ServerAdminTools.Common\BF1.ServerAdminTools.Common.csproj" />
+    <ProjectReference Include="..\BF1.ServerAdminTools.GameImage\BF1.ServerAdminTools.GameImage.csproj" />
   </ItemGroup>
 
 </Project>

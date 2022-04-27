@@ -497,7 +497,7 @@
                             </Grid>
                         </TabItem>
                         <TabItem Header="玩家黑/白名单">
-                            <UniformGrid Columns="2">
+                            <UniformGrid Columns="3">
                                 <DockPanel LastChildFill="True">
                                     <TextBlock
                                         DockPanel.Dock="Top"
@@ -582,6 +582,39 @@
                                         DockPanel.Dock="Top"
                                         Style="{StaticResource ListBoxStyle_Normal}" />
                                 </DockPanel>
+                                <StackPanel Grid.Column="3" Margin="5">
+                                    <StackPanel.Resources>
+                                        <Style TargetType="{x:Type TextBlock}">
+                                            <Setter Property="Margin" Value="5" />
+                                        </Style>
+                                        <Style TargetType="{x:Type CheckBox}">
+                                            <Setter Property="Margin" Value="5" />
+                                        </Style>
+                                    </StackPanel.Resources>
+                                    <TextBlock Foreground="Green" TextWrapping="Wrap">
+                                        白名单限制选项
+                                    </TextBlock>
+                                    <CheckBox
+                                        Name="WhiteListNoKill"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Top"
+                                        Content="白名单不限制击杀" />
+                                    <CheckBox
+                                        Name="WhiteListNoKD"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Top"
+                                        Content="白名单不限制KD" />
+                                    <CheckBox
+                                        Name="WhiteListNoKPM"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Top"
+                                        Content="白名单不限制KPM" />
+                                    <CheckBox
+                                        Name="WhiteListNoW"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Top"
+                                        Content="白名单不限制武器" />
+                                </StackPanel>
                             </UniformGrid>
                         </TabItem>
                     </TabControl>

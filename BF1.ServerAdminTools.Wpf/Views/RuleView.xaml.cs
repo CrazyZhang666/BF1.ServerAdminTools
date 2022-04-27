@@ -124,6 +124,11 @@ namespace BF1.ServerAdminTools.Common.Views
             ScoreNotSwitchMap.Value = DataSave.NowRule.ScoreNotSwitchMap;
             SocreOtherRule.Value = DataSave.NowRule.ScoreOtherRule;
 
+            WhiteListNoKill.IsChecked =  DataSave.NowRule.WhiteListNoKill;
+            WhiteListNoKD.IsChecked =  DataSave.NowRule.WhiteListNoKD;
+            WhiteListNoKPM.IsChecked = DataSave.NowRule.WhiteListNoKPM;
+            WhiteListNoW.IsChecked = DataSave.NowRule.WhiteListNoW;
+
             if (DataSave.NowRule.SwitchMapType == 0)
             {
                 SwitchMapSelect0.IsChecked = true;
@@ -207,50 +212,7 @@ namespace BF1.ServerAdminTools.Common.Views
 
         private void MainWindow_ClosingDisposeEvent()
         {
-            DataSave.NowRule.MaxKill = Convert.ToInt32(MaxKill.Value);
-            DataSave.NowRule.KDFlag = Convert.ToInt32(KDFlag.Value);
-            DataSave.NowRule.MaxKD = Convert.ToSingle(MaxKD.Value);
-            DataSave.NowRule.KPMFlag = Convert.ToInt32(KPMFlag.Value);
-            DataSave.NowRule.MaxKPM = Convert.ToSingle(MaxKPM.Value);
-            DataSave.NowRule.MinRank = Convert.ToInt32(MinRank.Value);
-            DataSave.NowRule.MaxRank = Convert.ToInt32(MaxRank.Value);
-            DataSave.NowRule.LifeMaxKD = Convert.ToSingle(LifeMaxKD.Value);
-            DataSave.NowRule.LifeMaxKPM = Convert.ToSingle(LifeMaxKPM.Value);
-            DataSave.NowRule.LifeMaxWeaponStar = Convert.ToInt32(LifeMaxWeaponStar.Value);
-            DataSave.NowRule.LifeMaxVehicleStar = Convert.ToInt32(LifeMaxVehicleStar.Value);
-            DataSave.NowRule.ScoreSwitchMap = Convert.ToInt32(ScoreSwitchMap.Value);
-            DataSave.NowRule.ScoreNotSwitchMap = Convert.ToInt32(ScoreNotSwitchMap.Value);
-            DataSave.NowRule.ScoreStartSwitchMap = Convert.ToInt32(ScoreStartSwitchMap.Value);
-            if (SwitchMapSelect0.IsChecked == true)
-            {
-                DataSave.NowRule.SwitchMapType = 0;
-            }
-            else if (SwitchMapSelect1.IsChecked == true)
-            {
-                DataSave.NowRule.SwitchMapType = 1;
-            }
-            else if (SwitchMapSelect2.IsChecked == true)
-            {
-                DataSave.NowRule.SwitchMapType = 2;
-            }
-            DataSave.NowRule.OtherRule = OtherRule.SelectedItem as string;
-            DataSave.NowRule.ScoreOtherRule = Convert.ToInt32(SocreOtherRule.Value);
-
-            DataSave.NowRule.Custom_WeaponList.Clear();
-            foreach (WeaponInfoModel item in BreakWeaponInfo.Items)
-            {
-                DataSave.NowRule.Custom_WeaponList.Add(item.English);
-            }
-            DataSave.NowRule.Custom_BlackList.Clear();
-            foreach (string item in BlackList.Items)
-            {
-                DataSave.NowRule.Custom_BlackList.Add(item);
-            }
-            DataSave.NowRule.Custom_WhiteList.Clear();
-            foreach (string item in WhiteList.Items)
-            {
-                DataSave.NowRule.Custom_WhiteList.Add(item);
-            }
+            
         }
 
         private void Button_BreakWeaponInfo_Add_Click(object sender, RoutedEventArgs e)
@@ -631,6 +593,11 @@ namespace BF1.ServerAdminTools.Common.Views
                 RunAutoKick.IsChecked = false;
                 DataSave.AutoKickBreakPlayer = false;
             }
+
+            DataSave.NowRule.WhiteListNoKill = WhiteListNoKill.IsChecked == true;
+            DataSave.NowRule.WhiteListNoKD = WhiteListNoKD.IsChecked == true;
+            DataSave.NowRule.WhiteListNoKPM = WhiteListNoKPM.IsChecked == true;
+            DataSave.NowRule.WhiteListNoW = WhiteListNoW.IsChecked == true;
 
             Globals.IsRuleSetRight = true;
             isApplyRule = true;

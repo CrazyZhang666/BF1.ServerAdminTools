@@ -64,8 +64,15 @@ internal static class TaskCheckLife
     public static void CheckBreakLifePlayer(PlayerData data)
     {
         // 跳过管理员
-        if (Globals.Server_AdminList.Contains(data.PersonaId))
-            return;
+        //管理员
+        if (Globals.RspInfo != null)
+        {
+            if (Globals.RspInfo.owner?.personaId == data.PersonaId.ToString())
+                return;
+            if (Globals.RspInfo.adminList != null)
+                if (Globals.RspInfo.adminList.FindIndex(a => a.personaId == data.PersonaId.ToString()) != -1)
+                    return;
+        }
 
         // 跳过白名单玩家
         if (DataSave.NowRule.Custom_WhiteList.Contains(data.Name))

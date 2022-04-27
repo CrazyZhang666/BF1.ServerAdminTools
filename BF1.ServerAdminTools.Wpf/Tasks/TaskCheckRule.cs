@@ -98,8 +98,7 @@ internal class TaskCheckRule
             return;
 
         //白名单
-        if (DataSave.NowRule.Custom_WhiteList.Contains(playerData.Name))
-            return;
+        bool WhiteList = DataSave.NowRule.Custom_WhiteList.Contains(playerData.Name);
 
         //管理员
         if (Globals.RspInfo != null)
@@ -126,7 +125,7 @@ internal class TaskCheckRule
         }
 
         //订阅黑名单
-        if (SubscribeUtils.Check(playerData.PersonaId, playerData.Name))
+        if (!WhiteList && SubscribeUtils.Check(playerData.PersonaId, playerData.Name))
         {
             TaskKick.AddKick(new BreakRuleInfo
             {
@@ -142,6 +141,8 @@ internal class TaskCheckRule
         // 限制玩家击杀
         if (playerData.Kill > rule.MaxKill && rule.MaxKill != 0)
         {
+            if (WhiteList && DataSave.NowRule.WhiteListNoKill)
+                return;
             TaskKick.AddKick(new BreakRuleInfo
             {
                 Name = playerData.Name,
@@ -159,6 +160,8 @@ internal class TaskCheckRule
             // 限制玩家KD
             if (playerData.KD > rule.MaxKD && rule.MaxKD != 0.00f)
             {
+                if (WhiteList && DataSave.NowRule.WhiteListNoKD)
+                    return;
                 TaskKick.AddKick(new BreakRuleInfo
                 {
                     Name = playerData.Name,
@@ -177,6 +180,8 @@ internal class TaskCheckRule
             // 限制玩家KPM
             if (playerData.KPM > rule.MaxKPM && rule.MaxKPM != 0.00f)
             {
+                if (WhiteList && DataSave.NowRule.WhiteListNoKPM)
+                    return;
                 TaskKick.AddKick(new BreakRuleInfo
                 {
                     Name = playerData.Name,
@@ -189,39 +194,12 @@ internal class TaskCheckRule
             return;
         }
 
-        // 限制玩家最低等级
-        if (playerData.Rank < DataSave.NowRule.MinRank
-            && DataSave.NowRule.MinRank != 0 && playerData.Rank != 0)
-        {
-            TaskKick.AddKick(new BreakRuleInfo
-            {
-                Name = playerData.Name,
-                PersonaId = playerData.PersonaId,
-                Reason = $"Min Rank Limit {rule.MinRank:0}",
-                Type = BreakType.Min_Rank_Limit
-            });
-
-            return;
-        }
-
-        // 限制玩家最高等级
-        if (playerData.Rank > DataSave.NowRule.MaxRank
-            && DataSave.NowRule.MaxRank != 0 && playerData.Rank != 0)
-        {
-            TaskKick.AddKick(new BreakRuleInfo
-            {
-                Name = playerData.Name,
-                PersonaId = playerData.PersonaId,
-                Reason = $"Max Rank Limit {rule.MaxRank:0}",
-                Type = BreakType.Max_Rank_Limit
-            });
-
-            return;
-        }
-
         // 从武器规则里遍历限制武器名称
         for (int i = 0; i < DataSave.NowRule.Custom_WeaponList.Count; i++)
         {
+            if (WhiteList && DataSave.NowRule.WhiteListNoW)
+                return;
+
             var item = DataSave.NowRule.Custom_WeaponList[i];
 
             // K 弹
@@ -341,21 +319,37 @@ internal class TaskCheckRule
             }
         }
 
-        // 黑名单
-        foreach (var item in DataSave.NowRule.Custom_BlackList)
-        {
-            if (playerData.Name == item)
-            {
-                TaskKick.AddKick(new BreakRuleInfo
-                {
-                    Name = playerData.Name,
-                    PersonaId = playerData.PersonaId,
-                    Reason = "Server Black List",
-                    Type = BreakType.Server_Black_List
-                });
+        if (WhiteList)
+            return;
 
-                return;
-            }
+        // 限制玩家最低等级
+        if (playerData.Rank < DataSave.NowRule.MinRank
+            && DataSave.NowRule.MinRank != 0 && playerData.Rank != 0)
+        {
+            TaskKick.AddKick(new BreakRuleInfo
+            {
+                Name = playerData.Name,
+                PersonaId = playerData.PersonaId,
+                Reason = $"Min Rank Limit {rule.MinRank:0}",
+                Type = BreakType.Min_Rank_Limit
+            });
+
+            return;
+        }
+
+        // 限制玩家最高等级
+        if (playerData.Rank > DataSave.NowRule.MaxRank
+            && DataSave.NowRule.MaxRank != 0 && playerData.Rank != 0)
+        {
+            TaskKick.AddKick(new BreakRuleInfo
+            {
+                Name = playerData.Name,
+                PersonaId = playerData.PersonaId,
+                Reason = $"Max Rank Limit {rule.MaxRank:0}",
+                Type = BreakType.Max_Rank_Limit
+            });
+
+            return;
         }
     }
 

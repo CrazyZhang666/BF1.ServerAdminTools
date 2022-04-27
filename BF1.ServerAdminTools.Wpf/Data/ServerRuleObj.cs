@@ -39,6 +39,22 @@ public record ServerRuleObj
     /// 自定义白名单玩家列表
     /// </summary>
     public List<string> Custom_WhiteList { get; set; } = new();
+    /// <summary>
+    /// 白名单不限制击杀
+    /// </summary>
+    public bool WhiteListNoKill { get; set; }
+    /// <summary>
+    /// 白名单不限制KD
+    /// </summary>
+    public bool WhiteListNoKD { get; set; }
+    /// <summary>
+    /// 白名单不限制KPM
+    /// </summary>
+    public bool WhiteListNoKPM { get; set; }
+    /// <summary>
+    /// 白名单不限制武器
+    /// </summary>
+    public bool WhiteListNoW { get; set; }
 }
 
 
