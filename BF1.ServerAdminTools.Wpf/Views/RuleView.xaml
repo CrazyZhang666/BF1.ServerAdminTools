@@ -58,11 +58,20 @@
                             </ContextMenu>
                         </ListView.ContextMenu>
                     </ListView>
-                    <TextBlock
-                        Margin="5,428,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Text="地图规则" />
+                    <StackPanel Margin="5,428,0,0" Orientation="Horizontal">
+                        <TextBlock
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Text="地图规则" />
+                        <CheckBox
+                            x:Name="EnableMapRule"
+                            Margin="10,0,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Checked="EnableMapRule_Checked"
+                            Content="启用地图更换规则"
+                            IsChecked="False" />
+                    </StackPanel>
                     <ListView
                         Name="MapRuleList"
                         Grid.Column="0"

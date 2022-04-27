@@ -12,7 +12,7 @@ internal static class TaskCheckLife
     {
         new Thread(AutoKickLifeBreakPlayer)
         {
-            Name = "AutoKickLifeThread",
+            Name = "TaskAutoKickLife",
             IsBackground = true
         }.Start();
     }

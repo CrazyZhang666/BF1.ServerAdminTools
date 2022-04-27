@@ -12,7 +12,7 @@ internal class TaskTick
     {
         new Thread(Run)
         {
-            Name = "CoreTick",
+            Name = "TaskCoreTick",
             IsBackground = true
         }.Start();
     }
@@ -29,17 +29,19 @@ internal class TaskTick
     {
         while (true)
         {
-            Thread.Sleep(100);
             if (!Globals.IsGameRun || !Globals.IsToolInit)
             {
                 DataSave.AutoKickBreakPlayer = false;
+                Thread.Sleep(1000);
                 continue;
             }
 
             Core.Tick();
-            ScoreView.Semaphore.Release();
+            TaskUpdatePlayerList.Semaphore.Release();
             LogView.Semaphore.Release();
             TaskCheckRule.Semaphore.Release();
+
+            Thread.Sleep(100);
 
             while (Semaphore != 3)
             {

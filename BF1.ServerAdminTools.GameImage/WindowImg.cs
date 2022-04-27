@@ -18,7 +18,7 @@ public static class WindowImg
         IntPtr hmemdc = CreateCompatibleDC(hscrdc);
         SelectObject(hmemdc, hbitmap);
         PrintWindow(hWnd, hmemdc, 0);
-        Bitmap bmp = Bitmap.FromHbitmap(hbitmap);
+        Bitmap bmp = Image.FromHbitmap(hbitmap);
         DeleteDC(hscrdc);//删除用过的对象
         DeleteDC(hmemdc);//删除用过的对象
         return bmp;

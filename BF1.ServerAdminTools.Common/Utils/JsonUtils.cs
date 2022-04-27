@@ -2,14 +2,14 @@
 
 public static class JsonUtils
 {
-    private static JsonSerializerOptions Options1 = new()
+    private readonly static JsonSerializerOptions Options1 = new()
     {
         IncludeFields = true,
         DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
         Encoder = JavaScriptEncoder.Create(UnicodeRanges.All)
     };
 
-    private static JsonSerializerOptions Options2 = new()
+    private readonly static JsonSerializerOptions Options2 = new()
     {
         WriteIndented = true,
         IncludeFields = true,
@@ -24,7 +24,15 @@ public static class JsonUtils
     /// <returns></returns>
     public static T JsonDese<T>(string result)
     {
+        try
+        {
             return JsonSerializer.Deserialize<T>(result, Options1);
+        }
+        catch (Exception e)
+        {
+            Core.LogError("文件解析错误", e);
+            return default;
+        }
     }
 
     /// <summary>

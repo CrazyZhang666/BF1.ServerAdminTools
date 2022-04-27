@@ -6,7 +6,7 @@ namespace BF1.ServerAdminTools.Wpf.Tasks;
 
 internal class TaskMapRule
 {
-    public static bool NeedPause;
+    public static bool NeedPause = true;
     public static void Start()
     {
         new Thread(Run)

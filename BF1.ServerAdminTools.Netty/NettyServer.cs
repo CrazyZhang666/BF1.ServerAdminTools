@@ -1,12 +1,14 @@
 ﻿using BF1.ServerAdminTools.Common;
 using BF1.ServerAdminTools.Common.API.BF1Server;
 using BF1.ServerAdminTools.Common.Data;
+using BF1.ServerAdminTools.GameImage;
 using DotNetty.Buffers;
 using DotNetty.Codecs;
 using DotNetty.Handlers.Logging;
 using DotNetty.Transport.Bootstrapping;
 using DotNetty.Transport.Channels;
 using DotNetty.Transport.Channels.Sockets;
+using System.Drawing.Imaging;
 using System.Text;
 
 namespace BF1.ServerAdminTools.Netty;
@@ -167,12 +169,12 @@ internal class NettyServer
                         //删除VIP
                         case 11:
                             buff.WriteByte(11);
-                            name = buffer.ReadString(buffer.ReadInt(), Encoding.UTF8);
                             if (Globals.ServerInfo == null)
                             {
                                 buff.WriteBoolean(false);
                                 break;
                             }
+                            name = buffer.ReadString(buffer.ReadInt(), Encoding.UTF8);
                             buff.WriteBoolean(true);
                             list1 = Globals.RspInfo.vipList;
                             if (list1.FindIndex(a =>
@@ -191,6 +193,45 @@ internal class NettyServer
                             buff.WriteBoolean(true);
                             var result2 = await ServerAPI.RemoveServerVip(name);
                             buff.WriteBoolean(result2.IsSuccess);
+                            break;
+                        //换边
+                        case 12:
+                            buff.WriteByte(12);
+                            if (Globals.ServerInfo == null && !string.IsNullOrEmpty(Globals.Config.SessionId))
+                            {
+                                buff.WriteBoolean(false);
+                                break;
+                            }
+                            name = buffer.ReadString(buffer.ReadInt(), Encoding.UTF8);
+                            buff.WriteBoolean(true);
+                            lock (Globals.PlayerList_All)
+                            {
+                                list = Globals.PlayerList_All.Values.Where(item => item.Name == name);
+                            }
+                            if (!list.Any())
+                            {
+                                buff.WriteBoolean(false);
+                                break;
+                            }
+                            var player = list.First();
+                            buff.WriteBoolean(true);
+                            var result3 = await ServerAPI.AdminMovePlayer(player.PersonaId.ToString(), player.TeamID.ToString());
+                            buff.WriteBoolean(result3.IsSuccess);
+                            break;
+                        //获取屏幕游戏截图
+                        case 13:
+                            buff.WriteByte(13);
+                            if (!Globals.IsGameRun || !Globals.IsToolInit)
+                            {
+                                buff.WriteBoolean(false);
+                                break;
+                            }
+                            var img = WindowImg.GetWindow();
+                            MemoryStream stream = new();
+                            img.Save(stream, ImageFormat.Png);
+                            var data = stream.ToArray();
+                            buff.WriteInt(data.Length);
+                            buff.WriteBytes(data, 0, data.Length);
                             break;
                     }
                     await context.WriteAndFlushAsync(buff);

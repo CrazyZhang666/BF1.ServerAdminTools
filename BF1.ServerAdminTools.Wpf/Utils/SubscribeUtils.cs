@@ -75,7 +75,6 @@ internal static class SubscribeUtils
     public static async Task UpdateAll()
     {
         IsEdit = true;
-        DataSave.SubscribeCache.Cache.Clear();
         foreach (var url in DataSave.Subscribes.UrlList)
         {
             try
@@ -88,16 +87,14 @@ internal static class SubscribeUtils
                 {
                     continue;
                 }
-
-                var obj1 = new SubscribeObj()
+                foreach (var item in DataSave.SubscribeCache.Cache)
                 {
-                    Url = url,
-                    Players = obj.Players,
-                    LastTime = obj.Time,
-                    UpdateTime = DateTime.Now.ToString()
-                };
-
-                DataSave.SubscribeCache.Cache.Add(obj1);
+                    if (item.Url == url)
+                    {
+                        item.Players = obj.Players;
+                        item.LastTime = obj.Time;
+                    }
+                }
 
             }
             catch

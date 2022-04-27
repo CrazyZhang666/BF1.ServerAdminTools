@@ -1261,5 +1261,10 @@ namespace BF1.ServerAdminTools.Common.Views
                 BanListInfo.Items.Add(item1);
             }
         }
+
+        private void EnableMapRule_Checked(object sender, RoutedEventArgs e)
+        {
+            TaskMapRule.NeedPause = EnableMapRule.IsChecked != true;
+        }
     }
 }

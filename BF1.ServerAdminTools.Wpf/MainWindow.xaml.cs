@@ -16,11 +16,11 @@ namespace BF1.ServerAdminTools.Common
         /// <summary>
         /// 主窗口全局提示信息委托
         /// </summary>
-        public static Action<int, string>? SetOperatingState;
+        public static Action<int, string> SetOperatingState;
         /// <summary>
         /// 主窗口选项卡控件选择委托
         /// </summary>
-        public static Action<int>? TabControlSelect;
+        public static Action<int> TabControlSelect;
 
         public delegate void ClosingDispose();
         public static event ClosingDispose? ClosingDisposeEvent;
