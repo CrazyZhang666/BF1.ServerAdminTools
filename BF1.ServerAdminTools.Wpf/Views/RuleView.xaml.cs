@@ -746,14 +746,22 @@ namespace BF1.ServerAdminTools.Common.Views
                 {
                     team1Player.AddRange(Globals.PlayerDatas_Team2.Values);
                 }
-
                 foreach (var item in team1Player)
                 {
-                    Dispatcher.Invoke(() =>
+                    try
                     {
-                        AppendLog($"正在检查玩家: {item.Name}");
-                    });
-                    TaskCheckLife.CheckBreakLifePlayer(item);
+                        Dispatcher.Invoke(() =>
+                        {
+                            AppendLog($"正在检查玩家: {item.Name}");
+                        });
+                        TaskCheckLife.CheckBreakLifePlayer(item);
+
+                    }
+                    catch (Exception e)
+                    {
+                        Core.LogError("生涯获取失败", e);
+                        AppendLog($"检查玩家: {item.Name}生涯失败");
+                    }
                 }
 
                 TaskCheckRule.StartCheck();
