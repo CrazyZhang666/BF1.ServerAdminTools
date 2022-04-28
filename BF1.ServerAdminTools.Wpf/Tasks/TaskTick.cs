@@ -23,7 +23,7 @@ internal class TaskTick
             Semaphore++;
         }
     }
-    
+
     /// <summary>
     /// 数据更新
     /// </summary>

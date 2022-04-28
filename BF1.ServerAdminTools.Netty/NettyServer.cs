@@ -13,7 +13,7 @@ using System.Text;
 
 namespace BF1.ServerAdminTools.Netty;
 
-internal static class NettyServer 
+internal static class NettyServer
 {
     private static IEventLoopGroup bossGroup;
     private static IEventLoopGroup workerGroup;

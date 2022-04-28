@@ -1,7 +1,6 @@
 ﻿using BF1.ServerAdminTools.Common;
 using BF1.ServerAdminTools.Common.API.BF1Server;
 using BF1.ServerAdminTools.Common.Data;
-using BF1.ServerAdminTools.Common.Utils;
 
 namespace BF1.ServerAdminTools.Wpf.Tasks;
 
@@ -48,7 +47,12 @@ internal static class TasCheckPlayerLifeData
 
                 try
                 {
-                    Parallel.ForEach(players, CheckBreakLifePlayer);
+                    Parallel.ForEach(players, item =>
+                    {
+                        if (NeedPause)
+                            return;
+                        CheckBreakLifePlayer(item);
+                    });
                 }
                 catch (Exception e)
                 {
@@ -60,8 +64,6 @@ internal static class TasCheckPlayerLifeData
     }
     public static void CheckBreakLifePlayer(PlayerData data)
     {
-        if (NeedPause)
-            return;
         //管理员
         if (Globals.RspInfo != null)
         {
