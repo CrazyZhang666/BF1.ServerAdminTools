@@ -1318,9 +1318,9 @@ namespace BF1.ServerAdminTools.Common.Views
             if (string.IsNullOrWhiteSpace(map))
                 return;
 
-            if (!MapRuleList.Items.Contains(map))
+            if (!SwitchMapList.Items.Contains(map))
             {
-                MapRuleList.Items.Add(map);
+                SwitchMapList.Items.Add(map);
             }
         }
 
@@ -1329,7 +1329,7 @@ namespace BF1.ServerAdminTools.Common.Views
             if (SwitchMapList.SelectedItem is not string item)
                 return;
 
-            MapRuleList.Items.Remove(item);
+            SwitchMapList.Items.Remove(item);
         }
     }
 }

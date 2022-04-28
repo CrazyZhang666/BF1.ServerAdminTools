@@ -139,7 +139,7 @@ public static class ServerAPI
             {
                 var respError = JsonUtils.JsonDese<RespError>(response.Content);
 
-                respContent.Message = $"{respError.error.code} {respError.error.message}";
+                respContent.Message = $"{respError.error?.code} {respError.error?.message}";
             }
         }
         catch (Exception ex)

@@ -35,7 +35,7 @@ public static class GameWindow
         {
             a--;
             Thread.Sleep(1000);
-            if (!NeedRun)
+            if (!NeedRun || !IsRun)
                 return;
         }
     }
@@ -77,7 +77,7 @@ public static class GameWindow
                 break;
             a++;
             Delay(5);
-            if (!NeedRun)
+            if (!NeedRun || !IsRun)
                 return;
         } while (a < 5);
         if (a >= 5)
@@ -88,12 +88,12 @@ public static class GameWindow
         //打开服务器列表
         WindowMessage.ToServerList();
         Delay(5);
-        if (!NeedRun)
+        if (!NeedRun || !IsRun)
             return;
         //打开最爱服务器
         WindowMessage.ToServerList1();
         Delay(5);
-        if (!NeedRun)
+        if (!NeedRun || !IsRun)
             return;
         a = 0;
         do
@@ -102,7 +102,7 @@ public static class GameWindow
                 break;
             a++;
             Delay(2);
-            if (!NeedRun)
+            if (!NeedRun || !IsRun)
                 return;
         } while (a < 5);
         if (a >= 5)
@@ -112,7 +112,7 @@ public static class GameWindow
         //打开服务器详情
         WindowMessage.ToServer();
         Delay(5);
-        if (!NeedRun)
+        if (!NeedRun || !IsRun)
             return;
         a = 0;
         do
@@ -121,7 +121,7 @@ public static class GameWindow
                 break;
             a++;
             Delay(5);
-            if (!NeedRun)
+            if (!NeedRun || !IsRun)
                 return;
         } while (a < 5);
         if (a >= 5)
@@ -131,7 +131,7 @@ public static class GameWindow
         //加入服务器
         WindowMessage.JoinServer();
         Delay(5);
-        if (!NeedRun)
+        if (!NeedRun || !IsRun)
             return;
         //点两次防止没进入
         WindowMessage.JoinServer();
@@ -140,30 +140,40 @@ public static class GameWindow
 
     private static void Run()
     {
-        if (!NeedRun)
+        if (!NeedRun || !IsRun)
             return;
         if (WindowOpenCV.Error1())
         {
+            if (!NeedRun || !IsRun)
+                return;
             WindowMessage.Ok();
             IsOut = true;
         }
         else if (WindowOpenCV.Error2())
         {
+            if (!NeedRun || !IsRun)
+                return;
             WindowMessage.Online();
             IsOut = true;
         }
         else if (WindowOpenCV.Error3())
         {
+            if (!NeedRun || !IsRun)
+                return;
             WindowMessage.Ok();
             IsOut = true;
         }
         else if (WindowOpenCV.Error4())
         {
+            if (!NeedRun || !IsRun)
+                return;
             WindowMessage.Online();
             IsOut = true;
         }
         else if (IsOut)
         {
+            if (!NeedRun || !IsRun)
+                return;
             if (WindowOpenCV.Info1())
                 IsOut = true;
             else

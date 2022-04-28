@@ -7,6 +7,7 @@
     Name="View_Option"
     d:DesignHeight="900"
     d:DesignWidth="1600"
+    Loaded="View_Option_Loaded"
     mc:Ignorable="d">
 
     <Grid Background="#77FFFFFF">

@@ -54,23 +54,6 @@ namespace BF1.ServerAdminTools.Common.Views
             Slider_BG_O.Value = DataSave.Config.BackgroudOpacity;
             Window_O.IsChecked = DataSave.Config.WindowVacuity;
             Window_A.IsChecked = DataSave.Config.AutoJoinServer;
-            if (DataSave.Config.AutoRunNetty)
-            {
-                try
-                {
-                    NettyCore.StartServer();
-                    Button_Server.Content = "关闭";
-                }
-                catch (Exception ex)
-                {
-                    Core.LogError("Netty服务器启动出错", ex);
-                    MsgBoxUtils.ErrorMsgBox("Netty服务器启动出错", ex);
-                }
-            }
-            if (DataSave.Config.AutoJoinServer)
-            {
-                GameWindow.Start();
-            }
         }
 
         private void RadioButton_ClickAudioSelect_Click(object sender, RoutedEventArgs e)
@@ -299,6 +282,27 @@ namespace BF1.ServerAdminTools.Common.Views
                 GameWindow.Pause();
             }
             ConfigUtils.SaveConfig();
+        }
+
+        private void View_Option_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (DataSave.Config.AutoRunNetty)
+            {
+                try
+                {
+                    NettyCore.StartServer();
+                    Button_Server.Content = "关闭";
+                }
+                catch (Exception ex)
+                {
+                    Core.LogError("Netty服务器启动出错", ex);
+                    MsgBoxUtils.ErrorMsgBox("Netty服务器启动出错", ex);
+                }
+            }
+            if (DataSave.Config.AutoJoinServer)
+            {
+                GameWindow.Start();
+            }
         }
     }
 }
