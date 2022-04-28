@@ -2,6 +2,7 @@
 
 public static class ProcessUtils
 {
+    private static int Count;
     /// <summary>
     /// 判断程序是否运行
     /// </summary>
@@ -9,7 +10,12 @@ public static class ProcessUtils
     /// <returns>正在运行返回true，未运行返回false</returns>
     public static bool IsAppRun(string appName)
     {
-        return Globals.IsGameRun = Process.GetProcessesByName(appName).ToList().Count > 0;
+        int temp = Process.GetProcessesByName(appName).ToList().Count;
+        if (temp > Count)
+        {
+            Count = temp;
+        }
+        return Globals.IsGameRun = temp == Count && temp > 0;
     }
 
     /// <summary>

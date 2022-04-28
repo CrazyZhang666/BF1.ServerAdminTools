@@ -36,7 +36,7 @@ public record DetailedStatsByPersonaId
         public List<VehicleStats> vehicleStats { get; set; }
         public string detailedStatType { get; set; }
 
-        public record VehicleStats 
+        public record VehicleStats
         {
             public string name { get; set; }
             public string prettyName { get; set; }
@@ -45,7 +45,7 @@ public record DetailedStatsByPersonaId
             public float timeSpent { get; set; }
         }
         public record GameModeStats
-        { 
+        {
             public string name { get; set; }
             public string prettyName { get; set; }
             public int wins { get; set; }
@@ -54,7 +54,7 @@ public record DetailedStatsByPersonaId
             public float winLossRatio { get; set; }
         }
 
-        public record KitStats 
+        public record KitStats
         {
             public string name { get; set; }
             public string prettyName { get; set; }
@@ -63,7 +63,7 @@ public record DetailedStatsByPersonaId
             public float kills { get; set; }
             public float secondsAs { get; set; }
         }
-        public record BasicStats 
+        public record BasicStats
         {
             public int timePlayed { get; set; }
             public int wins { get; set; }

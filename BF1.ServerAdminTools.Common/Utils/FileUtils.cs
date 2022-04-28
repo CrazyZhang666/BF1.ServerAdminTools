@@ -4,6 +4,11 @@ namespace BF1.ServerAdminTools.Common.Utils;
 
 public static class FileUtils
 {
+    /// <summary>
+    /// 写文件
+    /// </summary>
+    /// <param name="file"></param>
+    /// <param name="data"></param>
     public static void WriteFile(string file, string data)
     {
         using var stream = File.Open(file, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);

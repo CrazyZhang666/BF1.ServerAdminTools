@@ -3,10 +3,20 @@
 一个方便服主和管理员管理服务器的工具  
 该版本是新版服管工具，增加了功能提高稳定性
 
-## SDK
-`BF1.ServerAdminTools.SDK`是一个C#的简单netty接口客户端
+- `BF1.ServerAdminTools.ASP`:web服务器接口（不在计划中）
+- `BF1.ServerAdminTools.Common`:工具核心，抓取游戏内存
+- `BF1.ServerAdminTools.GameImage`:判断游戏窗口状态，进入服务器
+- `BF1.ServerAdminTools.Netty`:工具Netty接口服务器
+- `BF1.ServerAdminTools.SDK`:一个C#的简单netty接口客户端
+- `BF1.ServerAdminTools.Test`:测试项目
+- `BF1.ServerAdminTools.Wpf`:主界面
 
 ## 更新日志
+### 2022.4.28
+- 修复bug提升稳定性
+- 修复程序无法正常退出问题
+- 增加队伍规则
+
 ### 2022.4.27
 - 修复地图规则强制生效问题
 - 修复配置文件读取崩溃

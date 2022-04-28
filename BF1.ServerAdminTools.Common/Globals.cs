@@ -10,8 +10,13 @@ public static class Globals
     /// 目标进程
     /// </summary>
     public const string TargetAppName = "bf1";    // 战地1
-
+    /// <summary>
+    /// 配置文件
+    /// </summary>
     public static ConfigObj Config;
+    /// <summary>
+    /// 规则是否已经设置了
+    /// </summary>
     public static bool IsRuleSetRight = false;
 
     ///////////////////////////////////////////////////////
@@ -34,13 +39,33 @@ public static class Globals
     /// </summary>
     public static Dictionary<long, PlayerData> PlayerDatas_Team3 { get; } = new();
 
+    /// <summary>
+    /// 自己的数据
+    /// </summary>
     public static ClientPlayer LocalPlayer;
+    /// <summary>
+    /// 对局数据
+    /// </summary>
     public static ServerHook ServerHook;
+    /// <summary>
+    /// 服务器数据
+    /// </summary>
     public static ServerInfo ServerInfo;
+    /// <summary>
+    /// 管理员等
+    /// </summary>
     public static RspInfo RspInfo;
+    /// <summary>
+    /// 服务器详情
+    /// </summary>
     public static ServerInfos.ServersItem ServerDetailed;
-
+    /// <summary>
+    /// 队伍1数据
+    /// </summary>
     public static StatisticData StatisticData_Team1;
+    /// <summary>
+    /// 队伍2数据
+    /// </summary>
     public static StatisticData StatisticData_Team2;
 
     /// <summary>

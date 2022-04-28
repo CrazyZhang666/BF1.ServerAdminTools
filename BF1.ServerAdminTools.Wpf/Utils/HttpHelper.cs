@@ -5,6 +5,11 @@ namespace BF1.ServerAdminTools.Common.Helper;
 public static class HttpUtil
 {
     private static readonly HttpClient client = new();
+    /// <summary>
+    /// 获取网页
+    /// </summary>
+    /// <param name="url"></param>
+    /// <returns></returns>
 
     public static async Task<string> HttpClientGET(string url)
     {
@@ -27,6 +32,12 @@ public static class HttpUtil
             return ex.Message;
         }
     }
+    /// <summary>
+    /// 下载文件
+    /// </summary>
+    /// <param name="url"></param>
+    /// <param name="saveDirectory"></param>
+    /// <returns></returns>
 
     public static async Task<bool> DownloadFile(string url, string saveDirectory)
     {

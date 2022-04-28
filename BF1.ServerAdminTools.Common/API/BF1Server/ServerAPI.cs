@@ -443,6 +443,11 @@ public static class ServerAPI
         return respContent;
     }
 
+    /// <summary>
+    /// 获取武器统计
+    /// </summary>
+    /// <param name="personaId"></param>
+    /// <returns></returns>
     public static async Task<RespContent<GetWeaponsByPersonaId>> GetWeaponsByPersonaId(string personaId)
     {
         Stopwatch sw = new();
@@ -498,6 +503,11 @@ public static class ServerAPI
         return respContent;
     }
 
+    /// <summary>
+    /// 获取载具统计
+    /// </summary>
+    /// <param name="personaId"></param>
+    /// <returns></returns>
     public static async Task<RespContent<GetVehiclesByPersonaId>> GetVehiclesByPersonaId(string personaId)
     {
         Stopwatch sw = new();
@@ -553,6 +563,11 @@ public static class ServerAPI
         return respContent;
     }
 
+    /// <summary>
+    /// 获取玩家统计
+    /// </summary>
+    /// <param name="personaId"></param>
+    /// <returns></returns>
     public static async Task<RespContent<DetailedStatsByPersonaId>> DetailedStatsByPersonaId(string personaId)
     {
         Stopwatch sw = new();

@@ -24,16 +24,23 @@ internal class TaskCheckRule
         }.Start();
     }
 
+    /// <summary>
+    /// 检查服务器玩家是否违规
+    /// </summary>
     private static void Run()
     {
-        while (true)
+        while (Tasks.IsRun)
         {
             Semaphore.WaitOne();
+            if (!Tasks.IsRun)
+                return;
             if (DataSave.AutoKickBreakPlayer)
             {
                 if (!NeedPause)
+                {
                     StartCheck();
-                AutoSwitchMap();
+                    AutoSwitchMap();
+                }
             }
             TaskTick.Done();
         }
@@ -50,42 +57,33 @@ internal class TaskCheckRule
             other = DataSave.Rules.TryGetValue(DataSave.NowRule.OtherRule.ToLower(), out rule);
         }
 
-        if (other && Globals.ServerHook.Team1Score < Globals.ServerHook.Team2Score)
+        if (!other || Globals.ServerHook.Team1Score >= Globals.ServerHook.Team2Score)
         {
-            foreach (var item in Globals.PlayerDatas_Team1.Values)
-            {
-                if (NeedPause)
-                    return;
-                CheckPlayerIsBreakRule(item, rule);
-            }
-        }
-        else
-        {
-            foreach (var item in Globals.PlayerDatas_Team1.Values)
-            {
-                if (NeedPause)
-                    return;
-                CheckPlayerIsBreakRule(item, DataSave.NowRule);
-            }
+            rule = DataSave.NowRule;
         }
 
-        if (other && Globals.ServerHook.Team1Score > Globals.ServerHook.Team2Score)
+        foreach (var item in Globals.PlayerDatas_Team1.Values)
         {
-            foreach (var item in Globals.PlayerDatas_Team2.Values)
-            {
-                if (NeedPause)
-                    return;
-                CheckPlayerIsBreakRule(item, rule);
-            }
+            if (NeedPause)
+                return;
+            CheckPlayerIsBreakRule(item, DataSave.NowRule);
         }
-        else
+
+        if (!string.IsNullOrWhiteSpace(DataSave.NowRule.Team2Rule)
+            && DataSave.Rules.TryGetValue(DataSave.NowRule.Team2Rule.ToLower(), out var rule1))
         {
-            foreach (var item in Globals.PlayerDatas_Team2.Values)
-            {
-                if (NeedPause)
-                    return;
-                CheckPlayerIsBreakRule(item, DataSave.NowRule);
-            }
+            rule = rule1;
+        }
+        else if (!other || Globals.ServerHook.Team1Score <= Globals.ServerHook.Team2Score)
+        {
+            rule = DataSave.NowRule;
+        }
+
+        foreach (var item in Globals.PlayerDatas_Team2.Values)
+        {
+            if (NeedPause)
+                return;
+            CheckPlayerIsBreakRule(item, rule);
         }
     }
 
@@ -95,6 +93,9 @@ internal class TaskCheckRule
             return;
 
         if (TaskKick.IsHave(playerData.PersonaId))
+            return;
+
+        if (Globals.LocalPlayer.PersonaId == playerData.PersonaId)
             return;
 
         //白名单
@@ -200,7 +201,7 @@ internal class TaskCheckRule
             if (WhiteList && DataSave.NowRule.WhiteListNoW)
                 return;
 
-            var item = DataSave.NowRule.Custom_WeaponList[i];
+            var item = rule.Custom_WeaponList[i];
 
             // K 弹
             if (item == "_KBullet")
@@ -417,6 +418,26 @@ internal class TaskCheckRule
                     break;
                 case 2:
                     a = index;
+                    break;
+                case 3:
+                    if (DataSave.NowRule.SwitchMaps?.Count != 0)
+                    {
+                        List<int> indexs = new();
+                        foreach (var item1 in DataSave.NowRule.SwitchMaps)
+                        {
+                            index = list.FindIndex(item => item.mapPrettyName == item1);
+                            indexs.Add(index);
+                        }
+                        a = indexs[Random.Next(0, indexs.Count - 1)];
+                    }
+                    else
+                    {
+                        do
+                        {
+                            a = Random.Next(0, list.Count - 1);
+                        }
+                        while (a != index);
+                    }
                     break;
                 default:
                     a = 0;

@@ -389,8 +389,33 @@
                                         Margin="5"
                                         Content="重开原图"
                                         GroupName="SwitchMapSelect" />
+                                    <RadioButton
+                                        x:Name="SwitchMapSelect3"
+                                        Margin="5"
+                                        Content="下面任意一张图"
+                                        GroupName="SwitchMapSelect" />
                                 </WrapPanel>
-                                <TextBlock />
+                                <ListView
+                                    Name="SwitchMapList"
+                                    Grid.Column="0"
+                                    Height="120"
+                                    Margin="5,5,5,10"
+                                    Background="Transparent"
+                                    BorderBrush="#1E88E5"
+                                    ScrollViewer.VerticalScrollBarVisibility="Visible"
+                                    SelectionMode="Single">
+                                    <ListView.View>
+                                        <GridView>
+                                            <GridViewColumn Width="600" Header="地图名字" />
+                                        </GridView>
+                                    </ListView.View>
+                                    <ListView.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Click="Add_Map_List" Header="添加" />
+                                            <MenuItem Click="Delete_Map_List" Header="删除" />
+                                        </ContextMenu>
+                                    </ListView.ContextMenu>
+                                </ListView>
                                 <TextBlock Text="{Binding ElementName=SocreOtherRule, Path=Value, StringFormat=分差达到 : {0:0} 后劣势方使用其他规则, FallbackValue='分差达到 : 后劣势方使用其他规则'}" />
                                 <Slider
                                     x:Name="SocreOtherRule"
@@ -403,9 +428,17 @@
                                     Name="OtherRule"
                                     Height="24"
                                     Margin="5,5,5,0"
-                                    IsReadOnly="True" />
+                                    IsReadOnly="True"
+                                    SelectionChanged="OtherRule_SelectionChanged" />
+                                <TextBlock Text="队伍2使用规则" />
+                                <ComboBox
+                                    Name="Team2Rule"
+                                    Height="24"
+                                    Margin="5,5,5,0"
+                                    IsReadOnly="True"
+                                    SelectionChanged="TeamRule_SelectionChanged" />
                                 <TextBlock Foreground="Green" TextWrapping="Wrap">
-                                    说明：其他规则只会生效 击杀，KD，KPM
+                                    说明：其他规则只会生效 击杀，KD，KPM，武器
                                 </TextBlock>
                             </StackPanel>
                         </TabItem>

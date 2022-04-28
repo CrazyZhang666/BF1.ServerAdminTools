@@ -11,7 +11,7 @@ internal static class TaskUpdatePlayerList
 {
     public static Semaphore Semaphore = new(0, 5);
 
-    public static void Start() 
+    public static void Start()
     {
         new Thread(Run)
         {
@@ -20,11 +20,16 @@ internal static class TaskUpdatePlayerList
         }.Start();
     }
 
+    /// <summary>
+    /// 刷新计分板
+    /// </summary>
     private static void Run()
     {
-        while (true)
+        while (Tasks.IsRun)
         {
             Semaphore.WaitOne();
+            if (!Tasks.IsRun)
+                return;
             //////////////////////////////// 自己数据 ////////////////////////////////
 
             ScoreView.PlayerOtherModel.MySelfTeamID = $"队伍ID : {Globals.LocalPlayer.TeamID}";

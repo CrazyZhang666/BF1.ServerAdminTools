@@ -30,6 +30,8 @@ public static class DataSave
     /// 是否显示中文武器名称
     /// </summary>
     public static bool IsShowCHSWeaponName = true;
-
+    /// <summary>
+    /// 配置文件
+    /// </summary>
     public static WpfConfigObj Config { get; set; }
 }

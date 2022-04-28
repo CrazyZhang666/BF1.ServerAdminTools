@@ -22,6 +22,11 @@ internal static class SubscribeUtils
         }
     }
 
+    /// <summary>
+    /// 添加订阅
+    /// </summary>
+    /// <param name="url"></param>
+    /// <returns></returns>
     public static async Task<RespSubscribe> Add(string url)
     {
         RespSubscribe res = new();
@@ -72,6 +77,10 @@ internal static class SubscribeUtils
         return res;
     }
 
+    /// <summary>
+    /// 全部订阅更新
+    /// </summary>
+    /// <returns></returns>
     public static async Task UpdateAll()
     {
         IsEdit = true;
@@ -104,6 +113,10 @@ internal static class SubscribeUtils
         ConfigUtils.SaveSubscribeCache();
     }
 
+    /// <summary>
+    /// 删除订阅
+    /// </summary>
+    /// <param name="url"></param>
     public static void Delete(string url)
     {
         DataSave.Subscribes.UrlList.Remove(url);
@@ -123,6 +136,12 @@ internal static class SubscribeUtils
         }
     }
 
+    /// <summary>
+    /// 检测是否在黑名单中
+    /// </summary>
+    /// <param name="pid"></param>
+    /// <param name="name"></param>
+    /// <returns></returns>
     public static bool Check(long pid, string name)
     {
         if (IsEdit)
@@ -156,17 +175,4 @@ internal static class SubscribeUtils
 
         return false;
     }
-}
-
-public record HttpSubscribe
-{
-    public List<PlayerItem> Players { get; set; }
-    public string Time { get; set; }
-}
-
-public record RespSubscribe
-{
-    public HttpSubscribe http;
-    public SubscribeObj obj;
-    public bool OK;
 }

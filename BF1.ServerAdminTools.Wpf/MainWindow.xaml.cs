@@ -24,19 +24,12 @@ namespace BF1.ServerAdminTools.Common
         public static Action<int> TabControlSelect;
 
         public delegate void ClosingDispose();
-        public static event ClosingDispose? ClosingDisposeEvent;
+        public static event ClosingDispose ClosingDisposeEvent;
 
-
+        public static MainModel MainModel { get; set; }
         public static MainWindow? ThisMainWindow;
 
-        public BlurUtils blur;
-
-        public MainModel MainModel { get; set; }
-
-        // 声明一个变量，用于存储软件开始运行的时间
-        private DateTime Origin_DateTime;
-
-        ///////////////////////////////////////////////////////
+        private BlurUtils blur;
 
         public MainWindow()
         {
@@ -80,26 +73,9 @@ namespace BF1.ServerAdminTools.Common
         {
             MainModel.AppRunTime = "运行时间 : Loading...";
 
-            ////////////////////////////////
-
             Title = CoreUtils.MainAppWindowName + CoreUtils.ClientVersionInfo + "- 最后编译时间 : " + File.GetLastWriteTime(Process.GetCurrentProcess().MainModule.FileName);
 
-            // 获取当前时间，存储到对于变量中
-            Origin_DateTime = DateTime.Now;
-
-            ////////////////////////////////
-
-            new Thread(UpdateState)
-            {
-                Name = "UpdateStateThead",
-                IsBackground = true
-            }.Start();
-
-            new Thread(InitThread)
-            {
-                Name = "InitThread",
-                IsBackground = true
-            }.Start();
+            Task.Run(InitThread);
 
             this.DataContext = this;
 
@@ -113,7 +89,8 @@ namespace BF1.ServerAdminTools.Common
 
         private void Window_Main_Closing(object sender, CancelEventArgs e)
         {
-            GameWindow.Pause();
+            Tasks.Stop();
+            GameWindow.Stop();
             // 关闭事件
             ClosingDisposeEvent();
             Core.LogInfo($"调用关闭事件成功");
@@ -130,32 +107,10 @@ namespace BF1.ServerAdminTools.Common
         private void InitThread()
         {
             // 调用刷新SessionID功能
-            Core.LogInfo($"开始调用刷新SessionID功能");
-            AuthView._AutoRefreshSID();
+            Core.LogInfo($"开始刷新SessionID");
+            AuthView.AutoRefreshSID();
         }
 
-        private void UpdateState()
-        {
-            while (true)
-            {
-                // 获取软件运行时间
-                MainModel.AppRunTime = "运行时间 : " + CoreUtils.ExecDateDiff(Origin_DateTime, DateTime.Now);
-
-                if (Globals.IsGameRun)
-                {
-                    if (!Core.IsGameRun())
-                    {
-                        Globals.IsToolInit = false;
-                        Globals.IsGameRun = false;
-                        MsgBoxUtils.WarningMsgBox("游戏已退出，功能已关闭");
-                    }
-                }
-
-                Thread.Sleep(1000);
-            }
-        }
-
-        #region 常用方法
         /// <summary>
         /// 提示信息，绿色信息1，灰色警告2，红色错误3
         /// </summary>
@@ -185,7 +140,6 @@ namespace BF1.ServerAdminTools.Common
             ProcessUtils.OpenLink(e.Uri.OriginalString);
             e.Handled = true;
         }
-        #endregion
 
         ///////////////////////////////////////////////////////
 

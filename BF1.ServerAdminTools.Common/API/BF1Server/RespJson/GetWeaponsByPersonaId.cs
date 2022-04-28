@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BF1.ServerAdminTools.Common.API.BF1Server.RespJson;
+﻿namespace BF1.ServerAdminTools.Common.API.BF1Server.RespJson;
 
 public record GetWeaponsByPersonaId
 {
@@ -16,7 +10,7 @@ public record GetWeaponsByPersonaId
     {
         public string name { get; set; }
         public List<Weapon> weapons { get; set; }
-        public record Weapon 
+        public record Weapon
         {
             public string guid { get; set; }
             public string name { get; set; }
@@ -26,10 +20,10 @@ public record GetWeaponsByPersonaId
             public List<object> accessories { get; set; }
             public object star { get; set; }
             public Stats stats { get; set; }
-            public record Stats 
+            public record Stats
             {
                 public Values values { get; set; }
-                public record Values 
+                public record Values
                 {
                     public float kills { get; set; }
                     public float headshots { get; set; }

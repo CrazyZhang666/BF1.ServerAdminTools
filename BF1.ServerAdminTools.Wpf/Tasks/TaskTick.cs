@@ -1,6 +1,5 @@
 ﻿using BF1.ServerAdminTools.Common;
 using BF1.ServerAdminTools.Common.Data;
-using BF1.ServerAdminTools.Common.Views;
 
 namespace BF1.ServerAdminTools.Wpf.Tasks;
 
@@ -24,10 +23,13 @@ internal class TaskTick
             Semaphore++;
         }
     }
-
+    
+    /// <summary>
+    /// 数据更新
+    /// </summary>
     private static void Run()
     {
-        while (true)
+        while (Tasks.IsRun)
         {
             if (!Globals.IsGameRun || !Globals.IsToolInit)
             {
@@ -38,7 +40,7 @@ internal class TaskTick
 
             Core.Tick();
             TaskUpdatePlayerList.Semaphore.Release();
-            LogView.Semaphore.Release();
+            TaskCheckPlayerChangeTeam.Semaphore.Release();
             TaskCheckRule.Semaphore.Release();
 
             Thread.Sleep(100);

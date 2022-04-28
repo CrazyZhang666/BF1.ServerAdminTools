@@ -19,14 +19,23 @@ public class NettyMain
 
         Console.WriteLine("BF1.ServerAdminTools 正在读取配置文件");
         NettyCore.InitConfig();
-
+        NettyCore.StartServer();
+        Console.WriteLine("BF1.ServerAdminTools Netty服务器已启动");
         while (true)
         {
             string input = Console.ReadLine();
             if (input == null)
                 return;
             string[] arg = input.Split(" ");
+            if (arg[0] == "stop")
+            {
+                Console.WriteLine("BF1.ServerAdminTools Netty服务器正在关闭");
+                NettyCore.StopServer();
+                Core.MsgFreeMemory();
+                Core.SQLClose();
 
+                return;
+            }
         }
     }
 
@@ -35,24 +44,43 @@ public class NettyMain
 
 public class NettyCore
 {
+    /// <summary>
+    /// 初始化配置文件
+    /// </summary>
     public static void InitConfig()
         => ConfigUtils.Init();
-
+    /// <summary>
+    /// 加载配置文件
+    /// </summary>
     public static void LoadConfig()
         => ConfigUtils.Load();
-
+    /// <summary>
+    /// 获取配置文件
+    /// </summary>
+    /// <returns></returns>
     public static ConfigNettyObj GetConfig()
         => ConfigUtils.Config;
-
+    /// <summary>
+    /// 保存配置文件
+    /// </summary>
+    /// <param name="obj"></param>
     public static void SetConfig(ConfigNettyObj obj)
         => ConfigUtils.Save(obj);
-
+    /// <summary>
+    /// 开启Netty服务器
+    /// </summary>
+    /// <returns></returns>
     public static Task StartServer()
         => NettyServer.Start();
-
+    /// <summary>
+    /// 停止Netty服务器
+    /// </summary>
+    /// <returns></returns>
     public static Task StopServer()
          => NettyServer.Stop();
-
+    /// <summary>
+    /// 获取Netty服务器状态
+    /// </summary>
     public static bool State
     {
         get

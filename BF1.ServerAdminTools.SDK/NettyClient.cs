@@ -260,7 +260,7 @@ internal class DecodePack
         };
     }
 
-    public static List<string>? List(IByteBuffer buff) 
+    public static List<string>? List(IByteBuffer buff)
     {
         if (!buff.ReadBoolean())
             return null;

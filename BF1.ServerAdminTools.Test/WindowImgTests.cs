@@ -2,11 +2,7 @@
 using BF1.ServerAdminTools.GameImage;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace BF1.ServerAdminTools.Test;
 
@@ -121,7 +117,7 @@ internal class WindowImgTests : IMsgCall
     }
 
     [Test]
-    public void TestJoin() 
+    public void TestJoin()
     {
         Core.Init(this);
         var res = Core.HookInit();
@@ -267,7 +263,7 @@ internal class WindowImgTests : IMsgCall
     }
 
     [Test]
-    public void TestCheck() 
+    public void TestCheck()
     {
         Core.Init(this);
         var res = Core.HookInit();

@@ -29,7 +29,6 @@ namespace BF1.ServerAdminTools.Common.Views
         {
             InitializeComponent();
 
-            MainWindow.ClosingDisposeEvent += MainWindow_ClosingDisposeEvent;
             Loaded += RuleView_Loaded;
 
             CloseRunCheck = FCloseRunKick;
@@ -87,7 +86,15 @@ namespace BF1.ServerAdminTools.Common.Views
         private void LoadRule()
         {
             OtherRule.SelectedItem = null;
+            Team2Rule.SelectedItem = null;
             OtherRule.Items.Clear();
+            Team2Rule.Items.Clear();
+
+            SwitchMapList.Items.Clear();
+            foreach (var item in DataSave.NowRule.SwitchMaps)
+            {
+                SwitchMapList.Items.Add(item);
+            }
 
             NowName.Text = DataSave.NowRule.Name;
 
@@ -124,8 +131,8 @@ namespace BF1.ServerAdminTools.Common.Views
             ScoreNotSwitchMap.Value = DataSave.NowRule.ScoreNotSwitchMap;
             SocreOtherRule.Value = DataSave.NowRule.ScoreOtherRule;
 
-            WhiteListNoKill.IsChecked =  DataSave.NowRule.WhiteListNoKill;
-            WhiteListNoKD.IsChecked =  DataSave.NowRule.WhiteListNoKD;
+            WhiteListNoKill.IsChecked = DataSave.NowRule.WhiteListNoKill;
+            WhiteListNoKD.IsChecked = DataSave.NowRule.WhiteListNoKD;
             WhiteListNoKPM.IsChecked = DataSave.NowRule.WhiteListNoKPM;
             WhiteListNoW.IsChecked = DataSave.NowRule.WhiteListNoW;
 
@@ -141,8 +148,13 @@ namespace BF1.ServerAdminTools.Common.Views
             {
                 SwitchMapSelect2.IsChecked = true;
             }
+            else if (DataSave.NowRule.SwitchMapType == 3)
+            {
+                SwitchMapSelect3.IsChecked = true;
+            }
 
             OtherRule.Items.Add("");
+            Team2Rule.Items.Add("");
 
             var self = DataSave.NowRule.Name.ToLower();
             foreach (var item in DataSave.Rules)
@@ -150,6 +162,7 @@ namespace BF1.ServerAdminTools.Common.Views
                 if (item.Key != self)
                 {
                     OtherRule.Items.Add(item.Value.Name);
+                    Team2Rule.Items.Add(item.Value.Name);
                 }
             }
 
@@ -162,7 +175,24 @@ namespace BF1.ServerAdminTools.Common.Views
                 }
             }
 
-            OtherRule.SelectedItem = DataSave.NowRule.OtherRule;
+            if (!string.IsNullOrEmpty(DataSave.NowRule.Team2Rule))
+            {
+                var temp = DataSave.NowRule.Team2Rule.ToLower();
+                if (!DataSave.Rules.ContainsKey(temp) || DataSave.NowRule.Team2Rule == DataSave.NowRule.Name)
+                {
+                    DataSave.NowRule.Team2Rule = "";
+                }
+            }
+
+            if (!string.IsNullOrWhiteSpace(DataSave.NowRule.OtherRule))
+            {
+                OtherRule.SelectedItem = DataSave.NowRule.OtherRule;
+                DataSave.NowRule.Team2Rule = "";
+            }
+            else
+            {
+                Team2Rule.SelectedItem = DataSave.NowRule.Team2Rule;
+            }
 
             BreakWeaponInfo.Items.Clear();
             foreach (var item in DataSave.NowRule.Custom_WeaponList)
@@ -208,11 +238,6 @@ namespace BF1.ServerAdminTools.Common.Views
 
             DataSave.AutoKickBreakPlayer = false;
             RunAutoKick.IsChecked = false;
-        }
-
-        private void MainWindow_ClosingDisposeEvent()
-        {
-            
         }
 
         private void Button_BreakWeaponInfo_Add_Click(object sender, RoutedEventArgs e)
@@ -546,7 +571,12 @@ namespace BF1.ServerAdminTools.Common.Views
             {
                 DataSave.NowRule.SwitchMapType = 2;
             }
+            else if (SwitchMapSelect3.IsChecked == true)
+            {
+                DataSave.NowRule.SwitchMapType = 3;
+            }
             DataSave.NowRule.OtherRule = OtherRule.SelectedItem as string;
+            DataSave.NowRule.Team2Rule = Team2Rule.SelectedItem as string;
             DataSave.NowRule.ScoreOtherRule = Convert.ToInt32(SocreOtherRule.Value);
 
             if (DataSave.NowRule.MinRank >= DataSave.NowRule.MaxRank && DataSave.NowRule.MinRank != 0 && DataSave.NowRule.MaxRank != 0)
@@ -599,6 +629,12 @@ namespace BF1.ServerAdminTools.Common.Views
             DataSave.NowRule.WhiteListNoKPM = WhiteListNoKPM.IsChecked == true;
             DataSave.NowRule.WhiteListNoW = WhiteListNoW.IsChecked == true;
 
+            DataSave.NowRule.SwitchMaps.Clear();
+            foreach (string item in SwitchMapList.Items)
+            {
+                DataSave.NowRule.SwitchMaps.Add(item);
+            }
+
             Globals.IsRuleSetRight = true;
             isApplyRule = true;
 
@@ -649,9 +685,9 @@ namespace BF1.ServerAdminTools.Common.Views
 
             AppendLog($"========== 禁武器列表 ==========");
             AppendLog("");
-            foreach (var item in DataSave.NowRule.Custom_WeaponList)
+            for (int a = 0; a < DataSave.NowRule.Custom_WeaponList.Count; a++)
             {
-                AppendLog($"武器名称 {DataSave.NowRule.Custom_WeaponList.IndexOf(item) + 1} : {item}");
+                AppendLog($"武器名称 {a + 1} : {DataSave.NowRule.Custom_WeaponList[a]}");
             }
             AppendLog("\n");
 
@@ -700,6 +736,24 @@ namespace BF1.ServerAdminTools.Common.Views
                 AppendLog("\n");
             }
 
+            if (!string.IsNullOrWhiteSpace(DataSave.NowRule.Team2Rule))
+            {
+                AppendLog($"========== 队伍2规则 ==========");
+                AppendLog("");
+                var rule = DataSave.Rules[DataSave.NowRule.Team2Rule.ToLower()];
+
+                AppendLog($"玩家最高击杀限制 : {rule.MaxKill}");
+                AppendLog("");
+
+                AppendLog($"计算玩家KD的最低击杀数 : {rule.KDFlag}");
+                AppendLog($"玩家最高KD限制 : {rule.MaxKD}");
+                for (int a = 0; a < rule.Custom_WeaponList.Count; a++)
+                {
+                    AppendLog($"禁武器名称 {a + 1} : {rule.Custom_WeaponList[a]}");
+                }
+                AppendLog("\n");
+            }
+
             MainWindow.SetOperatingState(1, $"查询当前规则成功，请点击<检查违规玩家>测试是否正确");
         }
 
@@ -731,7 +785,7 @@ namespace BF1.ServerAdminTools.Common.Views
 
             AppendLog("正在检查玩家");
 
-            TaskCheckLife.NeedPause = true;
+            TasCheckPlayerLifeData.NeedPause = true;
             TaskCheckRule.NeedPause = true;
 
             await Task.Run(() =>
@@ -754,7 +808,7 @@ namespace BF1.ServerAdminTools.Common.Views
                         {
                             AppendLog($"正在检查玩家: {item.Name}");
                         });
-                        TaskCheckLife.CheckBreakLifePlayer(item);
+                        TasCheckPlayerLifeData.CheckBreakLifePlayer(item);
 
                     }
                     catch (Exception e)
@@ -767,7 +821,7 @@ namespace BF1.ServerAdminTools.Common.Views
                 TaskCheckRule.StartCheck();
             });
 
-            TaskCheckLife.NeedPause = false;
+            TasCheckPlayerLifeData.NeedPause = false;
             TaskCheckRule.NeedPause = false;
 
             int index = 1;
@@ -1240,6 +1294,42 @@ namespace BF1.ServerAdminTools.Common.Views
         private void EnableMapRule_Checked(object sender, RoutedEventArgs e)
         {
             TaskMapRule.NeedPause = EnableMapRule.IsChecked != true;
+        }
+
+        private void OtherRule_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Team2Rule.SelectedItem = "";
+        }
+
+        private void TeamRule_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            OtherRule.SelectedItem = "";
+        }
+
+        private void Add_Map_List(object sender, RoutedEventArgs e)
+        {
+            if (Globals.ServerInfo == null)
+            {
+                MsgBoxUtils.WarningMsgBox("没有服务器信息");
+                return;
+            }
+
+            var map = new MapSelectWindow(SwitchMapList.Items).Set();
+            if (string.IsNullOrWhiteSpace(map))
+                return;
+
+            if (!MapRuleList.Items.Contains(map))
+            {
+                MapRuleList.Items.Add(map);
+            }
+        }
+
+        private void Delete_Map_List(object sender, RoutedEventArgs e)
+        {
+            if (SwitchMapList.SelectedItem is not string item)
+                return;
+
+            MapRuleList.Items.Remove(item);
         }
     }
 }

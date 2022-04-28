@@ -42,16 +42,22 @@ internal static class ConfigHelper
             string path = ConfigLocal.Log + @"\ErrorLog";
             Directory.CreateDirectory(path);
             path += $@"\#ErrorLog# {DateTime.Now:yyyyMMdd_HH-mm-ss_ffff}.log";
-            File.WriteAllText(path, "2.0.0运行出现错误" + Environment.NewLine + logContent);
+            File.WriteAllText(path, "[Error]2.0.0运行出现错误" + Environment.NewLine + logContent);
         }
         catch (Exception) { }
     }
 
+    /// <summary>
+    /// 保存配置文件
+    /// </summary>
     public static void SaveConfig()
     {
         FileUtils.WriteFile(ConfigLocal.SettingFile, JsonUtils.JsonSeri(Globals.Config));
     }
 
+    /// <summary>
+    /// 加载配置文件
+    /// </summary>
     public static void LoadConfig()
     {
         Directory.CreateDirectory(ConfigLocal.Cache);

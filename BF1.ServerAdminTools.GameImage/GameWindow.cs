@@ -1,32 +1,57 @@
-﻿using BF1.ServerAdminTools.Common;
-
-namespace BF1.ServerAdminTools.GameImage;
+﻿namespace BF1.ServerAdminTools.GameImage;
 
 public static class GameWindow
 {
     private static bool IsOut = true;
     private static bool NeedRun = false;
+    private static bool IsRun = false;
     private static Thread thread;
 
     /// <summary>
     /// 0 1280x720 1 1024x768
     /// </summary>
     public static int XY = 0;
-
+    /// <summary>
+    /// 不判断游戏是否在服务器
+    /// </summary>
     public static void Pause()
     {
         NeedRun = false;
     }
-
+    /// <summary>
+    /// 停止运行
+    /// </summary>
+    public static void Stop()
+    {
+        IsRun = false;
+    }
+    /// <summary>
+    /// 延迟函数
+    /// </summary>
+    /// <param name="a"></param>
+    private static void Delay(int a)
+    {
+        while (a > 0)
+        {
+            a--;
+            Thread.Sleep(1000);
+            if (!NeedRun)
+                return;
+        }
+    }
+    /// <summary>
+    /// 启动判断
+    /// </summary>
     public static void Start()
     {
         if (thread == null)
         {
+            IsRun = true;
             thread = new Thread(() =>
             {
-                while (true)
+                while (IsRun)
                 {
-                    Thread.Sleep(10000);
+                    Delay(10);
                     Run();
                 }
             })
@@ -37,18 +62,21 @@ public static class GameWindow
         }
         NeedRun = true;
     }
-
+    /// <summary>
+    /// 进行加入服务器
+    /// </summary>
     public static void Join()
     {
+        //打开多人
         WindowMessage.ToM();
-        Thread.Sleep(5000);
+        Delay(5);
         int a = 0;
         do
         {
             if (WindowOpenCV.Test1())
                 break;
             a++;
-            Thread.Sleep(5000);
+            Delay(5);
             if (!NeedRun)
                 return;
         } while (a < 5);
@@ -57,12 +85,14 @@ public static class GameWindow
             return;
         }
 
+        //打开服务器列表
         WindowMessage.ToServerList();
-        Thread.Sleep(5000);
+        Delay(5);
         if (!NeedRun)
             return;
+        //打开最爱服务器
         WindowMessage.ToServerList1();
-        Thread.Sleep(5000);
+        Delay(5);
         if (!NeedRun)
             return;
         a = 0;
@@ -71,7 +101,7 @@ public static class GameWindow
             if (WindowOpenCV.Test2())
                 break;
             a++;
-            Thread.Sleep(2000);
+            Delay(2);
             if (!NeedRun)
                 return;
         } while (a < 5);
@@ -79,9 +109,9 @@ public static class GameWindow
         {
             return;
         }
-
+        //打开服务器详情
         WindowMessage.ToServer();
-        Thread.Sleep(5000);
+        Delay(5);
         if (!NeedRun)
             return;
         a = 0;
@@ -90,7 +120,7 @@ public static class GameWindow
             if (WindowOpenCV.Test3())
                 break;
             a++;
-            Thread.Sleep(5000);
+            Delay(5);
             if (!NeedRun)
                 return;
         } while (a < 5);
@@ -98,10 +128,12 @@ public static class GameWindow
         {
             return;
         }
+        //加入服务器
         WindowMessage.JoinServer();
-        Thread.Sleep(5000);
+        Delay(5);
         if (!NeedRun)
             return;
+        //点两次防止没进入
         WindowMessage.JoinServer();
         IsOut = false;
     }

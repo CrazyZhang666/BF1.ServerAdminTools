@@ -14,6 +14,9 @@ internal static class ConfigUtils
     public static string SubscribeCache { get; } = $"{Subscribe}/cache.json";
     public static string Self { get; } = $"{Wpf}/config.json";
 
+    /// <summary>
+    /// 初始化配置文件
+    /// </summary>
     public static void Init()
     {
         Directory.CreateDirectory(ServerRule);
@@ -22,6 +25,9 @@ internal static class ConfigUtils
         NettyCore.InitConfig();
     }
 
+    /// <summary>
+    /// 保存所有规则
+    /// </summary>
     public static void SaveAllRule()
     {
         foreach (var item in DataSave.Rules)
@@ -29,6 +35,10 @@ internal static class ConfigUtils
             FileUtils.WriteFile($"{ServerRule}/{item.Key}.json", JsonUtils.JsonSeri(item.Value));
         }
     }
+
+    /// <summary>
+    /// 加载所有配置
+    /// </summary>
 
     public static void LoadAll()
     {
@@ -125,32 +135,52 @@ internal static class ConfigUtils
         NettyCore.LoadConfig();
     }
 
+    /// <summary>
+    /// 保存配置文件
+    /// </summary>
     public static void SaveConfig()
     {
         FileUtils.WriteFile(Self, JsonUtils.JsonSeri(DataSave.Config));
     }
 
+    /// <summary>
+    /// 删除规则
+    /// </summary>
+    /// <param name="name"></param>
     public static void DeleteRule(string name)
     {
         File.Delete($"{ServerRule}/{name}.json");
     }
 
+    /// <summary>
+    /// 保存当前规则
+    /// </summary>
     public static void SaveRule()
     {
         FileUtils.WriteFile($"{ServerRule}/{DataSave.NowRule.Name.Trim().ToLower()}.json",
             JsonUtils.JsonSeri(DataSave.NowRule));
     }
 
+    /// <summary>
+    /// 保存规则
+    /// </summary>
+    /// <param name="rule"></param>
     public static void SaveRule(ServerRuleObj rule)
     {
         FileUtils.WriteFile($"{ServerRule}/{rule.Name.Trim().ToLower()}.json",
             JsonUtils.JsonSeri(rule));
     }
 
+    /// <summary>
+    /// 保存订阅列表
+    /// </summary>
     public static void SaveSubscribe()
     {
         FileUtils.WriteFile(SubscribeList, JsonUtils.JsonSeri(DataSave.Subscribes));
     }
+    /// <summary>
+    /// 保存订阅缓存
+    /// </summary>
     public static void SaveSubscribeCache()
     {
         FileUtils.WriteFile(SubscribeCache, JsonUtils.JsonSeri(DataSave.SubscribeCache));

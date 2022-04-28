@@ -16,9 +16,12 @@ internal class TaskMapRule
         }.Start();
     }
 
+    /// <summary>
+    /// 地图规则检测
+    /// </summary>
     private static void Run()
     {
-        while (true)
+        while (Tasks.IsRun)
         {
             Thread.Sleep(1000);
             if (!Globals.IsGameRun || !Globals.IsToolInit)

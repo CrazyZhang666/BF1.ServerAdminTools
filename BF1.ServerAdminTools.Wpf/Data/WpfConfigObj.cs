@@ -29,7 +29,7 @@ public record WpfConfigObj
     /// <summary>
     /// 地图规则
     /// </summary>
-    public Dictionary<string, string> MapRule { get; set; }
+    public Dictionary<string, string> MapRule { get; set; } = new();
     /// <summary>
     /// 播放的音频
     /// </summary>

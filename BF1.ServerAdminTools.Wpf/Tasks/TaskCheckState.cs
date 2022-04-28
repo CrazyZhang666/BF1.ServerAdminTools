@@ -14,10 +14,24 @@ internal static class TaskCheckState
             IsBackground = true
         }.Start();
     }
+
+    /// <summary>
+    /// 软件状态更新
+    /// </summary>
     private static void Run()
     {
-        while (true)
+        while (Tasks.IsRun)
         {
+            if (Globals.IsGameRun)
+            {
+                if (!Core.IsGameRun())
+                {
+                    Globals.IsToolInit = false;
+                    Globals.IsGameRun = false;
+                    MsgBoxUtils.WarningMsgBox("游戏已退出，功能已关闭");
+                }
+            }
+
             if (string.IsNullOrEmpty(Globals.Config.GameId))
             {
                 RuleView.CloseRunCheck?.Invoke();

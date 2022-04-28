@@ -1,6 +1,5 @@
 ﻿using BF1.ServerAdminTools.Common.Data;
 using BF1.ServerAdminTools.Common.Helper;
-using BF1.ServerAdminTools.Wpf.Tasks;
 
 namespace BF1.ServerAdminTools.Common.Views
 {
@@ -11,14 +10,7 @@ namespace BF1.ServerAdminTools.Common.Views
     {
         public static Action<BreakRuleInfo>? AddKickOKLog;
         public static Action<BreakRuleInfo>? AddKickNOLog;
-
-        public static Semaphore Semaphore = new(0, 5);
-
-        private Dictionary<long, PlayerData> Player_Team1 = new();
-        private Dictionary<long, PlayerData> Player_Team2 = new();
-
-        private Dictionary<long, PlayerData> New_Player_Team1 = new();
-        private Dictionary<long, PlayerData> New_Player_Team2 = new();
+        public static Action<ChangeTeamInfo>? AddChangeTeamLog;
 
         public LogView()
         {
@@ -26,105 +18,7 @@ namespace BF1.ServerAdminTools.Common.Views
 
             AddKickOKLog = FAddKickOKLog;
             AddKickNOLog = FAddKickNOLog;
-
-            new Thread(Run)
-            {
-                Name = "CheckPlayerChangeTeamThread",
-                IsBackground = true
-            }.Start();
-        }
-
-        private void Run()
-        {
-            while (true)
-            {
-                Semaphore.WaitOne();
-                CheckPlayerChangeTeam();
-                TaskTick.Done();
-            }
-        }
-
-        private void CheckPlayerChangeTeam()
-        {
-            if (string.IsNullOrEmpty(Globals.Config.GameId))
-                return;
-
-            if (Globals.PlayerDatas_Team1.Count == 0 && Globals.PlayerDatas_Team2.Count == 0)
-            {
-                New_Player_Team1.Clear();
-                New_Player_Team2.Clear();
-                Player_Team1.Clear();
-                Player_Team2.Clear();
-                return;
-            }
-
-            // 第一次初始化
-            if (Player_Team1.Count == 0 && Player_Team2.Count == 0)
-            {
-                foreach (var item in Globals.PlayerDatas_Team1)
-                {
-                    Player_Team1.Add(item.Key, item.Value);
-                }
-                foreach (var item in Globals.PlayerDatas_Team2)
-                {
-                    Player_Team2.Add(item.Key, item.Value);
-                }
-                return;
-            }
-
-            New_Player_Team1.Clear();
-            New_Player_Team2.Clear();
-            // 更新保存的数据
-            foreach (var item in Globals.PlayerDatas_Team1)
-            {
-                New_Player_Team1.Add(item.Key, item.Value);
-            }
-            foreach (var item in Globals.PlayerDatas_Team2)
-            {
-                New_Player_Team2.Add(item.Key, item.Value);
-            }
-
-            // 变量保存的队伍1玩家列表
-            foreach (var item in New_Player_Team1)
-            {
-                if (Player_Team2.ContainsKey(item.Key))
-                {
-                    AddChangeTeamLog(new ChangeTeamInfo()
-                    {
-                        Rank = item.Value.Rank,
-                        Name = item.Value.Name,
-                        PersonaId = item.Value.PersonaId,
-                        Status = "从 队伍2 更换到 队伍1"
-                    });
-                }
-            }
-
-            // 变量保存的队伍2玩家列表
-            foreach (var item in New_Player_Team2)
-            {
-                if (Player_Team1.ContainsKey(item.Key))
-                {
-                    AddChangeTeamLog(new ChangeTeamInfo()
-                    {
-                        Rank = item.Value.Rank,
-                        Name = item.Value.Name,
-                        PersonaId = item.Value.PersonaId,
-                        Status = "从 队伍1 更换到 队伍2"
-                    });
-                }
-            }
-
-            Player_Team1.Clear();
-            Player_Team2.Clear();
-            // 更新保存的数据
-            foreach (var item in New_Player_Team1)
-            {
-                Player_Team1.Add(item.Key, item.Value);
-            }
-            foreach (var item in New_Player_Team2)
-            {
-                Player_Team2.Add(item.Key, item.Value);
-            }
+            AddChangeTeamLog = FAddChangeTeamLog;
         }
 
         /////////////////////////////////////////////////////
@@ -184,7 +78,7 @@ namespace BF1.ServerAdminTools.Common.Views
             });
         }
 
-        private void AddChangeTeamLog(ChangeTeamInfo info)
+        private void FAddChangeTeamLog(ChangeTeamInfo info)
         {
             Application.Current.Dispatcher.BeginInvoke(() =>
             {

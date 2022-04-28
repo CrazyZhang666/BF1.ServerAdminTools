@@ -5,22 +5,25 @@ using BF1.ServerAdminTools.Common.Utils;
 
 namespace BF1.ServerAdminTools.Wpf.Tasks;
 
-internal static class TaskCheckLife
+internal static class TasCheckPlayerLifeData
 {
     public static bool NeedPause;
     public static void Start()
     {
-        new Thread(AutoKickLifeBreakPlayer)
+        new Thread(Run)
         {
-            Name = "TaskAutoKickLife",
+            Name = "TasCheckPlayerLifeData",
             IsBackground = true
         }.Start();
     }
 
-    private static void AutoKickLifeBreakPlayer()
+    /// <summary>
+    /// 检查玩家生涯
+    /// </summary>
+    private static void Run()
     {
         List<PlayerData> players = new();
-        while (true)
+        while (Tasks.IsRun)
         {
             while (NeedPause)
             {
@@ -45,17 +48,11 @@ internal static class TaskCheckLife
 
                 try
                 {
-                    foreach (var item in players)
-                    {
-                        if (NeedPause)
-                            continue;
-                        CheckBreakLifePlayer(item);
-                    }
+                    Parallel.ForEach(players, CheckBreakLifePlayer);
                 }
                 catch (Exception e)
                 {
                     Core.LogError("生涯数据获取错误", e);
-                    MsgBoxUtils.ErrorMsgBox("生涯数据获取错误", e);
                 }
                 Thread.Sleep(20000);
             }
@@ -63,7 +60,8 @@ internal static class TaskCheckLife
     }
     public static void CheckBreakLifePlayer(PlayerData data)
     {
-        // 跳过管理员
+        if (NeedPause)
+            return;
         //管理员
         if (Globals.RspInfo != null)
         {
@@ -73,6 +71,9 @@ internal static class TaskCheckLife
                 if (Globals.RspInfo.adminList.FindIndex(a => a.personaId == data.PersonaId.ToString()) != -1)
                     return;
         }
+
+        if (Globals.LocalPlayer.PersonaId == data.PersonaId)
+            return;
 
         // 跳过白名单玩家
         if (DataSave.NowRule.Custom_WhiteList.Contains(data.Name))
@@ -122,14 +123,15 @@ internal static class TaskCheckLife
 
         var res2 = ServerAPI.GetVehiclesByPersonaId(data.PersonaId.ToString()).Result;
 
-        foreach (var item in res2.Obj.result)
-        {
-            foreach (var item1 in item.vehicles)
+        if (res2.IsSuccess)
+            foreach (var item in res2.Obj.result)
             {
-                if (weaponStar < (int)item1.stats.values.kills)
-                    weaponStar = (int)item1.stats.values.kills;
+                foreach (var item1 in item.vehicles)
+                {
+                    if (weaponStar < (int)item1.stats.values.kills)
+                        weaponStar = (int)item1.stats.values.kills;
+                }
             }
-        }
 
         weaponStar /= 100;
         vehicleStar /= 100;

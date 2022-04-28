@@ -36,7 +36,7 @@ internal static class MemoryHook
         }
     }
 
-    private static bool TestHook(Process process) 
+    private static bool TestHook(Process process)
     {
         windowHandle = process.MainWindowHandle;
         LoggerHelper.Info(msg: $"目标程序窗口句柄 {windowHandle}");

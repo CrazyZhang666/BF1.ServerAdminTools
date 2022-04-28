@@ -52,6 +52,9 @@ public static class WindowMessage
         mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
     }
 
+    /// <summary>
+    /// 返回主菜单
+    /// </summary>
     public static void ToMain()
     {
         Core.SetForegroundWindow();
@@ -122,7 +125,7 @@ public static class WindowMessage
         if (GameWindow.XY == 0)
             Click(650, 440);
         else if (GameWindow.XY == 1)
-            Click(500, 350);
+            Click(500, 440);
     }
     /// <summary>
     /// 点击上线
@@ -132,6 +135,6 @@ public static class WindowMessage
         if (GameWindow.XY == 0)
             Click(650, 450);
         else if (GameWindow.XY == 1)
-            Click(500, 360);
+            Click(500, 440);
     }
 }

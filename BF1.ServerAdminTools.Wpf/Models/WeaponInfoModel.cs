@@ -5,6 +5,9 @@ namespace BF1.ServerAdminTools.Common.Models;
 public class WeaponInfoModel : ObservableObject
 {
     private string english;
+    /// <summary>
+    /// 英文名
+    /// </summary>
     public string English
     {
         get
@@ -18,6 +21,9 @@ public class WeaponInfoModel : ObservableObject
         }
     }
     private string chinese;
+    /// <summary>
+    /// 中文名
+    /// </summary>
     public string Chinese
     {
         get
@@ -31,6 +37,9 @@ public class WeaponInfoModel : ObservableObject
         }
     }
     private string mark;
+    /// <summary>
+    /// 标记名
+    /// </summary>
     public string Mark
     {
         get

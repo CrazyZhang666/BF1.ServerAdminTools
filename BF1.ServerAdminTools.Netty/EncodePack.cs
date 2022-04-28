@@ -8,26 +8,43 @@ namespace BF1.ServerAdminTools.Netty;
 
 internal static class EncodePack
 {
-    public static IByteBuffer WriteString(this IByteBuffer buff, string data)
+    /// <summary>
+    /// 写字符串
+    /// </summary>
+    /// <param name="buff"></param>
+    /// <param name="data"></param>
+    /// <returns></returns>
+    internal static IByteBuffer WriteString(this IByteBuffer buff, string data)
     {
         byte[] temp = Encoding.UTF8.GetBytes(data);
         buff.WriteInt(temp.Length);
         buff.WriteBytes(temp);
         return buff;
     }
-    public static void State(IByteBuffer buff)
+    /// <summary>
+    /// 写工具状态
+    /// </summary>
+    /// <param name="buff"></param>
+    internal static void State(IByteBuffer buff)
     {
         buff.WriteByte(Globals.IsGameRun ? 0xff : 0x00)
             .WriteByte(Globals.IsToolInit ? 0xff : 0x00);
     }
+    /// <summary>
+    /// 写检查后状态
+    /// </summary>
+    /// <param name="buff"></param>
 
-    public static void Check(IByteBuffer buff)
+    internal static void Check(IByteBuffer buff)
     {
         buff.WriteByte(Core.IsGameRun() ? 0xff : 0x00)
             .WriteByte(Core.HookInit() ? 0xff : 0x00);
     }
-
-    public static void Id(IByteBuffer buff)
+    /// <summary>
+    /// 写登录账户信息
+    /// </summary>
+    /// <param name="buff"></param>
+    internal static void Id(IByteBuffer buff)
     {
         buff.WriteString(Globals.Config.Remid)
             .WriteString(Globals.Config.Sid)
@@ -36,8 +53,11 @@ internal static class EncodePack
             .WriteString(Globals.Config.ServerId)
             .WriteString(Globals.Config.PersistedGameId);
     }
-
-    public static void ServerInfo(IByteBuffer buff)
+    /// <summary>
+    /// 写加入服务器的信息
+    /// </summary>
+    /// <param name="buff"></param>
+    internal static void ServerInfo(IByteBuffer buff)
     {
         buff.WriteString(Globals.ServerHook.ServerName)
             .WriteLong(Globals.ServerHook.ServerID)
@@ -75,8 +95,12 @@ internal static class EncodePack
             buff.WriteBoolean(false);
         }
     }
-
-    public static void Player(IByteBuffer buff, PlayerData player)
+    /// <summary>
+    /// 写玩家信息
+    /// </summary>
+    /// <param name="buff"></param>
+    /// <param name="player"></param>
+    internal static void Player(IByteBuffer buff, PlayerData player)
     {
         buff.WriteBoolean(player.Admin)
             .WriteBoolean(player.VIP)
@@ -95,8 +119,12 @@ internal static class EncodePack
             .WriteFloat(player.KPM)
             .WriteString(player.WeaponS0CH);
     }
-
-    public static void PlayerList(IByteBuffer buff, List<PlayerData> list)
+    /// <summary>
+    /// 写玩家列表
+    /// </summary>
+    /// <param name="buff"></param>
+    /// <param name="list"></param>
+    internal static void PlayerList(IByteBuffer buff, List<PlayerData> list)
     {
         buff.WriteInt(list.Count);
         foreach (var item in list)
@@ -104,8 +132,11 @@ internal static class EncodePack
             Player(buff, item);
         }
     }
-
-    public static void ServerScore(IByteBuffer buff)
+    /// <summary>
+    /// 写服务器计分板数据
+    /// </summary>
+    /// <param name="buff"></param>
+    internal static void ServerScore(IByteBuffer buff)
     {
         if (Globals.ServerInfo == null)
         {
@@ -155,8 +186,11 @@ internal static class EncodePack
             buff.WriteBoolean(value: false);
         }
     }
-
-    public static void ServerMap(IByteBuffer buff)
+    /// <summary>
+    /// 写服务器地图循环列表
+    /// </summary>
+    /// <param name="buff"></param>
+    internal static void ServerMap(IByteBuffer buff)
     {
         if (Globals.ServerInfo == null)
         {
@@ -178,7 +212,10 @@ internal static class EncodePack
             buff.WriteString(ChsUtils.ToSimplifiedChinese(item.mapPrettyName));
         }
     }
-
+    /// <summary>
+    /// 写管理员列表
+    /// </summary>
+    /// <param name="buff"></param>
     internal static void AdminList(IByteBuffer buff)
     {
         if (Globals.ServerInfo == null)
@@ -202,7 +239,10 @@ internal static class EncodePack
             buff.WriteString(item.displayName);
         }
     }
-
+    /// <summary>
+    /// 写VIP列表
+    /// </summary>
+    /// <param name="buff"></param>
     internal static void VipList(IByteBuffer buff)
     {
         if (Globals.ServerInfo == null)

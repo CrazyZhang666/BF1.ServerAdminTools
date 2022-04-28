@@ -18,7 +18,9 @@ internal static class ChatHelper
         WinAPI.Keybd_Event(winVK, WinAPI.MapVirtualKey(winVK, 0), 2, 0);
         Thread.Sleep(delay);
     }
-
+    /// <summary>
+    /// 按下Tab
+    /// </summary>
     public static void KeyTab()
     {
         WinAPI.Keybd_Event(WinVK.TAB, WinAPI.MapVirtualKey(WinVK.TAB, 0), 0, 0);
@@ -26,7 +28,11 @@ internal static class ChatHelper
         WinAPI.Keybd_Event(WinVK.TAB, WinAPI.MapVirtualKey(WinVK.TAB, 0), 2, 0);
         Thread.Sleep(50);
     }
-
+    /// <summary>
+    /// 取字符串长度
+    /// </summary>
+    /// <param name="str"></param>
+    /// <returns></returns>
     public static int GetStrLength(string str)
     {
         if (string.IsNullOrEmpty(str))
@@ -37,7 +43,7 @@ internal static class ChatHelper
         byte[] s = ascii.GetBytes(str);
         for (int i = 0; i < s.Length; i++)
         {
-            if ((int)s[i] == 63)
+            if (s[i] == 63)
             {
                 tempLen += 3;
             }
@@ -50,7 +56,11 @@ internal static class ChatHelper
         return tempLen;
     }
 
-    // 发送中文到战地1聊天框
+    /// <summary>
+    /// 发送文字到战地1聊天框
+    /// </summary>
+    /// <param name="msg"></param>
+    /// <returns></returns>
     public static string SendText2Bf1Game(string msg)
     {
         // 如果内容为空，则跳过

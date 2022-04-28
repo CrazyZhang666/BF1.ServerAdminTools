@@ -45,10 +45,13 @@ internal class TaskKick
         Parallel.ForEachAsync(NeedKick, KickItem).Wait();
         NeedKick.Clear();
     }
+    /// <summary>
+    /// T人
+    /// </summary>
 
     private static void Run()
     {
-        while (true)
+        while (Tasks.IsRun)
         {
             Thread.Sleep(100);
             if (DataSave.AutoKickBreakPlayer)

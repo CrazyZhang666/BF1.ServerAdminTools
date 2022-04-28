@@ -13,12 +13,17 @@ using System.Text;
 
 namespace BF1.ServerAdminTools.Netty;
 
-internal class NettyServer
+internal static class NettyServer 
 {
     private static IEventLoopGroup bossGroup;
     private static IEventLoopGroup workerGroup;
     private static IChannel boundChannel;
+    private static Func<IByteBuffer, IByteBuffer>? TopCall;
     public static bool State { get; private set; }
+    /// <summary>
+    /// 启动netty服务器
+    /// </summary>
+    /// <returns></returns>
     public static async Task Start()
     {
         bossGroup = new MultithreadEventLoopGroup(1);
@@ -41,7 +46,10 @@ internal class NettyServer
         boundChannel = await bootstrap.BindAsync(ConfigUtils.Config.Port);
         State = true;
     }
-
+    /// <summary>
+    /// 停止Netty服务器
+    /// </summary>
+    /// <returns></returns>
     public static async Task Stop()
     {
         if (boundChannel == null)
@@ -50,6 +58,15 @@ internal class NettyServer
         await boundChannel.CloseAsync();
         await boundChannel.DisconnectAsync();
         State = false;
+    }
+
+    /// <summary>
+    /// 设置顶层回调
+    /// </summary>
+    /// <param name="call"></param>
+    public static void SetCallBack(Func<IByteBuffer, IByteBuffer> call)
+    {
+        TopCall = call;
     }
 
     class ServerHandler : ChannelHandlerAdapter
@@ -232,6 +249,13 @@ internal class NettyServer
                             var data = stream.ToArray();
                             buff.WriteInt(data.Length);
                             buff.WriteBytes(data, 0, data.Length);
+                            break;
+                        //顶层回调
+                        case 255:
+                            if (TopCall != null)
+                            {
+                                buff = TopCall.Invoke(buffer);
+                            }
                             break;
                     }
                     await context.WriteAndFlushAsync(buff);

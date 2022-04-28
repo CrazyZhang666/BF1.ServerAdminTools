@@ -84,7 +84,7 @@ public static class Core
         => ConfigHelper.WriteErrorLog(data);
 
     /// <summary>
-    /// 初始化配置文件
+    /// 读取配置文件
     /// </summary>
     public static void ConfigInit()
     {
@@ -100,7 +100,9 @@ public static class Core
             Msg.Error("配置文件读取失败", e);
         }
     }
-
+    /// <summary>
+    /// 保存配置文件
+    /// </summary>
     public static void SaveConfig()
     {
         try
@@ -116,15 +118,31 @@ public static class Core
         }
     }
 
+    /// <summary>
+    /// info
+    /// </summary>
+    /// <param name="data"></param>
     public static void LogInfo(string data)
         => LoggerHelper.Info(data);
 
+    /// <summary>
+    /// error
+    /// </summary>
+    /// <param name="data"></param>
     public static void LogError(string data)
         => LoggerHelper.Error(data);
 
+    /// <summary>
+    /// error
+    /// </summary>
+    /// <param name="data"></param>
+    /// <param name="e"></param>
     public static void LogError(string data, Exception e)
         => LoggerHelper.Error(data, e);
 
+    /// <summary>
+    /// 数据库初始化
+    /// </summary>
     public static void SQLInit()
     {
         try
@@ -140,6 +158,9 @@ public static class Core
         }
     }
 
+    /// <summary>
+    /// 数据库关闭
+    /// </summary>
     public static void SQLClose()
     {
         try
@@ -154,7 +175,10 @@ public static class Core
             Msg.Error("SQLite数据库关闭失败", e);
         }
     }
-
+    /// <summary>
+    /// 初始化内存钩子
+    /// </summary>
+    /// <returns></returns>
     public static bool HookInit()
     {
         try
@@ -178,6 +202,9 @@ public static class Core
         }
         return false;
     }
+    /// <summary>
+    /// 关闭内存钩子
+    /// </summary>
     public static void HookClose()
     {
         try
@@ -192,8 +219,16 @@ public static class Core
             Msg.Error("释放内存钩子错误", e);
         }
     }
+    /// <summary>
+    /// 获取进程ID
+    /// </summary>
+    /// <returns></returns>
     public static int HookGetProcessId()
         => MemoryHook.GetProcessId();
+    /// <summary>
+    /// 给聊天分配内存
+    /// </summary>
+    /// <returns></returns>
     public static bool MsgAllocateMemory()
     {
         try
@@ -210,8 +245,15 @@ public static class Core
         }
         return false;
     }
+    /// <summary>
+    /// 获取聊天内存地址
+    /// </summary>
+    /// <returns></returns>
     public static long MsgGetAllocateMemoryAddress()
         => ChatMsg.GetAllocateMemoryAddress();
+    /// <summary>
+    /// 释放聊天内存
+    /// </summary>
     public static void MsgFreeMemory()
     {
         try
@@ -226,29 +268,62 @@ public static class Core
             Msg.Error("释放中文聊天指针内存成功失败", e);
         }
     }
+    /// <summary>
+    /// 是否开启聊天框
+    /// </summary>
+    /// <returns></returns>
     public static bool MsgGetChatIsOpen()
         => ChatMsg.GetChatIsOpen();
+    /// <summary>
+    /// 获取聊天消息地址
+    /// </summary>
+    /// <returns></returns>
     public static long MsgChatMessagePointer()
         => ChatMsg.ChatMessagePointer();
+    /// <summary>
+    /// 给窗口按下按键
+    /// </summary>
+    /// <param name="key"></param>
     public static void KeyPress(WinVK key)
         => ChatHelper.KeyPress(key, ChatHelper.KeyPressDelay);
+    /// <summary>
+    /// 刷新DNS缓存
+    /// </summary>
     public static void DnsFlushResolverCache()
         => WinAPI.DnsFlushResolverCache();
+    /// <summary>
+    /// 发送文本
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
     public static string SendText(string data)
         => ChatHelper.SendText2Bf1Game(data);
-
+    /// <summary>
+    /// 登录获取session
+    /// </summary>
+    /// <returns></returns>
     public static Task<string> Login()
         => LoginHelper.LoginSessionID();
-
+    /// <summary>
+    /// 设置窗口前置
+    /// </summary>
     public static void SetForegroundWindow()
         => MemoryHook.SetForegroundWindow();
-
+    /// <summary>
+    /// 按下Tab键
+    /// </summary>
     public static void KeyTab()
         => ChatHelper.KeyTab();
-
+    /// <summary>
+    /// 设置按下按键时间间隔
+    /// </summary>
+    /// <param name="data"></param>
     public static void SetKeyPressDelay(int data)
         => ChatHelper.KeyPressDelay = data;
-
+    /// <summary>
+    /// 初始化服务器信息
+    /// </summary>
+    /// <returns></returns>
     public static async Task<RespContent<FullServerDetails>> InitServerInfo()
     {
         if (string.IsNullOrEmpty(Globals.Config.GameId) ||
@@ -284,8 +359,11 @@ public static class Core
 
         return result;
     }
-
-    public static async Task<bool> InitServerDetailed() 
+    /// <summary>
+    /// 初始化服务器详情
+    /// </summary>
+    /// <returns></returns>
+    public static async Task<bool> InitServerDetailed()
     {
         var res = await GTAPI.GetServerDetailed(Globals.Config.GameId);
         if (res.IsSuccess)
@@ -296,16 +374,28 @@ public static class Core
 
         return res.IsSuccess;
     }
-
+    /// <summary>
+    /// 给数据库添加数据
+    /// </summary>
+    /// <param name="sheetName"></param>
+    /// <param name="info"></param>
     public static void AddLog2SQLite(DataShell sheetName, BreakRuleInfo info)
         => SQLiteHelper.AddLog2SQLite(sheetName, info);
-
+    /// <summary>
+    /// 给数据库添加数据
+    /// </summary>
+    /// <param name="info"></param>
     public static void AddLog2SQLite(ChangeTeamInfo info)
         => SQLiteHelper.AddLog2SQLite(info);
-
+    /// <summary>
+    /// 获取内存数据
+    /// </summary>
     public static void Tick()
         => MemoryHook.Tick();
-
+    /// <summary>
+    /// 获取窗口指针
+    /// </summary>
+    /// <returns></returns>
     public static IntPtr GetWindowHandle()
         => MemoryHook.GetWindowHandle();
 }

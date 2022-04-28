@@ -13,9 +13,9 @@ namespace BF1.ServerAdminTools.Common.Views
     /// </summary>
     public partial class AuthView : UserControl
     {
-        private WebView2Window WebView2Window = null;
+        private WebView2Window? WebView2Window = null;
 
-        public static Action _AutoRefreshSID;
+        public static Action AutoRefreshSID;
 
         public AuthView()
         {
@@ -23,25 +23,13 @@ namespace BF1.ServerAdminTools.Common.Views
 
             MainWindow.ClosingDisposeEvent += MainWindow_ClosingDisposeEvent;
 
-            WpfPlot_Main1.Plot.Title("战地1 PC端 亚服周报", true, System.Drawing.Color.Black, 18, "微软雅黑");
-            WpfPlot_Main2.Plot.Title("战地1 PC端 全服周报", true, System.Drawing.Color.Black, 18, "微软雅黑");
-
-            UpdateWpfPlot(WpfPlot_Main1, "Asia");
-            UpdateWpfPlot(WpfPlot_Main2, "ALL");
-
             WpfPlot_Main1.RightClicked -= WpfPlot_Main1.DefaultRightClickEvent;
             WpfPlot_Main2.RightClicked -= WpfPlot_Main2.DefaultRightClickEvent;
 
             WpfPlot_Main1.RightClicked += DeployCustomMenu1;
             WpfPlot_Main2.RightClicked += DeployCustomMenu2;
 
-            var timerAutoRefresh = new Timer();
-            timerAutoRefresh.AutoReset = true;
-            timerAutoRefresh.Interval = 43200000;
-            timerAutoRefresh.Elapsed += TimerAutoRefresh_Elapsed;
-            timerAutoRefresh.Start();
-
-            _AutoRefreshSID = AutoRefresh;
+            AutoRefreshSID = AutoRefresh;
         }
 
         private void MainWindow_ClosingDisposeEvent()
@@ -51,11 +39,11 @@ namespace BF1.ServerAdminTools.Common.Views
 
         private void AutoRefresh()
         {
-            Core.LogInfo($"调用刷新SessionID功能成功");
             TimerAutoRefresh_Elapsed(null, null);
+            Core.LogInfo($"刷新SessionID成功");
         }
 
-        private async void TimerAutoRefresh_Elapsed(object sender, ElapsedEventArgs e)
+        private async void TimerAutoRefresh_Elapsed(object? sender, ElapsedEventArgs e)
         {
             try
             {
@@ -106,9 +94,27 @@ namespace BF1.ServerAdminTools.Common.Views
                 MainWindow.SetOperatingState(3, $"EA连接失败{response.StatusCode}");
             }
 
-            string location = response.Headers.ToList()
-                .Find(x => x.Name == "Location")
-                .Value.ToString();
+            if (response.Headers == null)
+            {
+                MainWindow.SetOperatingState(3, $"EA连接失败:Headers null");
+                return;
+            }
+
+            var list = response.Headers.Where(a => a.Name == "Location").Select(a => a.Value?.ToString());
+
+            if (!list.Any())
+            {
+                MainWindow.SetOperatingState(3, $"EA连接失败:Location null");
+                return;
+            }
+
+            string location = list.First();
+
+            if (location == null)
+            {
+                MainWindow.SetOperatingState(3, $"EA连接失败:Location null");
+                return;
+            }
 
             if (location.Contains("http://127.0.0.1/success?code="))
             {
@@ -257,7 +263,7 @@ namespace BF1.ServerAdminTools.Common.Views
             }
         }
 
-        private void DeployCustomMenu1(object sender, EventArgs e)
+        private void DeployCustomMenu1(object? sender, EventArgs e)
         {
             MenuItem updateDataMenuItem = new()
             { Header = "更新表格数据" };
@@ -286,7 +292,7 @@ namespace BF1.ServerAdminTools.Common.Views
             WpfPlot_Main1.Refresh();
         }
 
-        private void DeployCustomMenu2(object sender, EventArgs e)
+        private void DeployCustomMenu2(object? sender, EventArgs e)
         {
             MenuItem updateDataMenuItem = new() { Header = "更新表格数据" };
             updateDataMenuItem.Click += UpdateData2;
@@ -311,6 +317,21 @@ namespace BF1.ServerAdminTools.Common.Views
         {
             WpfPlot_Main1.Plot.AxisAuto();
             WpfPlot_Main1.Refresh();
+        }
+
+        private void View_Auth_Loaded(object sender, RoutedEventArgs e)
+        {
+            WpfPlot_Main1.Plot.Title("战地1 PC端 亚服周报", true, System.Drawing.Color.Black, 18, "微软雅黑");
+            WpfPlot_Main2.Plot.Title("战地1 PC端 全服周报", true, System.Drawing.Color.Black, 18, "微软雅黑");
+
+            UpdateWpfPlot(WpfPlot_Main1, "Asia");
+            UpdateWpfPlot(WpfPlot_Main2, "ALL");
+
+            var timerAutoRefresh = new Timer();
+            timerAutoRefresh.AutoReset = true;
+            timerAutoRefresh.Interval = 43200000;
+            timerAutoRefresh.Elapsed += TimerAutoRefresh_Elapsed;
+            timerAutoRefresh.Start();
         }
     }
 }

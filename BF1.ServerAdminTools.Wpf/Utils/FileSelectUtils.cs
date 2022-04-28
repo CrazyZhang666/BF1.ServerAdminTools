@@ -2,6 +2,10 @@
 
 public static class FileSelectUtils
 {
+    /// <summary>
+    /// 选择txt
+    /// </summary>
+    /// <returns></returns>
     public static string? FileSelect()
     {
         var openFileDialog = new Microsoft.Win32.OpenFileDialog()
@@ -17,6 +21,10 @@ public static class FileSelectUtils
         return null;
     }
 
+    /// <summary>
+    /// 选择图片
+    /// </summary>
+    /// <returns></returns>
     public static string? FileSelectPic()
     {
         var openFileDialog = new Microsoft.Win32.OpenFileDialog()

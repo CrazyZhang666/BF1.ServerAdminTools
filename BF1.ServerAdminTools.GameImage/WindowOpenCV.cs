@@ -18,9 +18,7 @@ public static class WindowOpenCV
             dstMat = imgSub.ToMat();
             outArray = OutputArray.Create(srcMat);
             Cv2.MatchTemplate(srcMat, dstMat, outArray, TemplateMatchModes.CCoeffNormed);
-            double minValue, maxValue;
-            OpenCvSharp.Point location, point;
-            Cv2.MinMaxLoc(InputArray.Create(outArray.GetMat()), out minValue, out maxValue, out location, out point);
+            Cv2.MinMaxLoc(InputArray.Create(outArray.GetMat()), out double minValue, out double maxValue, out var location, out var point);
             Console.WriteLine(maxValue);
             if (maxValue >= threshold)
                 return true;
