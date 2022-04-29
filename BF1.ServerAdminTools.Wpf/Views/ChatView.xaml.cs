@@ -66,30 +66,12 @@ namespace BF1.ServerAdminTools.Common.Views
 
             TextBox_InputMsg.Text = defaultMsg[0];
 
-            MainWindow.ClosingDisposeEvent += MainWindow_ClosingDisposeEvent;
-
             timerAutoSendMsg.AutoReset = true;
             timerAutoSendMsg.Elapsed += TimerAutoSendMsg_Elapsed;
 
             timerNoAFK.AutoReset = true;
             timerNoAFK.Interval = 30000;
             timerNoAFK.Elapsed += TimerNoAFK_Elapsed;
-        }
-
-        private void MainWindow_ClosingDisposeEvent()
-        {
-            defaultMsg[RadioButtonWhoIsChecked()] = TextBox_InputMsg.Text;
-
-            DataSave.Config.Msg0 = defaultMsg[0];
-            DataSave.Config.Msg1 = defaultMsg[1];
-            DataSave.Config.Msg2 = defaultMsg[2];
-            DataSave.Config.Msg3 = defaultMsg[3];
-            DataSave.Config.Msg4 = defaultMsg[4];
-            DataSave.Config.Msg5 = defaultMsg[5];
-            DataSave.Config.Msg6 = defaultMsg[6];
-            DataSave.Config.Msg7 = defaultMsg[7];
-            DataSave.Config.Msg8 = defaultMsg[8];
-            DataSave.Config.Msg9 = defaultMsg[9];
         }
 
         private void SetIMEState()
@@ -270,6 +252,24 @@ namespace BF1.ServerAdminTools.Common.Views
                 timerNoAFK.Stop();
                 MainWindow.SetOperatingState(1, "已关闭游戏内挂机防踢功能");
             }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            defaultMsg[RadioButtonWhoIsChecked()] = TextBox_InputMsg.Text;
+
+            DataSave.Config.Msg0 = defaultMsg[0];
+            DataSave.Config.Msg1 = defaultMsg[1];
+            DataSave.Config.Msg2 = defaultMsg[2];
+            DataSave.Config.Msg3 = defaultMsg[3];
+            DataSave.Config.Msg4 = defaultMsg[4];
+            DataSave.Config.Msg5 = defaultMsg[5];
+            DataSave.Config.Msg6 = defaultMsg[6];
+            DataSave.Config.Msg7 = defaultMsg[7];
+            DataSave.Config.Msg8 = defaultMsg[8];
+            DataSave.Config.Msg9 = defaultMsg[9];
+
+            ConfigUtils.SaveConfig();
         }
     }
 }

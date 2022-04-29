@@ -722,15 +722,36 @@
                             <DataTemplate>
                                 <DockPanel Height="40" LastChildFill="True">
                                     <StackPanel VerticalAlignment="Center" DockPanel.Dock="Right">
-                                        <TextBlock
-                                            Margin="0"
-                                            VerticalAlignment="Bottom"
-                                            FontWeight="Bold"
-                                            Text="{Binding Name}" />
-                                        <TextBlock
-                                            Margin="0,3,0,0"
-                                            VerticalAlignment="Top"
-                                            Text="{Binding Reason}" />
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock
+                                                Margin="0"
+                                                VerticalAlignment="Bottom"
+                                                Text="昵称：" />
+                                            <TextBlock
+                                                Margin="0"
+                                                VerticalAlignment="Bottom"
+                                                Text="{Binding Name}" />
+                                            <TextBlock
+                                                Margin="10,0,0,0"
+                                                VerticalAlignment="Bottom"
+                                                Text="数字ID：" />
+                                            <TextBlock
+                                                Margin="0"
+                                                VerticalAlignment="Bottom"
+                                                Text="{Binding ID}" />
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock
+                                                Margin="0,3,0,0"
+                                                VerticalAlignment="Top"
+                                                FontWeight="Bold"
+                                                Text="黑名单理由：" />
+                                            <TextBlock
+                                                Margin="0,3,0,0"
+                                                VerticalAlignment="Top"
+                                                FontWeight="Bold"
+                                                Text="{Binding Reason}" />
+                                        </StackPanel>
                                     </StackPanel>
                                 </DockPanel>
                             </DataTemplate>

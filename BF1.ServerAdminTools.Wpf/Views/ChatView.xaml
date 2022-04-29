@@ -91,6 +91,7 @@
                     Click="SendChsMessage"
                     Content="发送文本到战地1聊天框"
                     Style="{StaticResource ButtonStyle_Web}" />
+                <Button Content="保存文本" Style="{StaticResource ButtonStyle_Web}" Click="Button_Click" />
                 <TextBlock />
                 <TextBlock
                     Margin="5"
