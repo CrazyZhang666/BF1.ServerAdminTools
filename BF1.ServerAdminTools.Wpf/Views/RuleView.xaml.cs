@@ -800,6 +800,9 @@ namespace BF1.ServerAdminTools.Common.Views
                 {
                     team1Player.AddRange(Globals.PlayerDatas_Team2.Values);
                 }
+
+                TaskCheckRule.StartCheck();
+
                 foreach (var item in team1Player)
                 {
                     try
@@ -817,8 +820,6 @@ namespace BF1.ServerAdminTools.Common.Views
                         AppendLog($"检查玩家: {item.Name}生涯失败");
                     }
                 }
-
-                TaskCheckRule.StartCheck();
             });
 
             TasCheckPlayerLifeData.NeedPause = false;
@@ -1298,12 +1299,20 @@ namespace BF1.ServerAdminTools.Common.Views
 
         private void OtherRule_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Team2Rule.SelectedItem = "";
+            if (OtherRule.SelectedItem is not string item)
+                return;
+
+            if (!string.IsNullOrWhiteSpace(item))
+                Team2Rule.SelectedItem = "";
         }
 
         private void TeamRule_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            OtherRule.SelectedItem = "";
+            if (Team2Rule.SelectedItem is not string item)
+                return;
+
+            if (!string.IsNullOrWhiteSpace(item))
+                OtherRule.SelectedItem = "";
         }
 
         private void Add_Map_List(object sender, RoutedEventArgs e)

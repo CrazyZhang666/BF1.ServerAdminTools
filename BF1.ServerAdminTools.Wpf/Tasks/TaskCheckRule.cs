@@ -61,8 +61,6 @@ internal class TaskCheckRule
         {
             foreach (var item in Globals.PlayerDatas_Team1.Values)
             {
-                if (NeedPause)
-                    return;
                 CheckPlayerIsBreakRule(item, rule);
             }
         }
@@ -70,8 +68,6 @@ internal class TaskCheckRule
         {
             foreach (var item in Globals.PlayerDatas_Team1.Values)
             {
-                if (NeedPause)
-                    return;
                 CheckPlayerIsBreakRule(item, DataSave.NowRule);
             }
         }
@@ -82,8 +78,6 @@ internal class TaskCheckRule
         {
             foreach (var item in Globals.PlayerDatas_Team2.Values)
             {
-                if (NeedPause)
-                    return;
                 CheckPlayerIsBreakRule(item, rule1);
             }
         }
@@ -91,8 +85,6 @@ internal class TaskCheckRule
         {
             foreach (var item in Globals.PlayerDatas_Team2.Values)
             {
-                if (NeedPause)
-                    return;
                 CheckPlayerIsBreakRule(item, rule);
             }
         }
@@ -100,8 +92,6 @@ internal class TaskCheckRule
         {
             foreach (var item in Globals.PlayerDatas_Team2.Values)
             {
-                if (NeedPause)
-                    return;
                 CheckPlayerIsBreakRule(item, DataSave.NowRule);
             }
         }
