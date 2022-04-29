@@ -72,9 +72,7 @@ public static class Core
     /// </summary>
     /// <returns>运行结果</returns>
     public static bool IsGameRun()
-    {
-        return ProcessUtils.IsAppRun(Globals.TargetAppName);
-    }
+        => ProcessUtils.IsAppRun();
 
     /// <summary>
     /// 保存错误日志
@@ -184,7 +182,7 @@ public static class Core
         try
         {
             LoggerHelper.Info($"正在初始化内存钩子");
-            var res = MemoryHook.Initialize(Globals.TargetAppName);
+            var res = MemoryHook.Initialize();
             if (res)
             {
                 LoggerHelper.Info($"初始化内存钩子成功");

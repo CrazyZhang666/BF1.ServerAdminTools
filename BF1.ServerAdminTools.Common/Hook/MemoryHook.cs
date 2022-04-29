@@ -11,13 +11,13 @@ internal static class MemoryHook
     private static int processId;
     private static long processBaseAddress;
 
-    public static bool Initialize(string ProcessName)
+    public static bool Initialize()
     {
         try
         {
             Globals.IsToolInit = false;
-            LoggerHelper.Info($"目标程序名称 {ProcessName}");
-            var pArray = Process.GetProcessesByName(ProcessName);
+            LoggerHelper.Info($"目标程序名称 {Globals.TargetAppName}");
+            var pArray = Process.GetProcessesByName(Globals.TargetAppName);
             foreach (var item in pArray)
             {
                 if (TestHook(item))
@@ -50,6 +50,7 @@ internal static class MemoryHook
         LoggerHelper.Info($"目标程序进程句柄 {processHandle}");
         if (process.MainModule != null)
         {
+            process.Exited += Process_Exited;
             processBaseAddress = process.MainModule.BaseAddress.ToInt64();
             LoggerHelper.Info($"目标程序主模块基址 0x{processBaseAddress:x}");
             Globals.IsToolInit = true;
@@ -60,6 +61,11 @@ internal static class MemoryHook
             LoggerHelper.Error($"发生错误，目标程序主模块基址为空");
             return false;
         }
+    }
+
+    private static void Process_Exited(object sender, EventArgs e)
+    {
+        Globals.IsToolInit = false;
     }
 
     public static void CloseHandle()
