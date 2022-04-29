@@ -30,6 +30,9 @@ internal class TaskMapRule
             if (Globals.ServerInfo == null)
                 continue;
 
+            if (NeedPause)
+                continue;
+
             if (DataSave.Config.MapRule.TryGetValue(Globals.ServerInfo.mapNamePretty, out var item))
             {
                 if (DataSave.NowRule.Name.ToLower() == item)

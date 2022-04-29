@@ -68,7 +68,7 @@
                             Margin="10,0,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Checked="EnableMapRule_Checked"
+                            Click="EnableMapRule_Checked"
                             Content="启用地图更换规则"
                             IsChecked="False" />
                     </StackPanel>

@@ -1294,7 +1294,22 @@ namespace BF1.ServerAdminTools.Common.Views
 
         private void EnableMapRule_Checked(object sender, RoutedEventArgs e)
         {
-            TaskMapRule.NeedPause = EnableMapRule.IsChecked != true;
+            if (!TaskMapRule.NeedPause)
+            {
+                TaskMapRule.NeedPause = true;
+                Dispatcher.BeginInvoke(() =>
+                {
+                    EnableMapRule.IsChecked = true;
+                });
+            }
+            else
+            {
+                TaskMapRule.NeedPause = false;
+                Dispatcher.BeginInvoke(() =>
+                {
+                    EnableMapRule.IsChecked = false;
+                });
+            }
         }
 
         private void OtherRule_SelectionChanged(object sender, SelectionChangedEventArgs e)
