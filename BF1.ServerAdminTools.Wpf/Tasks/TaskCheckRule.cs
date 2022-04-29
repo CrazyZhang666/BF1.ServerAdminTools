@@ -57,34 +57,55 @@ internal class TaskCheckRule
             other = DataSave.Rules.TryGetValue(DataSave.NowRule.OtherRule.ToLower(), out rule);
         }
 
-        if (!other || Globals.ServerHook.Team1Score >= Globals.ServerHook.Team2Score)
+        if (other && Globals.ServerHook.Team1Score < Globals.ServerHook.Team2Score)
         {
-            rule = DataSave.NowRule;
+            foreach (var item in Globals.PlayerDatas_Team1.Values)
+            {
+                if (NeedPause)
+                    return;
+                CheckPlayerIsBreakRule(item, rule);
+            }
         }
-
-        foreach (var item in Globals.PlayerDatas_Team1.Values)
+        else
         {
-            if (NeedPause)
-                return;
-            CheckPlayerIsBreakRule(item, DataSave.NowRule);
+            foreach (var item in Globals.PlayerDatas_Team1.Values)
+            {
+                if (NeedPause)
+                    return;
+                CheckPlayerIsBreakRule(item, DataSave.NowRule);
+            }
         }
+        
 
         if (!string.IsNullOrWhiteSpace(DataSave.NowRule.Team2Rule)
             && DataSave.Rules.TryGetValue(DataSave.NowRule.Team2Rule.ToLower(), out var rule1))
         {
-            rule = rule1;
+            foreach (var item in Globals.PlayerDatas_Team2.Values)
+            {
+                if (NeedPause)
+                    return;
+                CheckPlayerIsBreakRule(item, rule1);
+            }
         }
-        else if (!other || Globals.ServerHook.Team1Score <= Globals.ServerHook.Team2Score)
+        else if (other && Globals.ServerHook.Team1Score > Globals.ServerHook.Team2Score)
         {
-            rule = DataSave.NowRule;
+            foreach (var item in Globals.PlayerDatas_Team2.Values)
+            {
+                if (NeedPause)
+                    return;
+                CheckPlayerIsBreakRule(item, rule);
+            }
         }
-
-        foreach (var item in Globals.PlayerDatas_Team2.Values)
+        else
         {
-            if (NeedPause)
-                return;
-            CheckPlayerIsBreakRule(item, rule);
+            foreach (var item in Globals.PlayerDatas_Team2.Values)
+            {
+                if (NeedPause)
+                    return;
+                CheckPlayerIsBreakRule(item, DataSave.NowRule);
+            }
         }
+        
     }
 
     public static void CheckPlayerIsBreakRule(PlayerData playerData, ServerRuleObj rule)

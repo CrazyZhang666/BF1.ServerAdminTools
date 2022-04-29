@@ -190,6 +190,11 @@
                                 TextWrapping="Wrap" />
                             <TextBlock
                                 Margin="0,5,5,5"
+                                Foreground="HotPink"
+                                Text="手动检测违规玩家期间不会生效自动T出"
+                                TextWrapping="Wrap" />
+                            <TextBlock
+                                Margin="0,5,5,5"
                                 Foreground="Green"
                                 Text="提示：在开启自动踢人功能前，请先到【详情】-【获取当前服务器详情数据】，这样可以自动获取当前服务器管理员和服主信息，以免出现无限踢出管理员情况"
                                 TextWrapping="Wrap" />
