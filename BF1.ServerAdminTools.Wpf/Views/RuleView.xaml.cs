@@ -701,6 +701,22 @@ namespace BF1.ServerAdminTools.Common.Views
 
             AppendLog($"========== 白名单列表 ==========");
             AppendLog("");
+            if (DataSave.NowRule.WhiteListNoKill)
+            {
+                AppendLog($"白名单不限制击杀数量");
+            }
+            if (DataSave.NowRule.WhiteListNoKD)
+            {
+                AppendLog($"白名单不限制KD");
+            }
+            if (DataSave.NowRule.WhiteListNoKPM)
+            {
+                AppendLog($"白名单不限制KPM");
+            }
+            if (DataSave.NowRule.WhiteListNoW)
+            {
+                AppendLog($"白名单不限制武器");
+            }
             foreach (var item in DataSave.NowRule.Custom_WhiteList)
             {
                 AppendLog($"玩家ID {DataSave.NowRule.Custom_WhiteList.IndexOf(item) + 1} : {item}");

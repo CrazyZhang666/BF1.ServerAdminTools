@@ -87,11 +87,16 @@
                             Content="文本9" />
                     </WrapPanel>
                 </GroupBox>
-                <Button
-                    Click="SendChsMessage"
-                    Content="发送文本到战地1聊天框"
-                    Style="{StaticResource ButtonStyle_Web}" />
-                <Button Content="保存文本" Style="{StaticResource ButtonStyle_Web}" Click="Button_Click" />
+                <UniformGrid Columns="2">
+                    <Button
+                        Click="SendChsMessage"
+                        Content="发送文本到战地1聊天框"
+                        Style="{StaticResource ButtonStyle_Web}" />
+                    <Button
+                        Click="Button_Click"
+                        Content="保存文本"
+                        Style="{StaticResource ButtonStyle_Web}" />
+                </UniformGrid>
                 <TextBlock />
                 <TextBlock
                     Margin="5"
@@ -182,9 +187,14 @@
                             x:Name="Slider_AutoSendMsg"
                             Margin="5,0,5,5"
                             Maximum="10"
-                            Minimum="3"
+                            Minimum="1"
                             TickFrequency="1"
                             TickPlacement="None" />
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="下次发送倒计时：" />
+                            <TextBlock x:Name="NextTime" Text="N/A" />
+                        </StackPanel>
+
                     </StackPanel>
                 </GroupBox>
                 <CheckBox

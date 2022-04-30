@@ -1,6 +1,6 @@
 ﻿using BF1.ServerAdminTools.Common.Data;
 using BF1.ServerAdminTools.Common.Utils;
-using System.Collections.Concurrent;
+using BF1.ServerAdminTools.Wpf.Tasks;
 
 namespace BF1.ServerAdminTools.Common.Views
 {
@@ -9,14 +9,8 @@ namespace BF1.ServerAdminTools.Common.Views
     /// </summary>
     public partial class ChatView : UserControl
     {
+        public static Action<int>? SetTime;
         private readonly string[] defaultMsg = new string[10];
-
-        private readonly Timer timerAutoSendMsg = new();
-        private readonly Timer timerNoAFK = new();
-
-        private readonly ConcurrentBag<string> queueMsg = new();
-
-        private int queueMsgSleep = 1;
 
         public ICommand SendChsMessageCommand { get; set; }
 
@@ -46,7 +40,7 @@ namespace BF1.ServerAdminTools.Common.Views
             SendChsMessageCommand = new Comm(this);
             InitializeComponent();
 
-            this.DataContext = this;
+            DataContext = this;
 
             defaultMsg[0] = DataSave.Config.Msg0;
             defaultMsg[1] = DataSave.Config.Msg1;
@@ -66,53 +60,15 @@ namespace BF1.ServerAdminTools.Common.Views
 
             TextBox_InputMsg.Text = defaultMsg[0];
 
-            timerAutoSendMsg.AutoReset = true;
-            timerAutoSendMsg.Elapsed += TimerAutoSendMsg_Elapsed;
-
-            timerNoAFK.AutoReset = true;
-            timerNoAFK.Interval = 30000;
-            timerNoAFK.Elapsed += TimerNoAFK_Elapsed;
+            SetTime = FSetTime;
         }
 
-        private void SetIMEState()
+        private void FSetTime(int time)
         {
-            // 设置输入法为英文
-            Application.Current.Dispatcher.Invoke(() =>
+            Dispatcher.Invoke(() =>
             {
-                InputLanguageManager.Current.CurrentInputLanguage = new CultureInfo("en-US");
+                NextTime.Text = $"{time}";
             });
-        }
-
-        private void TimerAutoSendMsg_Elapsed(object? sender, ElapsedEventArgs e)
-        {
-            if (!Globals.IsGameRun)
-                MsgBoxUtils.ErrorMsgBox("游戏还未启动");
-
-            if (!Globals.IsToolInit)
-                MsgBoxUtils.ErrorMsgBox("工具还未正常初始化");
-
-            SetIMEState();
-            Thread.Sleep(50);
-
-            while (queueMsg.Any())
-            {
-                if (queueMsg.TryTake(out var item))
-                {
-                    Core.SendText(item);
-                    Thread.Sleep(queueMsgSleep * 1000);
-                }
-            }
-        }
-
-        private void TimerNoAFK_Elapsed(object? sender, ElapsedEventArgs e)
-        {
-            SetIMEState();
-            Thread.Sleep(50);
-
-            Core.SetForegroundWindow();
-            Thread.Sleep(50);
-
-            Core.KeyTab();
         }
 
         private void SendChsMessage(object sender, RoutedEventArgs e)
@@ -125,7 +81,7 @@ namespace BF1.ServerAdminTools.Common.Views
             if (!Globals.IsToolInit)
                 MsgBoxUtils.ErrorMsgBox("工具还未正常初始化");
 
-            SetIMEState();
+            TaskSendChar.SetIMEState();
             Thread.Sleep(20);
 
             Core.SetKeyPressDelay((int)Slider_KeyPressDelay.Value);
@@ -190,52 +146,54 @@ namespace BF1.ServerAdminTools.Common.Views
 
         private void CheckBox_ActiveAutoSendMsg_Click(object sender, RoutedEventArgs e)
         {
+            TaskSendChar.queueMsg.Clear();
             if (CheckBox_ActiveAutoSendMsg.IsChecked == true)
             {
-                queueMsg.Clear();
-
                 if (CheckBox_DefaultText0 != null && CheckBox_DefaultText0.IsChecked == true)
-                    queueMsg.Add(defaultMsg[0]);
+                    TaskSendChar.queueMsg.Add(defaultMsg[0]);
 
                 if (CheckBox_DefaultText1 != null && CheckBox_DefaultText1.IsChecked == true)
-                    queueMsg.Add(defaultMsg[1]);
+                    TaskSendChar.queueMsg.Add(defaultMsg[1]);
 
                 if (CheckBox_DefaultText2 != null && CheckBox_DefaultText2.IsChecked == true)
-                    queueMsg.Add(defaultMsg[2]);
+                    TaskSendChar.queueMsg.Add(defaultMsg[2]);
 
                 if (CheckBox_DefaultText3 != null && CheckBox_DefaultText3.IsChecked == true)
-                    queueMsg.Add(defaultMsg[3]);
+                    TaskSendChar.queueMsg.Add(defaultMsg[3]);
 
                 if (CheckBox_DefaultText4 != null && CheckBox_DefaultText4.IsChecked == true)
-                    queueMsg.Add(defaultMsg[4]);
+                    TaskSendChar.queueMsg.Add(defaultMsg[4]);
 
                 if (CheckBox_DefaultText5 != null && CheckBox_DefaultText5.IsChecked == true)
-                    queueMsg.Add(defaultMsg[5]);
+                    TaskSendChar.queueMsg.Add(defaultMsg[5]);
 
                 if (CheckBox_DefaultText6 != null && CheckBox_DefaultText6.IsChecked == true)
-                    queueMsg.Add(defaultMsg[6]);
+                    TaskSendChar.queueMsg.Add(defaultMsg[6]);
 
                 if (CheckBox_DefaultText7 != null && CheckBox_DefaultText7.IsChecked == true)
-                    queueMsg.Add(defaultMsg[7]);
+                    TaskSendChar.queueMsg.Add(defaultMsg[7]);
 
                 if (CheckBox_DefaultText8 != null && CheckBox_DefaultText8.IsChecked == true)
-                    queueMsg.Add(defaultMsg[8]);
+                    TaskSendChar.queueMsg.Add(defaultMsg[8]);
 
                 if (CheckBox_DefaultText9 != null && CheckBox_DefaultText9.IsChecked == true)
-                    queueMsg.Add(defaultMsg[9]);
+                    TaskSendChar.queueMsg.Add(defaultMsg[9]);
+
+                if (TaskSendChar.queueMsg.Count == 0)
+                {
+                    MsgBoxUtils.WarningMsgBox("你还没有勾选任何发送的文字");
+                    return;
+                }
 
                 Core.SetKeyPressDelay((int)Slider_KeyPressDelay.Value);
 
-                queueMsgSleep = (int)Slider_AutoSendMsgSleep.Value;
-
-                timerAutoSendMsg.Interval = Slider_AutoSendMsg.Value * 1000 * 60;
-                timerAutoSendMsg.Start();
+                TaskSendChar.SetStart((int)Slider_AutoSendMsg.Value, (int)Slider_AutoSendMsgSleep.Value);
 
                 MainWindow.SetOperatingState(1, "已启用定时发送指定文本功能");
             }
             else
             {
-                timerAutoSendMsg.Stop();
+                TaskSendChar.SetStop();
                 MainWindow.SetOperatingState(1, "已关闭定时发送指定文本功能");
             }
         }
@@ -244,12 +202,12 @@ namespace BF1.ServerAdminTools.Common.Views
         {
             if (CheckBox_ActiveNoAFK.IsChecked == true)
             {
-                timerNoAFK.Start();
+                TaskSendChar.SetAFKStart();
                 MainWindow.SetOperatingState(1, "已启用游戏内挂机防踢功能");
             }
             else
             {
-                timerNoAFK.Stop();
+                TaskSendChar.SetAFKStop();
                 MainWindow.SetOperatingState(1, "已关闭游戏内挂机防踢功能");
             }
         }

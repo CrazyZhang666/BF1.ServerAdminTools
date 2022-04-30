@@ -682,6 +682,10 @@
                                         HorizontalAlignment="Left"
                                         VerticalAlignment="Top"
                                         Content="白名单不限制武器" />
+                                    <TextBlock
+                                        Margin="0,5,5,5"
+                                        Foreground="Green"
+                                        Text="提示：白名单默认没有等级限制和生涯限制" />
                                 </StackPanel>
                             </UniformGrid>
                         </TabItem>

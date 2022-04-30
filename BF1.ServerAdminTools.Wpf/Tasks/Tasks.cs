@@ -15,6 +15,7 @@ internal static class Tasks
         TaskUpdatePlayerList.Start();
         TaskCheckPlayerChangeTeam.Start();
         TaskUpdateState.Start();
+        TaskSendChar.Start();
     }
 
     public static void Stop()
