@@ -201,7 +201,7 @@ internal class TaskCheckRule
         }
 
         // 从武器规则里遍历限制武器名称
-        if (!WhiteList || !DataSave.NowRule.WhiteListNoW)
+        if (!(WhiteList && DataSave.NowRule.WhiteListNoW))
             for (int i = 0; i < rule.Custom_WeaponList.Count; i++)
             {
                 var item = rule.Custom_WeaponList[i];
