@@ -1,5 +1,5 @@
 ﻿<Application
-    x:Class="BF1.ServerAdminTools.Common.App"
+    x:Class="BF1.ServerAdminTools.Wpf.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     StartupUri="AuthWindow.xaml">

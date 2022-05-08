@@ -2,7 +2,7 @@
 using BF1.ServerAdminTools.Common.API.BF1Server;
 using BF1.ServerAdminTools.Common.Data;
 
-namespace BF1.ServerAdminTools.Wpf.Tasks;
+namespace BF1.ServerAdminTools.Wpf.TaskList;
 
 internal static class TasCheckPlayerLifeData
 {

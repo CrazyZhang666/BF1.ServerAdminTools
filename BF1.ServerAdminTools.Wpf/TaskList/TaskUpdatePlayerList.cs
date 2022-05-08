@@ -3,9 +3,9 @@ using BF1.ServerAdminTools.Common.Data;
 using BF1.ServerAdminTools.Common.Extension;
 using BF1.ServerAdminTools.Common.Models;
 using BF1.ServerAdminTools.Common.Utils;
-using BF1.ServerAdminTools.Common.Views;
+using BF1.ServerAdminTools.Wpf.Views;
 
-namespace BF1.ServerAdminTools.Wpf.Tasks;
+namespace BF1.ServerAdminTools.Wpf.TaskList;
 
 internal static class TaskUpdatePlayerList
 {

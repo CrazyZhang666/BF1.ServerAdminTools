@@ -1,30 +1,30 @@
 ﻿using BF1.ServerAdminTools.Common.Helper;
 using BF1.ServerAdminTools.Common.Utils;
 
-namespace BF1.ServerAdminTools.Common.Views
+namespace BF1.ServerAdminTools.Wpf.Views;
+
+/// <summary>
+/// HomeView.xaml 的交互逻辑
+/// </summary>
+public partial class HomeView : UserControl
 {
-    /// <summary>
-    /// HomeView.xaml 的交互逻辑
-    /// </summary>
-    public partial class HomeView : UserControl
+    public HomeView()
     {
-        public HomeView()
-        {
-            InitializeComponent();
+        InitializeComponent();
 
-            //Task.Run(async () =>
-            //{
-            //    string notice = await HttpUtil.HttpClientGET(CoreUtil.Notice_Address);
-            //    string change = await HttpUtil.HttpClientGET(CoreUtil.Change_Address);
+        //Task.Run(async () =>
+        //{
+        //    string notice = await HttpUtil.HttpClientGET(CoreUtil.Notice_Address);
+        //    string change = await HttpUtil.HttpClientGET(CoreUtil.Change_Address);
 
-            //    Dispatcher.Invoke(() =>
-            //    {
-            //        TextBox_Notice.Text = notice;
-            //        TextBox_Change.Text = change;
-            //    });
-            //});
+        //    Dispatcher.Invoke(() =>
+        //    {
+        //        TextBox_Notice.Text = notice;
+        //        TextBox_Change.Text = change;
+        //    });
+        //});
 
-            TextBox_Change.Text =
+        TextBox_Change.Text =
 @"### 2022.4.30
 - 修复崩溃问题
 - 修复切图不生效问题
@@ -106,21 +106,20 @@ namespace BF1.ServerAdminTools.Common.Views
 - 重写跳边检测
 - 重写配置文件数据结构
 ";
-        }
+    }
 
-        private async void MenuItem_RefushNotice_Click(object sender, RoutedEventArgs e)
+    private async void MenuItem_RefushNotice_Click(object sender, RoutedEventArgs e)
+    {
+        Dispatcher.Invoke(() =>
         {
-            Dispatcher.Invoke(() =>
-            {
-                TextBox_Notice.Text = "加载中...";
-            });
+            TextBox_Notice.Text = "加载中...";
+        });
 
-            string notice = await HttpUtil.HttpClientGET(CoreUtils.Notice_Address);
+        string notice = await HttpUtil.HttpClientGET(CoreUtils.Notice_Address);
 
-            Dispatcher.Invoke(() =>
-            {
-                TextBox_Notice.Text = notice;
-            });
-        }
+        Dispatcher.Invoke(() =>
+        {
+            TextBox_Notice.Text = notice;
+        });
     }
 }

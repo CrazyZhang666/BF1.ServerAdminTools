@@ -1,4 +1,4 @@
-﻿namespace BF1.ServerAdminTools.Wpf.Tasks;
+﻿namespace BF1.ServerAdminTools.Wpf.TaskList;
 
 internal static class Tasks
 {

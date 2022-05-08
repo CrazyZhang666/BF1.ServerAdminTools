@@ -5,7 +5,7 @@ using BF1.ServerAdminTools.Common.Utils;
 using BF1.ServerAdminTools.Wpf.Data;
 using BF1.ServerAdminTools.Wpf.Utils;
 
-namespace BF1.ServerAdminTools.Wpf.Tasks;
+namespace BF1.ServerAdminTools.Wpf.TaskList;
 
 internal class TaskCheckRule
 {

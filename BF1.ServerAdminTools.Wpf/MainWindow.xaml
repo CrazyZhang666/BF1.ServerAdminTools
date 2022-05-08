@@ -1,10 +1,10 @@
 ﻿<Window
-    x:Class="BF1.ServerAdminTools.Common.MainWindow"
+    x:Class="BF1.ServerAdminTools.Wpf.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:views="clr-namespace:BF1.ServerAdminTools.Common.Views"
+    xmlns:views="clr-namespace:BF1.ServerAdminTools.Wpf.Views"
     Name="Window_Main"
     Title="战地1服务器管理工具-预览版"
     Width="1920"

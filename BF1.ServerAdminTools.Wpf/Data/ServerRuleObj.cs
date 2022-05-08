@@ -110,6 +110,14 @@ public record ServerRuleObj
     /// 白名单不限制武器
     /// </summary>
     public bool WhiteListNoW { get; set; }
+    /// <summary>
+    /// 白名单不限制武器数量
+    /// </summary>
+    public bool WhiteListNoN { get; set; }
+    /// <summary>
+    /// 武器数量限制
+    /// </summary>
+    public Dictionary<string, WeaponNumberObj> WeaponNumbers { get; set; }
 }
 
 

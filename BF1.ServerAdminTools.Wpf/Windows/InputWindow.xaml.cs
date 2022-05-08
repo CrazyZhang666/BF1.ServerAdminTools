@@ -1,33 +1,32 @@
-﻿namespace BF1.ServerAdminTools.Common.Windows
+﻿namespace BF1.ServerAdminTools.Wpf.Windows;
+
+/// <summary>
+/// InputWindow.xaml 的交互逻辑
+/// </summary>
+public partial class InputWindow : Window
 {
-    /// <summary>
-    /// InputWindow.xaml 的交互逻辑
-    /// </summary>
-    public partial class InputWindow : Window
+    public string Value { get; set; }
+
+    public InputWindow(string title, string text, string value = "")
     {
-        public string Value { get; set; }
+        InitializeComponent();
 
-        public InputWindow(string title, string text, string value = "")
-        {
-            InitializeComponent();
+        this.DataContext = this;
 
-            this.DataContext = this;
+        Title = title;
+        Text.Text = text;
+        Value = value;
+    }
 
-            Title = title;
-            Text.Text = text;
-            Value = value;
-        }
+    public string Set()
+    {
+        ShowDialog();
+        return Value;
+    }
 
-        public string Set()
-        {
-            ShowDialog();
-            return Value;
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
-            return;
-        }
+    private void Button_Click(object sender, RoutedEventArgs e)
+    {
+        Close();
+        return;
     }
 }

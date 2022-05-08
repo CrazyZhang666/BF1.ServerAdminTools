@@ -100,7 +100,7 @@ public static class CoreUtils
     /// <returns></returns>
     public static double DiffSeconds(DateTime startTime, DateTime endTime)
     {
-        TimeSpan secondSpan = new TimeSpan(endTime.Ticks - startTime.Ticks);
+        TimeSpan secondSpan = new(endTime.Ticks - startTime.Ticks);
         return secondSpan.TotalSeconds;
     }
 }
