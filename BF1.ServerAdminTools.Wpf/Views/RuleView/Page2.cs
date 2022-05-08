@@ -245,7 +245,7 @@ public partial class RuleView
 
         MainWindow.SetOperatingState(1, "已设置限制组");
     }
-    private void AddNumberList(object sender, RoutedEventArgs e) 
+    private void AddNumberList(object sender, RoutedEventArgs e)
     {
         var name = new InputWindow("新建限制组名字", "输入限制组名字").Set();
         if (string.IsNullOrWhiteSpace(name))
@@ -263,7 +263,7 @@ public partial class RuleView
             Name = name
         };
         LoadWeaponNumber(namel);
-        NumberList.Items.Add(new WeaponNumberModel() 
+        NumberList.Items.Add(new WeaponNumberModel()
         {
             Name = name
         });

@@ -146,7 +146,7 @@ internal static class TasCheckPlayerLifeData
             {
                 Name = data.Name,
                 PersonaId = data.PersonaId,
-                Reason = $"Life KD Limit {DataSave.NowRule.LifeMaxKD:0.00}",
+                Reason = $"Life KD limit {DataSave.NowRule.LifeMaxKD:0.00}",
                 Type = BreakType.Life_KD_Limit
             });
 
@@ -160,7 +160,7 @@ internal static class TasCheckPlayerLifeData
             {
                 Name = data.Name,
                 PersonaId = data.PersonaId,
-                Reason = $"Life KPM Limit {DataSave.NowRule.LifeMaxKPM:0.00}",
+                Reason = $"Life KPM limit {DataSave.NowRule.LifeMaxKPM:0.00}",
                 Type = BreakType.Life_KPM_Limit
             });
 
@@ -174,7 +174,7 @@ internal static class TasCheckPlayerLifeData
             {
                 Name = data.Name,
                 PersonaId = data.PersonaId,
-                Reason = $"Life Weapon Star Limit {DataSave.NowRule.LifeMaxWeaponStar:0}",
+                Reason = $"Life weapon star limit {DataSave.NowRule.LifeMaxWeaponStar:0}",
                 Type = BreakType.Life_Weapon_Star_Limit
             });
 
@@ -188,7 +188,7 @@ internal static class TasCheckPlayerLifeData
             {
                 Name = data.Name,
                 PersonaId = data.PersonaId,
-                Reason = $"Life Vehicle Star Limit {DataSave.NowRule.LifeMaxVehicleStar:0}",
+                Reason = $"Life vehicle star limit {DataSave.NowRule.LifeMaxVehicleStar:0}",
                 Type = BreakType.Life_Vehicle_Star_Limit
             });
 

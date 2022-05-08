@@ -1,5 +1,4 @@
-﻿using BF1.ServerAdminTools.Common.Data;
-using BF1.ServerAdminTools.Common.Utils;
+﻿using BF1.ServerAdminTools.Common.Utils;
 using BF1.ServerAdminTools.Wpf.Data;
 using RestSharp;
 

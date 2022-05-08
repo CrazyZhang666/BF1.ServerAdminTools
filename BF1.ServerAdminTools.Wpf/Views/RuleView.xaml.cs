@@ -1,14 +1,7 @@
-﻿using BF1.ServerAdminTools.Common;
-using BF1.ServerAdminTools.Common.API.BF1Server;
-using BF1.ServerAdminTools.Common.API.BF1Server.RespJson;
-using BF1.ServerAdminTools.Common.Data;
-using BF1.ServerAdminTools.Common.Helper;
-using BF1.ServerAdminTools.Wpf.Models;
+﻿using BF1.ServerAdminTools.Common.Data;
 using BF1.ServerAdminTools.Common.Utils;
 using BF1.ServerAdminTools.Wpf.Data;
-using BF1.ServerAdminTools.Wpf.TaskList;
-using BF1.ServerAdminTools.Wpf.Utils;
-using BF1.ServerAdminTools.Wpf.Windows;
+using BF1.ServerAdminTools.Wpf.Models;
 
 namespace BF1.ServerAdminTools.Wpf.Views;
 
@@ -240,7 +233,7 @@ public partial class RuleView : UserControl
         NumberList.Items.Clear();
         foreach (var item in DataSave.NowRule.WeaponNumbers.Values)
         {
-            NumberList.Items.Add(new WeaponNumberModel 
+            NumberList.Items.Add(new WeaponNumberModel
             {
                 Name = item.Name,
                 Count = item.Count

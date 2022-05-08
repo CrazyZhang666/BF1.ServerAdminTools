@@ -8,16 +8,16 @@ public class WeaponNumberModel : ObservableObject
     /// <summary>
     /// 规则名字
     /// </summary>
-    public string Name 
+    public string Name
     {
         get { return _name; }
-        set { _name = value; OnPropertyChanged(); } 
+        set { _name = value; OnPropertyChanged(); }
     }
     private int _count;
     /// <summary>
     /// 限制数量
     /// </summary>
-    public int Count 
+    public int Count
     {
         get { return _count; }
         set { _count = value; OnPropertyChanged(); }

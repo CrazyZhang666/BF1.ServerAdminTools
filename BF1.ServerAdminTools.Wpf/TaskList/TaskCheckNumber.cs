@@ -22,7 +22,7 @@ internal static class TaskCheckNumber
         }.Start();
     }
 
-    private static void Run() 
+    private static void Run()
     {
         while (Tasks.IsRun)
         {
@@ -45,7 +45,7 @@ internal static class TaskCheckNumber
         Team1Weapon.Clear();
     }
 
-    private static void CheckTeam(List<long> obj, WeaponNumberObj item, ICollection<PlayerData> list) 
+    private static void CheckTeam(List<long> obj, WeaponNumberObj item, ICollection<PlayerData> list)
     {
         foreach (var item1 in list)
         {
@@ -146,7 +146,7 @@ internal static class TaskCheckNumber
         }
     }
 
-    private static bool WhiteList(PlayerData playerData) 
+    private static bool WhiteList(PlayerData playerData)
     {
         //白名单
         if (DataSave.NowRule.Custom_WhiteList.Contains(playerData.Name))
@@ -167,7 +167,7 @@ internal static class TaskCheckNumber
         return false;
     }
 
-    private static bool IsEmpty(PlayerData playerData) 
+    private static bool IsEmpty(PlayerData playerData)
     {
         return string.IsNullOrWhiteSpace(playerData.WeaponS0) &&
             string.IsNullOrWhiteSpace(playerData.WeaponS1) &&
@@ -179,7 +179,7 @@ internal static class TaskCheckNumber
             string.IsNullOrWhiteSpace(playerData.WeaponS7);
     }
 
-    private static bool IsInGroup(List<string> list, PlayerData playerData) 
+    private static bool IsInGroup(List<string> list, PlayerData playerData)
     {
         foreach (var item in list)
         {

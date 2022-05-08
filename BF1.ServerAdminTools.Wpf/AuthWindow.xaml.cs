@@ -1,6 +1,5 @@
 ﻿using BF1.ServerAdminTools.Common;
 using BF1.ServerAdminTools.Common.Data;
-using BF1.ServerAdminTools.Common.Helper;
 using BF1.ServerAdminTools.Common.Utils;
 using BF1.ServerAdminTools.Wpf.Helper;
 using BF1.ServerAdminTools.Wpf.Utils;

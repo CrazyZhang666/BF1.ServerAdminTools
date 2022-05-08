@@ -14,7 +14,7 @@ namespace BF1.ServerAdminTools.Wpf.Views;
 
 public partial class RuleView
 {
-    private void Page1Load() 
+    private void Page1Load()
     {
         foreach (var item in DataSave.Rules)
         {
@@ -205,7 +205,7 @@ public partial class RuleView
 
         RuleLog.Clear();
 
-        AppendLog($"===== 操作时间 =====\n{ DateTime.Now:yyyy/MM/dd HH:mm:ss}\n");
+        AppendLog($"===== 操作时间 =====\n{DateTime.Now:yyyy/MM/dd HH:mm:ss}\n");
 
         DataSave.NowRule.MaxKill = Convert.ToInt32(MaxKill.Value);
         DataSave.NowRule.KDFlag = Convert.ToInt32(KDFlag.Value);
@@ -494,7 +494,7 @@ public partial class RuleView
 
             TaskCheckRule.StartCheck();
 
-            Parallel.ForEach(team1Player, (a, b) => 
+            Parallel.ForEach(team1Player, (a, b) =>
             {
                 try
                 {
