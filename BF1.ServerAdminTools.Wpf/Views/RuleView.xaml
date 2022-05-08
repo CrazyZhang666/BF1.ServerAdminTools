@@ -56,9 +56,9 @@
                                 </ListView.View>
                                 <ListView.ContextMenu>
                                     <ContextMenu>
-                                        <MenuItem Click="Add_Rule" Header="添加" />
-                                        <MenuItem Click="Delete_Rule" Header="删除" />
-                                        <MenuItem Click="Load_Rule" Header="加载" />
+                                        <MenuItem Click="AddRule" Header="添加" />
+                                        <MenuItem Click="DeleteRule" Header="删除" />
+                                        <MenuItem Click="LoadRule" Header="加载" />
                                     </ContextMenu>
                                 </ListView.ContextMenu>
                             </ListView>
@@ -72,7 +72,7 @@
                                     Margin="10,0,0,0"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Top"
-                                    Click="EnableMapRule_Checked"
+                                    Click="EnableMapRuleChecked"
                                     Content="启用地图更换规则"
                                     IsChecked="False" />
                             </StackPanel>
@@ -99,9 +99,9 @@
                                 </ListView.View>
                                 <ListView.ContextMenu>
                                     <ContextMenu>
-                                        <MenuItem Click="Add_Map_Rule" Header="添加" />
-                                        <MenuItem Click="Delete_Map_Rule" Header="删除" />
-                                        <MenuItem Click="Load_Map_Rule" Header="修改" />
+                                        <MenuItem Click="AddMapRule" Header="添加" />
+                                        <MenuItem Click="DeleteMapRule" Header="删除" />
+                                        <MenuItem Click="LoadMapRule" Header="修改" />
                                     </ContextMenu>
                                 </ListView.ContextMenu>
                             </ListView>
@@ -146,9 +146,8 @@
                                 </Hyperlink>
                             </TextBlock>
                             <Button
-                                x:Name="Button_OpenConfigurationFolder"
                                 Margin="0,5,5,5"
-                                Click="Button_OpenConfigurationFolder_Click"
+                                Click="OpenConfigurationFolderClick"
                                 Content="打开配置文件夹"
                                 Style="{StaticResource ButtonStyle_Web}" />
                         </StackPanel>
@@ -158,23 +157,13 @@
                                     <Setter Property="Margin" Value="0,5,5,0" />
                                 </Style>
                             </StackPanel.Resources>
-                            <Button
-                                x:Name="Button_ApplyRule"
-                                Click="Button_ApplyRule_Click"
-                                Content="应用当前规则" />
-                            <Button
-                                x:Name="Button_QueryRule"
-                                Click="Button_QueryRule_Click"
-                                Content="查询当前规则" />
+                            <Button Click="ApplyRuleClick" Content="应用当前规则" />
+                            <Button Click="QueryRuleClick" Content="查询当前规则" />
                             <TextBlock />
+                            <Button Click="CheckBreakRulePlayerClick" Content="检查违规玩家" />
                             <Button
-                                x:Name="Button_CheckBreakRulePlayer"
-                                Click="Button_CheckBreakRulePlayer_Click"
-                                Content="检查违规玩家" />
-                            <Button
-                                x:Name="Button_ManualKickBreakRulePlayer"
                                 Margin="0,5,5,0"
-                                Click="Button_ManualKickBreakRulePlayer_Click"
+                                Click="ManualKickBreakRulePlayerClick"
                                 Content="手动踢出全部违规玩家"
                                 Style="{StaticResource ButtonStyle_WebRed}" />
                             <TextBlock />
@@ -188,7 +177,7 @@
                                 x:Name="RunAutoKick"
                                 Margin="10"
                                 HorizontalAlignment="Center"
-                                Click="CheckBox_RunAutoKick_Click"
+                                Click="RunAutoKickClick"
                                 IsChecked="False"
                                 Style="{StaticResource CheckBox_Slider}" />
                             <TextBlock />
@@ -437,8 +426,8 @@
                                             </ListView.View>
                                             <ListView.ContextMenu>
                                                 <ContextMenu>
-                                                    <MenuItem Click="Add_Map_List" Header="添加" />
-                                                    <MenuItem Click="Delete_Map_List" Header="删除" />
+                                                    <MenuItem Click="AddMapList" Header="添加" />
+                                                    <MenuItem Click="DeleteMapList" Header="删除" />
                                                 </ContextMenu>
                                             </ListView.ContextMenu>
                                         </ListView>
@@ -518,24 +507,21 @@
                                 </ListBox>
                                 <StackPanel Grid.Column="1" VerticalAlignment="Center">
                                     <Button
-                                        x:Name="Button_BreakWeaponInfo_Add"
                                         Margin="5"
                                         Padding="5"
-                                        Click="Button_BreakWeaponInfo_Add_Click"
+                                        Click="BreakWeaponInfoAddClick"
                                         Content="👉"
                                         Style="{StaticResource ButtonStyle_Web}" />
                                     <Button
-                                        x:Name="Button_BreakWeaponInfo_Remove"
                                         Margin="5"
                                         Padding="5"
-                                        Click="Button_BreakWeaponInfo_Remove_Click"
+                                        Click="BreakWeaponInfoRemoveClick"
                                         Content="👈"
                                         Style="{StaticResource ButtonStyle_Web}" />
                                     <Button
-                                        x:Name="Button_BreakWeaponInfo_Clear"
                                         Margin="5"
                                         Padding="5"
-                                        Click="Button_BreakWeaponInfo_Clear_Click"
+                                        Click="BreakWeaponInfoClearClick"
                                         Content="✘"
                                         Style="{StaticResource ButtonStyle_WebRed}" />
                                 </StackPanel>
@@ -572,12 +558,17 @@
                                 </Grid.ColumnDefinitions>
                                 <Grid>
                                     <Grid.RowDefinitions>
+                                        <RowDefinition Height="30" />
                                         <RowDefinition />
                                         <RowDefinition Height="200" />
                                     </Grid.RowDefinitions>
+                                    <StackPanel Grid.Row="0" Orientation="Horizontal">
+                                        <TextBlock Margin="5" Text="当前限制组：" />
+                                        <TextBlock Name="NumberName" Margin="5" />
+                                    </StackPanel>
                                     <ListView
                                         Name="NumberList"
-                                        Grid.Row="0"
+                                        Grid.Row="1"
                                         Margin="5,5,5,10"
                                         Background="Transparent"
                                         BorderBrush="#1E88E5"
@@ -585,23 +576,43 @@
                                         SelectionMode="Single">
                                         <ListView.View>
                                             <GridView>
-                                                <GridViewColumn Width="400" Header="限制组名字" />
-                                                <GridViewColumn Width="200" Header="限制数量" />
+                                                <GridViewColumn
+                                                    Width="400"
+                                                    DisplayMemberBinding="{Binding Name}"
+                                                    Header="限制组名字" />
+                                                <GridViewColumn
+                                                    Width="200"
+                                                    DisplayMemberBinding="{Binding Count}"
+                                                    Header="限制数量" />
                                             </GridView>
                                         </ListView.View>
                                         <ListView.ContextMenu>
                                             <ContextMenu>
-                                                <MenuItem Click="Add_Map_List" Header="添加" />
-                                                <MenuItem Click="Delete_Map_List" Header="删除" />
+                                                <MenuItem Click="AddNumberList" Header="添加" />
+                                                <MenuItem Click="DeleteNumberList" Header="删除" />
+                                                <MenuItem Click="LoadNumberList" Header="修改" />
                                             </ContextMenu>
                                         </ListView.ContextMenu>
                                     </ListView>
-                                    <StackPanel Grid.Row="1" Margin="5">
+                                    <StackPanel Grid.Row="2">
                                         <StackPanel.Resources>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Setter Property="Margin" Value="5" />
                                             </Style>
                                         </StackPanel.Resources>
+                                        <TextBlock Text="{Binding ElementName=NumberWeaponCount, Path=Value, StringFormat=限制数量 : {0:0}, FallbackValue='限制数量 :'}" />
+                                        <Slider
+                                            x:Name="NumberWeaponCount"
+                                            Margin="5,0,5,0"
+                                            Maximum="20"
+                                            Minimum="0"
+                                            TickFrequency="1"
+                                            TickPlacement="None" />
+                                        <Button
+                                            Click="NumberWeaponSetClick"
+                                            Content="设置"
+                                            Style="{StaticResource ButtonStyle_Web}" />
+                                        <TextBlock />
                                         <TextBlock
                                             Margin="0,5,5,5"
                                             Foreground="Green"
@@ -654,24 +665,21 @@
                                     </ListBox>
                                     <StackPanel Grid.Column="1" VerticalAlignment="Center">
                                         <Button
-                                            x:Name="Button_NumberBreakWeaponInfo_Add"
                                             Margin="5"
                                             Padding="5"
-                                            Click="Button_NumberWeaponInfo_Add_Click"
+                                            Click="NumberWeaponAddClick"
                                             Content="👉"
                                             Style="{StaticResource ButtonStyle_Web}" />
                                         <Button
-                                            x:Name="Button_NumberBreakWeaponInfo_Remove"
                                             Margin="5"
                                             Padding="5"
-                                            Click="Button_NumberWeaponInfo_Remove_Click"
+                                            Click="NumberWeaponRemoveClick"
                                             Content="👈"
                                             Style="{StaticResource ButtonStyle_Web}" />
                                         <Button
-                                            x:Name="Button_NumberBreakWeaponInfo_Clear"
                                             Margin="5"
                                             Padding="5"
-                                            Click="Button_NumberWeaponInfo_Clear_Click"
+                                            Click="NumberWeaponClearClick"
                                             Content="✘"
                                             Style="{StaticResource ButtonStyle_WebRed}" />
                                     </StackPanel>
@@ -710,27 +718,23 @@
                                         Text="玩家黑名单" />
                                     <UniformGrid Columns="4" DockPanel.Dock="Bottom">
                                         <Button
-                                            x:Name="Button_Add_BlackList"
                                             Margin="5,5,0,5"
-                                            Click="Button_Add_BlackList_Click"
+                                            Click="AddBlackListClick"
                                             Content="添加"
                                             Style="{StaticResource ButtonStyle_Web}" />
                                         <Button
-                                            x:Name="Button_Remove_BlackList"
                                             Margin="5,5,0,5"
-                                            Click="Button_Remove_BlackList_Click"
+                                            Click="RemoveBlackListClick"
                                             Content="移除"
                                             Style="{StaticResource ButtonStyle_Web}" />
                                         <Button
-                                            x:Name="Button_Input_BlackList"
                                             Margin="5,5,0,5"
-                                            Click="Button_Input_BlackList_Click"
+                                            Click="InputBlackListClick"
                                             Content="导入"
                                             Style="{StaticResource ButtonStyle_Web}" />
                                         <Button
-                                            x:Name="Button_Clear_BlackList"
                                             Margin="5,5,2.5,5"
-                                            Click="Button_Clear_BlackList_Click"
+                                            Click="ClearBlackListClick"
                                             Content="清空"
                                             Style="{StaticResource ButtonStyle_WebRed}" />
                                     </UniformGrid>
@@ -752,27 +756,23 @@
                                         Text="玩家白名单" />
                                     <UniformGrid Columns="4" DockPanel.Dock="Bottom">
                                         <Button
-                                            x:Name="Button_Add_WhiteList"
                                             Margin="2.5,5,0,5"
-                                            Click="Button_Add_WhiteList_Click"
+                                            Click="AddWhiteListClick"
                                             Content="添加"
                                             Style="{StaticResource ButtonStyle_Web}" />
                                         <Button
-                                            x:Name="Button_Remove_WhiteList"
                                             Margin="5,5,0,5"
-                                            Click="Button_Remove_WhiteList_Click"
+                                            Click="RemoveWhiteListClick"
                                             Content="移除"
                                             Style="{StaticResource ButtonStyle_Web}" />
                                         <Button
-                                            x:Name="Button_Input_WhiteList"
                                             Margin="5,5,0,5"
-                                            Click="Button_Input_WhiteList_Click"
+                                            Click="InputWhiteListClick"
                                             Content="导入"
                                             Style="{StaticResource ButtonStyle_Web}" />
                                         <Button
-                                            x:Name="Button_Clear_WhiteList"
                                             Margin="5"
-                                            Click="Button_Clear_WhiteList_Click"
+                                            Click="ClearWhiteListClick"
                                             Content="清空"
                                             Style="{StaticResource ButtonStyle_WebRed}" />
                                     </UniformGrid>
@@ -843,7 +843,7 @@
                     <StackPanel Grid.Column="0" Margin="5">
                         <ListView
                             Name="SubscribeBlackList"
-                            Height="300"
+                            Height="400"
                             Margin="5"
                             Background="Transparent"
                             BorderBrush="#1E88E5"
@@ -867,16 +867,16 @@
                             </ListView.View>
                             <ListView.ContextMenu>
                                 <ContextMenu>
-                                    <MenuItem Click="Add_Subscribe" Header="添加" />
-                                    <MenuItem Click="Delete_Subscribe" Header="删除" />
-                                    <MenuItem Click="See_Subscribe" Header="查看" />
+                                    <MenuItem Click="AddSubscribe" Header="添加" />
+                                    <MenuItem Click="DeleteSubscribe" Header="删除" />
+                                    <MenuItem Click="SeeSubscribe" Header="查看" />
                                 </ContextMenu>
                             </ListView.ContextMenu>
                         </ListView>
                         <StackPanel>
                             <Button
                                 x:Name="UpdateSubscribe"
-                                Click="Button_Click"
+                                Click="UpdateSubscribeClick"
                                 Content="更新黑名单"
                                 Style="{StaticResource ButtonStyle_Web}" />
                         </StackPanel>

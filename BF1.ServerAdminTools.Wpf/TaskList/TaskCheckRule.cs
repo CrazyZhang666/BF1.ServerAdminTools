@@ -7,7 +7,7 @@ using BF1.ServerAdminTools.Wpf.Utils;
 
 namespace BF1.ServerAdminTools.Wpf.TaskList;
 
-internal class TaskCheckRule
+internal static class TaskCheckRule
 {
     public static bool NeedPause;
     public static Semaphore Semaphore = new(0, 5);
@@ -159,7 +159,7 @@ internal class TaskCheckRule
             {
                 Name = playerData.Name,
                 PersonaId = playerData.PersonaId,
-                Reason = $"Kill Limit {rule.MaxKill:0}",
+                Reason = $"Kill limit {rule.MaxKill:0}",
                 Type = BreakType.Kill_Limit
             });
 
@@ -176,7 +176,7 @@ internal class TaskCheckRule
             {
                 Name = playerData.Name,
                 PersonaId = playerData.PersonaId,
-                Reason = $"KD Limit {rule.MaxKD:0.00}",
+                Reason = $"KD limit {rule.MaxKD:0.00}",
                 Type = BreakType.KD_Limit
             });
 
@@ -193,7 +193,7 @@ internal class TaskCheckRule
             {
                 Name = playerData.Name,
                 PersonaId = playerData.PersonaId,
-                Reason = $"KPM Limit {rule.MaxKPM:0.00}",
+                Reason = $"KPM limit {rule.MaxKPM:0.00}",
                 Type = BreakType.KPM_Limit
             });
 
@@ -222,7 +222,7 @@ internal class TaskCheckRule
                         {
                             Name = playerData.Name,
                             PersonaId = playerData.PersonaId,
-                            Reason = $"Weapon Limit K Bullet",
+                            Reason = $"Weapon limit K_Bullet",
                             Type = BreakType.Weapon_Limit
                         });
 
@@ -246,7 +246,7 @@ internal class TaskCheckRule
                         {
                             Name = playerData.Name,
                             PersonaId = playerData.PersonaId,
-                            Reason = $"Weapon Limit RGL Frag",
+                            Reason = $"Weapon limit RGL_Frag",
                             Type = BreakType.Weapon_Limit
                         });
 
@@ -270,7 +270,7 @@ internal class TaskCheckRule
                         {
                             Name = playerData.Name,
                             PersonaId = playerData.PersonaId,
-                            Reason = $"Weapon Limit RGL Smoke",
+                            Reason = $"Weapon limit RGL_Smoke",
                             Type = BreakType.Weapon_Limit
                         });
 
@@ -294,7 +294,7 @@ internal class TaskCheckRule
                         {
                             Name = playerData.Name,
                             PersonaId = playerData.PersonaId,
-                            Reason = $"Weapon Limit RGL HE",
+                            Reason = $"Weapon limit RGL_HE",
                             Type = BreakType.Weapon_Limit
                         });
 
@@ -315,7 +315,7 @@ internal class TaskCheckRule
                     {
                         Name = playerData.Name,
                         PersonaId = playerData.PersonaId,
-                        Reason = $"Weapon Limit {PlayerUtils.GetWeaponShortTxt(item)}",
+                        Reason = $"Weapon limit {PlayerUtils.GetWeaponShortTxt(item)}",
                         Type = BreakType.Weapon_Limit
                     });
 
@@ -334,7 +334,7 @@ internal class TaskCheckRule
             {
                 Name = playerData.Name,
                 PersonaId = playerData.PersonaId,
-                Reason = $"Min Rank Limit {rule.MinRank:0}",
+                Reason = $"Min rank limit {rule.MinRank:0}",
                 Type = BreakType.Min_Rank_Limit
             });
 
@@ -349,7 +349,7 @@ internal class TaskCheckRule
             {
                 Name = playerData.Name,
                 PersonaId = playerData.PersonaId,
-                Reason = $"Max Rank Limit {rule.MaxRank:0}",
+                Reason = $"Max rank limit {rule.MaxRank:0}",
                 Type = BreakType.Max_Rank_Limit
             });
 

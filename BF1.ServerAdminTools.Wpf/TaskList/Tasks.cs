@@ -16,6 +16,7 @@ internal static class Tasks
         TaskCheckPlayerChangeTeam.Start();
         TaskUpdateState.Start();
         TaskSendChar.Start();
+        TaskCheckNumber.Start();
     }
 
     public static void Stop()
@@ -24,6 +25,8 @@ internal static class Tasks
         TaskCheckRule.Semaphore.Release();
         TaskUpdatePlayerList.Semaphore.Release();
         TaskCheckPlayerChangeTeam.Semaphore.Release();
+        TaskCheckNumber.Semaphore.Release();
+        TaskTick.Done();
         TaskTick.Done();
         TaskTick.Done();
         TaskTick.Done();

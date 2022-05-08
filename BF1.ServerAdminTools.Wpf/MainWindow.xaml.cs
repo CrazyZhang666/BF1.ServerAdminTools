@@ -1,5 +1,5 @@
 ﻿using BF1.ServerAdminTools.Common.Data;
-using BF1.ServerAdminTools.Common.Models;
+using BF1.ServerAdminTools.Wpf.Models;
 using BF1.ServerAdminTools.Common.Utils;
 using BF1.ServerAdminTools.Wpf.Views;
 using BF1.ServerAdminTools.GameImage;
@@ -7,6 +7,7 @@ using BF1.ServerAdminTools.Wpf.TaskList;
 using BF1.ServerAdminTools.Wpf.Utils;
 using System.Windows.Media.Imaging;
 using BF1.ServerAdminTools.Common;
+using BF1.ServerAdminTools.Wpf.Data;
 
 namespace BF1.ServerAdminTools.Wpf;
 

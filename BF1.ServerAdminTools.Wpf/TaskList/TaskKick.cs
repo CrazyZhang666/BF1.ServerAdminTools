@@ -2,6 +2,8 @@
 using BF1.ServerAdminTools.Common.API.BF1Server;
 using BF1.ServerAdminTools.Common.Data;
 using BF1.ServerAdminTools.Common.Utils;
+using BF1.ServerAdminTools.Wpf.Data;
+using BF1.ServerAdminTools.Wpf.Utils;
 using BF1.ServerAdminTools.Wpf.Views;
 using System.Collections.Concurrent;
 

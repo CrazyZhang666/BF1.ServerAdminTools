@@ -1,6 +1,6 @@
 ﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
 
-namespace BF1.ServerAdminTools.Common.Models;
+namespace BF1.ServerAdminTools.Wpf.Models;
 
 public class PlayerListModel : ObservableObject, IComparable<PlayerListModel>
 {

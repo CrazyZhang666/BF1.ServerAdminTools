@@ -1,9 +1,10 @@
 ﻿using BF1.ServerAdminTools.Common.Data;
 using BF1.ServerAdminTools.Common.Helper;
+using BF1.ServerAdminTools.Common.Utils;
 using BF1.ServerAdminTools.Netty;
 using BF1.ServerAdminTools.Wpf.Data;
 
-namespace BF1.ServerAdminTools.Common.Utils;
+namespace BF1.ServerAdminTools.Wpf.Utils;
 
 internal static class ConfigUtils
 {

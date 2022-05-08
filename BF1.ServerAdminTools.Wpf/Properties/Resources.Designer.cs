@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace BF1.ServerAdminTools.Common.Properties {
+namespace BF1.ServerAdminTools.Wpf.Properties {
     using System;
     
     

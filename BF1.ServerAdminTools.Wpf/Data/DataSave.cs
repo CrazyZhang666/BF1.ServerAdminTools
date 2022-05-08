@@ -1,6 +1,6 @@
 ﻿using BF1.ServerAdminTools.Wpf.Data;
 
-namespace BF1.ServerAdminTools.Common.Data;
+namespace BF1.ServerAdminTools.Wpf.Data;
 
 public static class DataSave
 {

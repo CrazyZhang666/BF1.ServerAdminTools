@@ -1,11 +1,11 @@
 ﻿using BF1.ServerAdminTools.Common;
-using BF1.ServerAdminTools.Common.Data;
+using BF1.ServerAdminTools.Wpf.Data;
 
 namespace BF1.ServerAdminTools.Wpf.TaskList;
 
 internal class TaskTick
 {
-    private static object Lock = new object();
+    private static object Lock = new();
     private static int Semaphore = 0;
     public static void Start()
     {
@@ -42,10 +42,11 @@ internal class TaskTick
             TaskUpdatePlayerList.Semaphore.Release();
             TaskCheckPlayerChangeTeam.Semaphore.Release();
             TaskCheckRule.Semaphore.Release();
+            TaskCheckNumber.Semaphore.Release();
 
             Thread.Sleep(100);
 
-            while (Semaphore != 3)
+            while (Semaphore < 4)
             {
                 Thread.Sleep(100);
             }

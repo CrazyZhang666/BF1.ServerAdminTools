@@ -3,6 +3,7 @@ using BF1.ServerAdminTools.Common.API.BF1Server;
 using BF1.ServerAdminTools.Common.API.BF1Server.RespJson;
 using BF1.ServerAdminTools.Common.API.GT;
 using BF1.ServerAdminTools.Common.Utils;
+using BF1.ServerAdminTools.Wpf.Utils;
 using BF1.ServerAdminTools.Wpf.Windows;
 using RestSharp;
 using ScottPlot;

@@ -1,8 +1,8 @@
 ﻿using BF1.ServerAdminTools.Common;
-using BF1.ServerAdminTools.Common.Data;
-using BF1.ServerAdminTools.Common.Utils;
 using BF1.ServerAdminTools.GameImage;
 using BF1.ServerAdminTools.Netty;
+using BF1.ServerAdminTools.Wpf.Data;
+using BF1.ServerAdminTools.Wpf.Utils;
 using System.Drawing.Imaging;
 
 namespace BF1.ServerAdminTools.Wpf.Views;

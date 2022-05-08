@@ -1,4 +1,4 @@
-﻿namespace BF1.ServerAdminTools.Common.Utils;
+﻿namespace BF1.ServerAdminTools.Wpf.Utils;
 
 public static class FileSelectUtils
 {

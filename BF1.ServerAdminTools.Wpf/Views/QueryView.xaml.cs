@@ -1,8 +1,9 @@
 ﻿using BF1.ServerAdminTools.Common.API.GT;
 using BF1.ServerAdminTools.Common.API.GT.RespJson;
-using BF1.ServerAdminTools.Common.Models;
+using BF1.ServerAdminTools.Wpf.Models;
 using BF1.ServerAdminTools.Common.Utils;
 using Microsoft.Toolkit.Mvvm.Input;
+using BF1.ServerAdminTools.Wpf.Utils;
 
 namespace BF1.ServerAdminTools.Wpf.Views;
 

@@ -1,6 +1,6 @@
 ﻿using System.Net.Http;
 
-namespace BF1.ServerAdminTools.Common.Helper;
+namespace BF1.ServerAdminTools.Wpf.Helper;
 
 public static class HttpUtil
 {

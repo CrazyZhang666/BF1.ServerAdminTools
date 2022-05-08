@@ -1,5 +1,6 @@
 ﻿using BF1.ServerAdminTools.Common;
 using BF1.ServerAdminTools.Common.Data;
+using BF1.ServerAdminTools.Wpf.Data;
 using BF1.ServerAdminTools.Wpf.Views;
 
 namespace BF1.ServerAdminTools.Wpf.TaskList;
@@ -42,6 +43,7 @@ internal class TaskMapRule
                     continue;
 
                 TaskCheckRule.NeedPause = true;
+                TaskCheckNumber.NeedPause = true;
 
                 if (DataSave.Rules.TryGetValue(item, out var item1))
                 {
@@ -50,6 +52,7 @@ internal class TaskMapRule
                 }
 
                 TaskCheckRule.NeedPause = false;
+                TaskCheckNumber.NeedPause = false;
             }
         }
     }
