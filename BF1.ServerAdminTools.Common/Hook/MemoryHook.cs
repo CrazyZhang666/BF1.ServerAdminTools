@@ -20,12 +20,15 @@ internal static class MemoryHook
             var pArray = Process.GetProcessesByName(Globals.TargetAppName);
             foreach (var item in pArray)
             {
-                if (TestHook(item))
+                try
                 {
-                    return true;
+                    if (TestHook(item))
+                    {
+                        return true;
+                    }
                 }
+                catch { }
             }
-
             LoggerHelper.Error($"发生错误，未发现目标进程");
             return false;
         }

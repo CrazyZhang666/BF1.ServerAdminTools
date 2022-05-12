@@ -25,7 +25,12 @@ public partial class HomeView : UserControl
         //});
 
         TextBox_Change.Text =
-@"### 2022.4.30
+@"###2022.5.12
+发布正式版
+- 修复若干问题
+- 新增武器数量限制
+
+### 2022.4.30
 - 修复崩溃问题
 - 修复切图不生效问题
 - 修复白名单问题

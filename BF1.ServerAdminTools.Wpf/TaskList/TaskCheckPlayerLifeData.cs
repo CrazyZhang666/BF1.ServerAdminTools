@@ -48,12 +48,12 @@ internal static class TasCheckPlayerLifeData
 
                 try
                 {
-                    Parallel.ForEach(players, item =>
+                    foreach (var item in players)
                     {
                         if (NeedPause)
-                            return;
+                            continue;
                         CheckBreakLifePlayer(item);
-                    });
+                    }
                 }
                 catch (Exception e)
                 {
