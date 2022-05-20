@@ -97,6 +97,7 @@ internal static class TaskCheckPlayerChangeTeam
                 {
                     IByteBuffer buff = Unpooled.Buffer();
                     buff.WriteByte(127)
+                        .WriteByte(60)
                         .WriteString($"玩家：{item.Value.Name}\n从 队伍2 更换到 队伍1");
                     NettyCore.SendData(buff);
                 }
@@ -119,6 +120,7 @@ internal static class TaskCheckPlayerChangeTeam
                 {
                     IByteBuffer buff = Unpooled.Buffer();
                     buff.WriteByte(127)
+                        .WriteByte(60)
                         .WriteString($"玩家：{item.Value.Name}\n从 队伍1 更换到 队伍2");
                     NettyCore.SendData(buff);
                 }

@@ -5,6 +5,7 @@ public record PlayerData
     public bool Admin { get; set; }
     public bool VIP { get; set; }
 
+    public bool InCar { get; set; }
     public bool IsSurvival { get; set; }
     public byte Mark { get; set; }
     public int TeamID { get; set; }

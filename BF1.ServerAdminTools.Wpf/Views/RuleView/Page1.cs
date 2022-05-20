@@ -51,8 +51,6 @@ public partial class RuleView
         ConfigUtils.SaveRule(rule);
 
         LoadRule();
-
-        RuleList.SelectedItem = null;
     }
 
     private void LoadRule(object sender, RoutedEventArgs e)
@@ -62,10 +60,11 @@ public partial class RuleView
         if (item == null)
             return;
 
+        RuleList.SelectedItem = null;
+
         DataSave.NowRule = item;
         LoadRule();
         isApplyRule = false;
-        RuleList.SelectedItem = null;
 
         RuleLog.Clear();
 

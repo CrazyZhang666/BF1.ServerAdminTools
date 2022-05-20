@@ -103,7 +103,8 @@ internal class TaskKick
         {
             IByteBuffer buff = Unpooled.Buffer();
             buff.WriteByte(127)
-                .WriteString($"玩家：{item.Value.Name}被T出\n{item.Value.Reason}");
+                .WriteByte(60)
+                .WriteString(item.Value.Reason1);
             NettyCore.SendData(buff);
         }
 
@@ -131,6 +132,7 @@ internal class TaskKick
             {
                 IByteBuffer buff = Unpooled.Buffer();
                 buff.WriteByte(127)
+                    .WriteByte(60)
                     .WriteString($"玩家：{info.Name}踢出失败\n{result.Message}");
                 NettyCore.SendData(buff);
             }

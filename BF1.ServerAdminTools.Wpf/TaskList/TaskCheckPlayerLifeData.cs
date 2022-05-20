@@ -160,6 +160,7 @@ internal static class TasCheckPlayerLifeData
             {
                 Name = data.Name,
                 PersonaId = data.PersonaId,
+                Reason1 = $"玩家{data.Name}生涯KPM超出，被踢出",
                 Reason = $"Life KPM limit {DataSave.NowRule.LifeMaxKPM:0.00}",
                 Type = BreakType.Life_KPM_Limit
             });
@@ -174,6 +175,7 @@ internal static class TasCheckPlayerLifeData
             {
                 Name = data.Name,
                 PersonaId = data.PersonaId,
+                Reason1 = $"玩家{data.Name}生涯武器星级超出，被踢出",
                 Reason = $"Life weapon star limit {DataSave.NowRule.LifeMaxWeaponStar:0}",
                 Type = BreakType.Life_Weapon_Star_Limit
             });
@@ -188,6 +190,7 @@ internal static class TasCheckPlayerLifeData
             {
                 Name = data.Name,
                 PersonaId = data.PersonaId,
+                Reason1 = $"玩家{data.Name}生涯载具星级超出，被踢出",
                 Reason = $"Life vehicle star limit {DataSave.NowRule.LifeMaxVehicleStar:0}",
                 Type = BreakType.Life_Vehicle_Star_Limit
             });

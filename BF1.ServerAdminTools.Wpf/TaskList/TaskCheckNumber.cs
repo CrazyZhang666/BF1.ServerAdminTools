@@ -94,6 +94,7 @@ internal static class TaskCheckNumber
                     {
                         Name = item1.Name,
                         PersonaId = item1.PersonaId,
+                        Reason1 = $"玩家{item1.Name}武器数量限制，被踢出",
                         Reason = $"To many weapon",
                         Type = BreakType.To_Many_Weapon
                     });

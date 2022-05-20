@@ -339,6 +339,7 @@ internal static class MemoryHook
         string clan;
         string name;
         bool survival;
+        bool car = false;
 
         for (int i = 0; i < MaxPlayer; i++)
         {
@@ -365,6 +366,7 @@ internal static class MemoryHook
                 survival = true;
                 if (IsValid(_tdCSE.pClientVehicleEntity))
                 {
+                    car = true; 
                     _tdCSE.pVehicleEntityData = Read<long>(_tdCSE.pClientVehicleEntity + 0x30);
                     _tdCP.WeaponSlot[0] = ReadString(Read<long>(_tdCSE.pVehicleEntityData + 0x2F8), 64);
 
@@ -375,6 +377,7 @@ internal static class MemoryHook
                 }
                 else
                 {
+                    car = false;
                     _tdCSE.pClientSoldierWeaponComponent = Read<long>(_tdCSE.pClientSoldierEntity + 0x698);
                     _tdCSE.m_handler = Read<long>(_tdCSE.pClientSoldierWeaponComponent + 0x8A8);
 
@@ -403,6 +406,7 @@ internal static class MemoryHook
                 Clan = clan,
                 Name = name,
                 IsSurvival = survival,
+                InCar = car,
                 Career = InfoUtils.GetCareerName(_tdCP.Career),
                 CareerCH = InfoUtils.GetCareerChsName(_tdCP.Career),
                 PersonaId = _tdCP.PersonaId,

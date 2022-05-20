@@ -130,6 +130,7 @@ internal static class TaskCheckRule
             {
                 Name = playerData.Name,
                 PersonaId = playerData.PersonaId,
+                Reason1 = $"玩家{playerData.Name}在黑名单中，被踢出",
                 Reason = $"You have been ban on this server",
                 Type = BreakType.Server_Black_List
             });
@@ -144,6 +145,7 @@ internal static class TaskCheckRule
             {
                 Name = playerData.Name,
                 PersonaId = playerData.PersonaId,
+                Reason1 = $"玩家{playerData.Name}在订阅黑名单中，被踢出",
                 Reason = $"You have been ban on this server",
                 Type = BreakType.Server_Black_List
             });
@@ -159,6 +161,7 @@ internal static class TaskCheckRule
             {
                 Name = playerData.Name,
                 PersonaId = playerData.PersonaId,
+                Reason1 = $"玩家{playerData.Name}击杀数超出，被踢出",
                 Reason = $"Kill limit {rule.MaxKill:0}",
                 Type = BreakType.Kill_Limit
             });
@@ -176,6 +179,7 @@ internal static class TaskCheckRule
             {
                 Name = playerData.Name,
                 PersonaId = playerData.PersonaId,
+                Reason1 = $"玩家{playerData.Name}KD超出，被踢出",
                 Reason = $"KD limit {rule.MaxKD:0.00}",
                 Type = BreakType.KD_Limit
             });
@@ -193,6 +197,7 @@ internal static class TaskCheckRule
             {
                 Name = playerData.Name,
                 PersonaId = playerData.PersonaId,
+                Reason1 = $"玩家{playerData.Name}KPM超出，被踢出",
                 Reason = $"KPM limit {rule.MaxKPM:0.00}",
                 Type = BreakType.KPM_Limit
             });
@@ -222,6 +227,7 @@ internal static class TaskCheckRule
                         {
                             Name = playerData.Name,
                             PersonaId = playerData.PersonaId,
+                            Reason1 = $"玩家{playerData.Name}使用限制武器[K 弹]，被踢出",
                             Reason = $"Weapon limit K_Bullet",
                             Type = BreakType.Weapon_Limit
                         });
@@ -246,6 +252,7 @@ internal static class TaskCheckRule
                         {
                             Name = playerData.Name,
                             PersonaId = playerData.PersonaId,
+                            Reason1 = $"玩家{playerData.Name}使用限制武器[步枪手榴弹（破片）]，被踢出",
                             Reason = $"Weapon limit RGL_Frag",
                             Type = BreakType.Weapon_Limit
                         });
@@ -270,6 +277,7 @@ internal static class TaskCheckRule
                         {
                             Name = playerData.Name,
                             PersonaId = playerData.PersonaId,
+                            Reason1 = $"玩家{playerData.Name}使用限制武器[步枪手榴弹（烟雾）]，被踢出",
                             Reason = $"Weapon limit RGL_Smoke",
                             Type = BreakType.Weapon_Limit
                         });
@@ -294,6 +302,7 @@ internal static class TaskCheckRule
                         {
                             Name = playerData.Name,
                             PersonaId = playerData.PersonaId,
+                            Reason1 = $"玩家{playerData.Name}使用限制武器[步枪手榴弹（高爆）]，被踢出",
                             Reason = $"Weapon limit RGL_HE",
                             Type = BreakType.Weapon_Limit
                         });
@@ -315,6 +324,7 @@ internal static class TaskCheckRule
                     {
                         Name = playerData.Name,
                         PersonaId = playerData.PersonaId,
+                        Reason1 = $"玩家{playerData.Name}使用限制武器[{InfoUtils.GetWeaponChsName(item)}]，被踢出",
                         Reason = $"Weapon limit {InfoUtils.GetWeaponShortTxt(item)}",
                         Type = BreakType.Weapon_Limit
                     });
@@ -334,6 +344,7 @@ internal static class TaskCheckRule
             {
                 Name = playerData.Name,
                 PersonaId = playerData.PersonaId,
+                Reason1 = $"玩家{playerData.Name}最小等级[{rule.MinRank:0}]超出，被踢出",
                 Reason = $"Min rank limit {rule.MinRank:0}",
                 Type = BreakType.Min_Rank_Limit
             });
@@ -349,6 +360,7 @@ internal static class TaskCheckRule
             {
                 Name = playerData.Name,
                 PersonaId = playerData.PersonaId,
+                Reason1 = $"玩家{playerData.Name}最大等级[{rule.MaxRank:0}]超出，被踢出",
                 Reason = $"Max rank limit {rule.MaxRank:0}",
                 Type = BreakType.Max_Rank_Limit
             });
@@ -451,54 +463,5 @@ internal static class TaskCheckRule
             await Task.Delay(30000);
             IsSwitching = false;
         });
-    }
-
-    private readonly static List<string> WeaponLock1 = new()
-    {
-        "U_MauserC96AutoPistol", "U_LugerArtillery", "U_PieperCarbine", "U_FrommerStopAuto", "U_C93Carbine", "U_Gewehr98_SI", "U_SawnOffShotgun", "U_M1911_Stock", "U_FN1903stock"
-    };
-
-    private readonly static Dictionary<string, string[]> WeaponLock = new()
-    {
-        { CareerData.FLAMETHROWER.ID, new string[]{ 
-            "U_FlameThrower", "", "", "", "", "", "U_Incendiary_Hero", "U_Club" 
-        } },
-        { CareerData.ANTITANK.ID, new string[]{ 
-            "U_TankGewehr", "U_SawnOffShotgun_FK", "U_TrPeriscope_Elite", "", "", "U_ATGrenade_VhKit", "U_FragGrenade", "U_Club" 
-        } },
-        { CareerData.SENTRY.ID + "1", new string[]{ 
-            "U_MaximMG0815", "", "", "", "", "", "U_FragGrenade", "U_Club" 
-        } },
-        { CareerData.SENTRY.ID + "2", new string[]{ 
-            "U_VillarPerosa", "", "", "", "", "", "U_FragGrenade", "U_Club" 
-        } },
-        { CareerData.RUNNER.ID, new string[]{ 
-            "U_MartiniGrenadeLauncher", "U_SawnOffShotgun_FK", "U_FlareGun_Elite", "", "", "U_SpawnBeacon", "U_SmokeGrenade", "U_ScoutKnife" 
-        } },
-        { CareerData.RAIDER.ID, new string[]{ 
-            "U_RoyalClub", "U_SmithWesson", "U_MedicBag", "U_GasMask", "", "U_SmokeGrenade", "U_FragGrenade", "U_RoyalClub" 
-        } },
-        { CareerData.TANKER.ID, new string[]{
-            "", "U_M1911", "U_Wrench", "U_GasMask", "", "U_ATGrenade", "U_FragGrenade", "U_ScoutKnife"
-        } },
-        { CareerData.PILOT.ID, new string[]{
-            "", "U_M1911", "U_Wrench", "U_GasMask", "", "U_FlareGun", "U_FragGrenade", "U_ScoutKnife"
-        } },
-        { CareerData.CAVALRY.ID, new string[]{
-            "U_WinchesterM1895_Horse", "U_LugerP08_VhKit", "U_AmmoPouch_Cav", "U_GasMask", "", "U_Bandages_Cav", "U_Grenade_AT_Cavalry", "U_Saber_Cav"
-        } }
-    };
-
-    private static void WeaponCheck(PlayerData data) 
-    {
-        if (data.Career == CareerData.SENTRY.ID)
-        {
-            string[] temp = WeaponLock[CareerData.SENTRY.ID + "1"];
-            string[] temp1 = WeaponLock[CareerData.SENTRY.ID + "1"];
-            if (data.WeaponS0 != temp[0] && data.WeaponS0 != temp1[0])
-            { 
-                
-            }
-        }
     }
 }
