@@ -197,7 +197,7 @@ public partial class RuleView : UserControl
             BreakWeaponInfo.Items.Add(new WeaponInfoModel()
             {
                 English = item,
-                Chinese = PlayerUtils.GetWeaponChsName(item)
+                Chinese = InfoUtils.GetWeaponChsName(item)
             });
         }
 

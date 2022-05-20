@@ -48,7 +48,7 @@ internal static class TaskUpdatePlayerList
 
             ScoreView.ServerInfoModel.ServerName = $"服务器名称 : {Globals.ServerHook.ServerName}  |  GameID : {Globals.ServerHook.ServerID} | 地图 : {Globals.ServerHook.ServerMapCH}";
 
-            ScoreView.ServerInfoModel.ServerTime = Globals.ServerHook.ServerTimeS = PlayerUtils.SecondsToMMSS(Globals.ServerHook.ServerTime);
+            ScoreView.ServerInfoModel.ServerTime = Globals.ServerHook.ServerTimeS = InfoUtils.SecondsToMMSS(Globals.ServerHook.ServerTime);
 
             if (Globals.ServerHook.Team1Score >= 0 && Globals.ServerHook.Team1Score <= 1000 &&
                 Globals.ServerHook.Team2Score >= 0 && Globals.ServerHook.Team2Score <= 1000)

@@ -89,7 +89,7 @@ public partial class QueryView : UserControl
                 QueryModel.UserName = all.userName;
                 QueryModel.Rank = $"等级 : {all.rank}";
                 QueryModel.RankImg = all.rankImg;
-                QueryModel.PlayerTime = $"游戏时间 : {PlayerUtils.GetPlayTime(all.secondsPlayed)}";
+                QueryModel.PlayerTime = $"游戏时间 : {InfoUtils.GetPlayTime(all.secondsPlayed)}";
 
                 Update(all);
 
@@ -169,8 +169,8 @@ public partial class QueryView : UserControl
                 {
                     item.weaponName = ChsUtils.ToSimplifiedChinese(item.weaponName);
                     item.image = ImageData.GetTempImagePath(item.image, ImageData.ImageType.weapons2);
-                    item.star = PlayerUtils.GetKillStar(item.kills);
-                    item.time = PlayerUtils.GetPlayTime(item.timeEquipped);
+                    item.star = InfoUtils.GetKillStar(item.kills);
+                    item.time = InfoUtils.GetPlayTime(item.timeEquipped);
 
                     Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
                     {
@@ -188,8 +188,8 @@ public partial class QueryView : UserControl
                 {
                     item.vehicleName = ChsUtils.ToSimplifiedChinese(item.vehicleName);
                     item.image = ImageData.GetTempImagePath(item.image, ImageData.ImageType.vehicles2);
-                    item.star = PlayerUtils.GetKillStar(item.kills);
-                    item.time = PlayerUtils.GetPlayTime(item.timeIn);
+                    item.star = InfoUtils.GetKillStar(item.kills);
+                    item.time = InfoUtils.GetPlayTime(item.timeIn);
 
                     Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
                     {

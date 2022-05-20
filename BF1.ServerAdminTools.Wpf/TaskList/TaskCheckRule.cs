@@ -315,7 +315,7 @@ internal static class TaskCheckRule
                     {
                         Name = playerData.Name,
                         PersonaId = playerData.PersonaId,
-                        Reason = $"Weapon limit {PlayerUtils.GetWeaponShortTxt(item)}",
+                        Reason = $"Weapon limit {InfoUtils.GetWeaponShortTxt(item)}",
                         Type = BreakType.Weapon_Limit
                     });
 

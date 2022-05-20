@@ -186,7 +186,7 @@ public partial class RuleView
             SelectNumberWeaponInfo.Items.Add(new WeaponInfoModel()
             {
                 English = item,
-                Chinese = PlayerUtils.GetWeaponChsName(item)
+                Chinese = InfoUtils.GetWeaponChsName(item)
             });
         }
 

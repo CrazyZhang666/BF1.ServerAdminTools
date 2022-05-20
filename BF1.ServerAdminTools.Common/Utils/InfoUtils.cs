@@ -2,7 +2,7 @@
 
 namespace BF1.ServerAdminTools.Common.Utils;
 
-public static class PlayerUtils
+public static class InfoUtils
 {
     /// <summary>
     /// 小数类型的时间秒，转为mm:ss格式
@@ -197,6 +197,36 @@ public static class PlayerUtils
     public static string GetCareerName(string input)
     {
         foreach (var item in CareerData.AllCareerInfo)
+        {
+            if (item.ID == input)
+            {
+                return item.English;
+            }
+        }
+
+        return input;
+    }
+
+    /// <summary>
+    /// 获取地图名字
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns></returns>
+    public static string GetMapChsName(string input) 
+    {
+        foreach (var item in ServerMapData.AllMapInfo)
+        {
+            if (item.ID == input)
+            {
+                return item.Chinese;
+            }
+        }
+
+        return input;
+    }
+    public static string GetMapName(string input)
+    {
+        foreach (var item in ServerMapData.AllMapInfo)
         {
             if (item.ID == input)
             {

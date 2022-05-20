@@ -96,6 +96,12 @@ public class NettyCore
     public static void SendData(IByteBuffer buffer)
         => NettyServer.SendPackToAll(buffer);
     /// <summary>
+    /// 设置顶部回调
+    /// </summary>
+    /// <param name="call"></param>
+    public static void SendTopCall(Func<IByteBuffer, IByteBuffer> call)
+        => NettyServer.SetCallBack(call);
+    /// <summary>
     /// 获取Netty服务器状态
     /// </summary>
     public static bool State

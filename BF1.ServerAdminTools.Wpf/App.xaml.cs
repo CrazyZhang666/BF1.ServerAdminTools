@@ -1,5 +1,10 @@
 ﻿using BF1.ServerAdminTools.Common;
+using BF1.ServerAdminTools.Common.Helper;
+using BF1.ServerAdminTools.GameImage;
+using BF1.ServerAdminTools.Netty;
 using BF1.ServerAdminTools.Wpf.Utils;
+using DotNetty.Buffers;
+using System.Drawing;
 
 namespace BF1.ServerAdminTools.Wpf;
 
@@ -9,10 +14,12 @@ namespace BF1.ServerAdminTools.Wpf;
 public partial class App : Application, IMsgCall
 {
     public static Mutex AppMainMutex;
+
     protected override void OnStartup(StartupEventArgs e)
     {
         //初始化内核
         Core.Init(this);
+        NettyCore.SendTopCall(NettyCall);
         AppMainMutex = new Mutex(true, ResourceAssembly.GetName().Name, out var createdNew);
 
         if (createdNew)
@@ -32,6 +39,28 @@ public partial class App : Application, IMsgCall
                 "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
             Current.Shutdown();
         }
+    }
+
+    private IByteBuffer NettyCall(IByteBuffer buff) 
+    {
+        byte index = buff.ReadByte();
+        IByteBuffer res = Unpooled.Buffer();
+        res.WriteByte(127);
+        switch (index)
+        {
+            //获取游戏截图
+            case 0:
+                Bitmap map = GameWindowImg.GetWindow();
+                string local = $"{ConfigLocal.Base}/image.png";
+                map.Save(local);
+                res.WriteByte(0).WriteString(local);
+                break;
+            default:
+                res.WriteByte(0xFF);
+                break;
+        }
+
+        return res;
     }
 
     private void RegisterEvents()

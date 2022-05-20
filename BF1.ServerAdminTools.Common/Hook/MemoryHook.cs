@@ -291,8 +291,8 @@ internal static class MemoryHook
             offset1 = Read<long>(offset1 + 0x28);
             Globals.ServerHook.ServerMap = ReadString(offset1, 64);
             if (!string.IsNullOrWhiteSpace(Globals.ServerHook.ServerMap))
-            { 
-                
+            {
+                Globals.ServerHook.ServerMapCH = InfoUtils.GetMapChsName(Globals.ServerHook.ServerMap);
             }
         }
 
@@ -393,7 +393,7 @@ internal static class MemoryHook
                 }
             }
 
-            name = PlayerUtils.GetPlayerTargetName(_tdCP.Name, out clan);
+            name = InfoUtils.GetPlayerTargetName(_tdCP.Name, out clan);
 
             var player = new PlayerData()
             {
@@ -403,10 +403,10 @@ internal static class MemoryHook
                 Clan = clan,
                 Name = name,
                 IsSurvival = survival,
-                Career = PlayerUtils.GetCareerName(_tdCP.Career),
-                CareerCH = PlayerUtils.GetCareerChsName(_tdCP.Career),
+                Career = InfoUtils.GetCareerName(_tdCP.Career),
+                CareerCH = InfoUtils.GetCareerChsName(_tdCP.Career),
                 PersonaId = _tdCP.PersonaId,
-                SquadId = PlayerUtils.GetSquadChsName(_tdCP.PartyId),
+                SquadId = InfoUtils.GetSquadChsName(_tdCP.PartyId),
 
                 Rank = 0,
                 Kill = 0,
@@ -425,14 +425,14 @@ internal static class MemoryHook
                 WeaponS6 = _tdCP.WeaponSlot[6],
                 WeaponS7 = _tdCP.WeaponSlot[7],
 
-                WeaponS0CH = PlayerUtils.GetWeaponChsName(_tdCP.WeaponSlot[0]),
-                WeaponS1CH = PlayerUtils.GetWeaponChsName(_tdCP.WeaponSlot[1]),
-                WeaponS2CH = PlayerUtils.GetWeaponChsName(_tdCP.WeaponSlot[2]),
-                WeaponS3CH = PlayerUtils.GetWeaponChsName(_tdCP.WeaponSlot[3]),
-                WeaponS4CH = PlayerUtils.GetWeaponChsName(_tdCP.WeaponSlot[4]),
-                WeaponS5CH = PlayerUtils.GetWeaponChsName(_tdCP.WeaponSlot[5]),
-                WeaponS6CH = PlayerUtils.GetWeaponChsName(_tdCP.WeaponSlot[6]),
-                WeaponS7CH = PlayerUtils.GetWeaponChsName(_tdCP.WeaponSlot[7]),
+                WeaponS0CH = InfoUtils.GetWeaponChsName(_tdCP.WeaponSlot[0]),
+                WeaponS1CH = InfoUtils.GetWeaponChsName(_tdCP.WeaponSlot[1]),
+                WeaponS2CH = InfoUtils.GetWeaponChsName(_tdCP.WeaponSlot[2]),
+                WeaponS3CH = InfoUtils.GetWeaponChsName(_tdCP.WeaponSlot[3]),
+                WeaponS4CH = InfoUtils.GetWeaponChsName(_tdCP.WeaponSlot[4]),
+                WeaponS5CH = InfoUtils.GetWeaponChsName(_tdCP.WeaponSlot[5]),
+                WeaponS6CH = InfoUtils.GetWeaponChsName(_tdCP.WeaponSlot[6]),
+                WeaponS7CH = InfoUtils.GetWeaponChsName(_tdCP.WeaponSlot[7]),
             };
 
             if (!TempData.ContainsKey(player.PersonaId))
@@ -472,8 +472,8 @@ internal static class MemoryHook
                 MarkData[Mark].Kill = Kill;
                 MarkData[Mark].Dead = Dead;
                 MarkData[Mark].Score = Score;
-                MarkData[Mark].KD = PlayerUtils.GetPlayerKD(Kill, Dead);
-                MarkData[Mark].KPM = PlayerUtils.GetPlayerKPM(Kill, PlayerUtils.SecondsToMM(Globals.ServerHook.ServerTime));
+                MarkData[Mark].KD = InfoUtils.GetPlayerKD(Kill, Dead);
+                MarkData[Mark].KPM = InfoUtils.GetPlayerKPM(Kill, InfoUtils.SecondsToMM(Globals.ServerHook.ServerTime));
             }
         }
 
@@ -531,8 +531,8 @@ internal static class MemoryHook
                         Globals.PlayerDatas_Team1.Clear();
                         foreach (var item in Globals.PlayerList_All)
                         {
-                            item.Value.Admin = PlayerUtils.CheckAdminVIP(item.Key, Globals.Server_AdminList);
-                            item.Value.VIP = PlayerUtils.CheckAdminVIP(item.Key, Globals.Server_VIPList);
+                            item.Value.Admin = InfoUtils.CheckAdminVIP(item.Key, Globals.Server_AdminList);
+                            item.Value.VIP = InfoUtils.CheckAdminVIP(item.Key, Globals.Server_VIPList);
 
                             if (item.Value.TeamID == 0)
                             {

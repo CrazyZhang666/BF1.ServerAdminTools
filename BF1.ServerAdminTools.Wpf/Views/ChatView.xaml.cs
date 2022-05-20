@@ -101,7 +101,7 @@ public partial class ChatView : UserControl
 
     private void TextBox_InputMsg_TextChanged(object sender, TextChangedEventArgs e)
     {
-        TextBlock_TxtLength.Text = $"当前文本长度 : {PlayerUtils.GetStrLength(TextBox_InputMsg.Text)} 字符";
+        TextBlock_TxtLength.Text = $"当前文本长度 : {InfoUtils.GetStrLength(TextBox_InputMsg.Text)} 字符";
 
         defaultMsg[RadioButtonWhoIsChecked()] = TextBox_InputMsg.Text;
     }
