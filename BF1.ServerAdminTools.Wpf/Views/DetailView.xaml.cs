@@ -114,14 +114,14 @@ public partial class DetailView : UserControl
             DetailModel.ServerOwnerName = server.result.rspInfo.owner.displayName;
             DetailModel.ServerOwnerPersonaId = server.result.rspInfo.owner.personaId;
             DetailModel.ServerOwnerImage = server.result.rspInfo.owner.avatar;
-            DetailModel.ServerCurrentMap = ImageData.GetTempImagePath(server.result.serverInfo.mapImageUrl, "maps");
+            DetailModel.ServerCurrentMap = ImageData.GetTempImagePath(server.result.serverInfo.mapImageUrl, ImageData.ImageType.maps);
 
             // 地图列表
             foreach (var item in server.result.serverInfo.rotation)
             {
                 ListBox_Map.Items.Add(new Map()
                 {
-                    mapImage = ImageData.GetTempImagePath(item.mapImage, "maps"),
+                    mapImage = ImageData.GetTempImagePath(item.mapImage, ImageData.ImageType.maps),
                     mapPrettyName = ChsUtils.ToSimplifiedChinese(item.mapPrettyName),
                     modePrettyName = ChsUtils.ToSimplifiedChinese(item.modePrettyName)
                 });

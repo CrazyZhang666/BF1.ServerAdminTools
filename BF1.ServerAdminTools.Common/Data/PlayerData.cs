@@ -5,6 +5,7 @@ public record PlayerData
     public bool Admin { get; set; }
     public bool VIP { get; set; }
 
+    public bool IsSurvival { get; set; }
     public byte Mark { get; set; }
     public int TeamID { get; set; }
     public byte Spectator { get; set; }
@@ -12,6 +13,8 @@ public record PlayerData
     public string Name { get; set; }
     public long PersonaId { get; set; }
     public string SquadId { get; set; }
+    public string Career { get; set; }
+    public string CareerCH { get; set; }
 
     public int Rank { get; set; }
     public int Kill { get; set; }

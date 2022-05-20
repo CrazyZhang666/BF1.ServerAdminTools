@@ -8,6 +8,7 @@ using DotNetty.Handlers.Logging;
 using DotNetty.Transport.Bootstrapping;
 using DotNetty.Transport.Channels;
 using DotNetty.Transport.Channels.Sockets;
+using System.Collections.Concurrent;
 using System.Drawing.Imaging;
 using System.Text;
 
@@ -19,6 +20,7 @@ internal static class NettyServer
     private static IEventLoopGroup workerGroup;
     private static IChannel boundChannel;
     private static Func<IByteBuffer, IByteBuffer>? TopCall;
+    public static readonly ConcurrentDictionary<IChannelHandlerContext, bool> Contexts = new();
     public static bool State { get; private set; }
     /// <summary>
     /// 启动netty服务器
@@ -69,8 +71,41 @@ internal static class NettyServer
         TopCall = call;
     }
 
+    /// <summary>
+    /// 发送数据到所有客户端
+    /// </summary>
+    /// <param name="buffer">数据</param>
+    public static void SendPackToAll(IByteBuffer buffer) 
+    {
+        Task.Run(() =>
+        {
+            foreach (var item in Contexts.Keys)
+            {
+                item.WriteAndFlushAsync(buffer);
+            }
+        });
+    }
+
     class ServerHandler : ChannelHandlerAdapter
     {
+        public override void ChannelRegistered(IChannelHandlerContext context)
+        {
+            base.ChannelRegistered(context);
+            if (!Contexts.ContainsKey(context))
+            {
+                Contexts.TryAdd(context, true);
+            }
+        }
+
+        public override void ChannelUnregistered(IChannelHandlerContext context)
+        {
+            base.ChannelUnregistered(context);
+            if (Contexts.ContainsKey(context))
+            {
+                Contexts.TryRemove(context, out var item);
+            }
+        }
+
         public override void ChannelRead(IChannelHandlerContext context, object message)
         {
             if (message is IByteBuffer buffer)
@@ -251,7 +286,7 @@ internal static class NettyServer
                             buff.WriteBytes(data, 0, data.Length);
                             break;
                         //顶层回调
-                        case 255:
+                        case 127:
                             if (TopCall != null)
                             {
                                 buff = TopCall.Invoke(buffer);

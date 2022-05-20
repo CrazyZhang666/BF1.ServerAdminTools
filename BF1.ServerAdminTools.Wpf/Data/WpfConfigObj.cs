@@ -44,4 +44,16 @@ public record WpfConfigObj
     public string Msg7 { get; set; }
     public string Msg8 { get; set; }
     public string Msg9 { get; set; }
+    /// <summary>
+    /// 广播踢出内容
+    /// </summary>
+    public bool NettyBQ1 { get; set; }
+    /// <summary>
+    /// 广播换边内容
+    /// </summary>
+    public bool NettyBQ2 { get; set; }
+    /// <summary>
+    /// 广播错误内容
+    /// </summary>
+    public bool NettyBQ3 { get; set; }
 }

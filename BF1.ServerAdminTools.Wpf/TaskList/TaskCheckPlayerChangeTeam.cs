@@ -1,6 +1,9 @@
 ﻿using BF1.ServerAdminTools.Common;
 using BF1.ServerAdminTools.Common.Data;
+using BF1.ServerAdminTools.Netty;
+using BF1.ServerAdminTools.Wpf.Data;
 using BF1.ServerAdminTools.Wpf.Views;
+using DotNetty.Buffers;
 
 namespace BF1.ServerAdminTools.Wpf.TaskList;
 
@@ -89,6 +92,14 @@ internal static class TaskCheckPlayerChangeTeam
                     PersonaId = item.Value.PersonaId,
                     Status = "从 队伍2 更换到 队伍1"
                 });
+
+                if (DataSave.Config.NettyBQ2)
+                {
+                    IByteBuffer buff = Unpooled.Buffer();
+                    buff.WriteByte(127)
+                        .WriteString($"玩家：{item.Value.Name}\n从 队伍2 更换到 队伍1");
+                    NettyCore.SendData(buff);
+                }
             }
         }
 
@@ -104,6 +115,13 @@ internal static class TaskCheckPlayerChangeTeam
                     PersonaId = item.Value.PersonaId,
                     Status = "从 队伍1 更换到 队伍2"
                 });
+                if (DataSave.Config.NettyBQ2)
+                {
+                    IByteBuffer buff = Unpooled.Buffer();
+                    buff.WriteByte(127)
+                        .WriteString($"玩家：{item.Value.Name}\n从 队伍1 更换到 队伍2");
+                    NettyCore.SendData(buff);
+                }
             }
         }
 

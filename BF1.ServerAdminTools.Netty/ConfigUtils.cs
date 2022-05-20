@@ -19,7 +19,7 @@ internal class ConfigUtils
     {
         if (File.Exists(FileLocal))
             Config = JsonUtils.JsonDese<ConfigNettyObj>(File.ReadAllText(FileLocal));
-        else
+        if (Config == null)
         {
             Save(Config = new()
             {

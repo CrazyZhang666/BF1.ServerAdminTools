@@ -284,6 +284,18 @@ internal static class MemoryHook
         // 服务器时间
         Globals.ServerHook.ServerTime = Read<float>(GetBaseAddress() + Offsets.ServerTime_Offset, Offsets.ServerTime);
 
+        long offset1 = Read<long>(Offsets.OFFSET_CLIENTGAMECONTEXT);
+        if (IsValid(offset1))
+        {
+            offset1 = Read<long>(offset1 + 0x30);
+            offset1 = Read<long>(offset1 + 0x28);
+            Globals.ServerHook.ServerMap = ReadString(offset1, 64);
+            if (!string.IsNullOrWhiteSpace(Globals.ServerHook.ServerMap))
+            { 
+                
+            }
+        }
+
         Globals.ServerHook.Offset0 = Read<long>(GetBaseAddress() + Offsets.ServerScore_Offset, Offsets.ServerScoreTeam);
 
         // 队伍1、队伍2分数
@@ -326,6 +338,7 @@ internal static class MemoryHook
 
         string clan;
         string name;
+        bool survival;
 
         for (int i = 0; i < MaxPlayer; i++)
         {
@@ -342,33 +355,41 @@ internal static class MemoryHook
             if (string.IsNullOrEmpty(_tdCP.Name))
                 continue;
 
+            offset1 = Read<long>(_tdCP.BaseAddress + 0x11A8);
+            _tdCP.Career = ReadString(Read<long>(offset1 + 0x28), 64);
             _tdCSE.pClientVehicleEntity = Read<long>(_tdCP.BaseAddress + 0x1D38);
-            if (IsValid(_tdCSE.pClientVehicleEntity))
+            _tdCSE.pClientSoldierEntity = Read<long>(_tdCP.BaseAddress + 0x1D48);
+            survival = false;
+            if (_tdCSE.pClientVehicleEntity != 0 || _tdCSE.pClientSoldierEntity != 0)
             {
-                _tdCSE.pVehicleEntityData = Read<long>(_tdCSE.pClientVehicleEntity + 0x30);
-                _tdCP.WeaponSlot[0] = ReadString(Read<long>(_tdCSE.pVehicleEntityData + 0x2F8), 64);
-
-                for (int j = 1; j < 8; j++)
+                survival = true;
+                if (IsValid(_tdCSE.pClientVehicleEntity))
                 {
-                    _tdCP.WeaponSlot[j] = "";
+                    _tdCSE.pVehicleEntityData = Read<long>(_tdCSE.pClientVehicleEntity + 0x30);
+                    _tdCP.WeaponSlot[0] = ReadString(Read<long>(_tdCSE.pVehicleEntityData + 0x2F8), 64);
+
+                    for (int j = 1; j < 8; j++)
+                    {
+                        _tdCP.WeaponSlot[j] = "";
+                    }
                 }
-            }
-            else
-            {
-                _tdCSE.pClientSoldierEntity = Read<long>(_tdCP.BaseAddress + 0x1D48);
-                _tdCSE.pClientSoldierWeaponComponent = Read<long>(_tdCSE.pClientSoldierEntity + 0x698);
-                _tdCSE.m_handler = Read<long>(_tdCSE.pClientSoldierWeaponComponent + 0x8A8);
-
-                for (int j = 0; j < 8; j++)
+                else
                 {
-                    var offset0 = Read<long>(_tdCSE.m_handler + j * 0x8);
+                    _tdCSE.pClientSoldierWeaponComponent = Read<long>(_tdCSE.pClientSoldierEntity + 0x698);
+                    _tdCSE.m_handler = Read<long>(_tdCSE.pClientSoldierWeaponComponent + 0x8A8);
 
-                    offset0 = Read<long>(offset0 + 0x4A30);
-                    offset0 = Read<long>(offset0 + 0x20);
-                    offset0 = Read<long>(offset0 + 0x38);
-                    offset0 = Read<long>(offset0 + 0x20);
+                    for (int j = 0; j < 8; j++)
+                    {
+                        var offset0 = Read<long>(_tdCSE.m_handler + j * 0x8);
 
-                    _tdCP.WeaponSlot[j] = ReadString(offset0, 64);
+                        offset0 = Read<long>(offset0 + 0x4A30);
+                        offset0 = Read<long>(offset0 + 0x20);
+                        offset0 = Read<long>(offset0 + 0x38);
+
+                        offset0 = Read<long>(offset0 + 0x20);
+
+                        _tdCP.WeaponSlot[j] = ReadString(offset0, 64);
+                    }
                 }
             }
 
@@ -381,6 +402,9 @@ internal static class MemoryHook
                 Spectator = _tdCP.Spectator,
                 Clan = clan,
                 Name = name,
+                IsSurvival = survival,
+                Career = PlayerUtils.GetCareerName(_tdCP.Career),
+                CareerCH = PlayerUtils.GetCareerChsName(_tdCP.Career),
                 PersonaId = _tdCP.PersonaId,
                 SquadId = PlayerUtils.GetSquadChsName(_tdCP.PartyId),
 

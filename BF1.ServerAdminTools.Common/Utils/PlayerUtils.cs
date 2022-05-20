@@ -178,6 +178,36 @@ public static class PlayerUtils
     }
 
     /// <summary>
+    /// 获取职业中文名
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns></returns>
+    public static string GetCareerChsName(string input)
+    {
+        foreach (var item in CareerData.AllCareerInfo)
+        { 
+            if(item.ID == input)
+            {
+                return item.Chinese;
+            }
+        }
+
+        return input;
+    }
+    public static string GetCareerName(string input)
+    {
+        foreach (var item in CareerData.AllCareerInfo)
+        {
+            if (item.ID == input)
+            {
+                return item.English;
+            }
+        }
+
+        return input;
+    }
+
+    /// <summary>
     /// 获取武器对应的中文名称
     /// </summary>
     /// <param name="originWeaponName"></param>
@@ -199,7 +229,7 @@ public static class PlayerUtils
         if (originWeaponName.Contains("_RGL_HE"))
             return "步枪手榴弹（高爆）";
 
-        int index = WeaponData.AllWeaponInfo.FindIndex(var => var.English == originWeaponName);
+        int index = WeaponData.AllWeaponInfo.FindIndex(var => var.ID == originWeaponName);
         if (index != -1)
             return WeaponData.AllWeaponInfo[index].Chinese;
         else
@@ -241,10 +271,10 @@ public static class PlayerUtils
     /// <returns></returns>
     public static string GetWeaponShortTxt(string weaponName)
     {
-        int index = WeaponData.AllWeaponInfo.FindIndex(var => var.English.Equals(weaponName));
+        int index = WeaponData.AllWeaponInfo.FindIndex(var => var.ID.Equals(weaponName));
         if (index != -1)
         {
-            return WeaponData.AllWeaponInfo[index].ShortTxt;
+            return WeaponData.AllWeaponInfo[index].English;
         }
 
         return weaponName;
@@ -257,42 +287,25 @@ public static class PlayerUtils
     /// <returns></returns>
     public static string GetSquadChsName(int squadID)
     {
-        switch (squadID)
+        return squadID switch
         {
-            case 0:
-                return "无";
-            case 1:
-                return "苹果";
-            case 2:
-                return "奶油";
-            case 3:
-                return "查理";
-            case 4:
-                return "达夫";
-            case 5:
-                return "爱德华";
-            case 6:
-                return "弗莱迪";
-            case 7:
-                return "乔治";
-            case 8:
-                return "哈利";
-            case 9:
-                return "墨水";
-            case 10:
-                return "强尼";
-            case 11:
-                return "国王";
-            case 12:
-                return "伦敦";
-            case 13:
-                return "猿猴";
-            case 14:
-                return "疯子";
-            case 15:
-                return "橘子";
-            default:
-                return squadID.ToString();
-        }
+            0 => "无",
+            1 => "苹果",
+            2 => "奶油",
+            3 => "查理",
+            4 => "达夫",
+            5 => "爱德华",
+            6 => "弗莱迪",
+            7 => "乔治",
+            8 => "哈利",
+            9 => "墨水",
+            10 => "强尼",
+            11 => "国王",
+            12 => "伦敦",
+            13 => "猿猴",
+            14 => "疯子",
+            15 => "橘子",
+            _ => squadID.ToString(),
+        };
     }
 }

@@ -5,7 +5,7 @@ public static class GameWindow
     private static bool IsOut = true;
     private static bool NeedRun = false;
     private static bool IsRun = false;
-    private static Thread thread;
+    private static Thread thread = null;
 
     /// <summary>
     /// 0 1280x720 1 1024x768

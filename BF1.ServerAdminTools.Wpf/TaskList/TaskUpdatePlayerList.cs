@@ -3,6 +3,7 @@ using BF1.ServerAdminTools.Common.Utils;
 using BF1.ServerAdminTools.Wpf.Data;
 using BF1.ServerAdminTools.Wpf.Extension;
 using BF1.ServerAdminTools.Wpf.Models;
+using BF1.ServerAdminTools.Wpf.Utils;
 using BF1.ServerAdminTools.Wpf.Views;
 
 namespace BF1.ServerAdminTools.Wpf.TaskList;
@@ -45,7 +46,7 @@ internal static class TaskUpdatePlayerList
 
             ////////////////////////////////////////////////////////////////////////////////
 
-            ScoreView.ServerInfoModel.ServerName = $"服务器名称 : {Globals.ServerHook.ServerName}  |  GameID : {Globals.ServerHook.ServerID}";
+            ScoreView.ServerInfoModel.ServerName = $"服务器名称 : {Globals.ServerHook.ServerName}  |  GameID : {Globals.ServerHook.ServerID} | 地图 : {Globals.ServerHook.ServerMapCH}";
 
             ScoreView.ServerInfoModel.ServerTime = Globals.ServerHook.ServerTimeS = PlayerUtils.SecondsToMMSS(Globals.ServerHook.ServerTime);
 
@@ -130,6 +131,9 @@ internal static class TaskUpdatePlayerList
                     item.KD = Globals.PlayerDatas_Team1[item.PersonaId].KD.ToString("0.00");
                     item.KPM = Globals.PlayerDatas_Team1[item.PersonaId].KPM.ToString("0.00");
                     item.Score = Globals.PlayerDatas_Team1[item.PersonaId].Score;
+                    item.Career = DataSave.IsShowCHSWeaponName ?
+                        Globals.PlayerDatas_Team1[item.PersonaId].CareerCH :
+                        Globals.PlayerDatas_Team1[item.PersonaId].Career;
                     item.WeaponS0 = DataSave.IsShowCHSWeaponName ?
                        Globals.PlayerDatas_Team1[item.PersonaId].WeaponS0CH :
                        Globals.PlayerDatas_Team1[item.PersonaId].WeaponS0;
@@ -182,6 +186,7 @@ internal static class TaskUpdatePlayerList
                         KD = item.KD.ToString("0.00"),
                         KPM = item.KPM.ToString("0.00"),
                         Score = item.Score,
+                        Career = DataSave.IsShowCHSWeaponName ? item.CareerCH : item.Career,
                         WeaponS0 = DataSave.IsShowCHSWeaponName ? item.WeaponS0CH : item.WeaponS0,
                         WeaponS1 = DataSave.IsShowCHSWeaponName ? item.WeaponS1CH : item.WeaponS1,
                         WeaponS2 = DataSave.IsShowCHSWeaponName ? item.WeaponS2CH : item.WeaponS2,
@@ -228,6 +233,9 @@ internal static class TaskUpdatePlayerList
                     item.KD = Globals.PlayerDatas_Team2[item.PersonaId].KD.ToString("0.00");
                     item.KPM = Globals.PlayerDatas_Team2[item.PersonaId].KPM.ToString("0.00");
                     item.Score = Globals.PlayerDatas_Team2[item.PersonaId].Score;
+                    item.Career = DataSave.IsShowCHSWeaponName ? 
+                        Globals.PlayerDatas_Team2[item.PersonaId].CareerCH : 
+                        Globals.PlayerDatas_Team2[item.PersonaId].Career;
                     item.WeaponS0 = DataSave.IsShowCHSWeaponName ?
                        Globals.PlayerDatas_Team2[item.PersonaId].WeaponS0CH :
                        Globals.PlayerDatas_Team2[item.PersonaId].WeaponS0;
@@ -280,6 +288,7 @@ internal static class TaskUpdatePlayerList
                         KD = item.KD.ToString("0.00"),
                         KPM = item.KPM.ToString("0.00"),
                         Score = item.Score,
+                        Career = DataSave.IsShowCHSWeaponName ? item.CareerCH : item.Career,
                         WeaponS0 = DataSave.IsShowCHSWeaponName ? item.WeaponS0CH : item.WeaponS0,
                         WeaponS1 = DataSave.IsShowCHSWeaponName ? item.WeaponS1CH : item.WeaponS1,
                         WeaponS2 = DataSave.IsShowCHSWeaponName ? item.WeaponS2CH : item.WeaponS2,

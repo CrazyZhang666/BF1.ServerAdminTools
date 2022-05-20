@@ -55,6 +55,9 @@ public partial class OptionView : UserControl
         Slider_BG_O.Value = DataSave.Config.BackgroudOpacity;
         Window_O.IsChecked = DataSave.Config.WindowVacuity;
         Window_A.IsChecked = DataSave.Config.AutoJoinServer;
+        NettyBQ1.IsChecked = DataSave.Config.NettyBQ1;
+        NettyBQ2.IsChecked = DataSave.Config.NettyBQ2;
+        NettyBQ3.IsChecked = DataSave.Config.NettyBQ3;
     }
 
     private void RadioButton_ClickAudioSelect_Click(object sender, RoutedEventArgs e)
@@ -137,6 +140,9 @@ public partial class OptionView : UserControl
             ServerKey = key
         });
 
+        DataSave.Config.NettyBQ1 = NettyBQ1.IsChecked == true;
+        DataSave.Config.NettyBQ2 = NettyBQ2.IsChecked == true;
+        DataSave.Config.NettyBQ3 = NettyBQ3.IsChecked == true;
         DataSave.Config.AutoRunNetty = AutoRun.IsChecked == true;
         ConfigUtils.SaveConfig();
 

@@ -13,6 +13,11 @@ public static class ImageData
 
     public static Dictionary<string, string> MapsDict { get; } = new();
 
+    public enum ImageType
+    {
+        maps, weapons, weapons2, vehicles, vehicles2, classes, classes2
+    }
+
     private static bool isInit = false;
     /// <summary>
     /// 获取本地图片路径，如果未找到会返回空字符串
@@ -20,28 +25,20 @@ public static class ImageData
     /// <param name="url"></param>
     /// <param name="type"></param>
     /// <returns></returns>
-    public static string GetTempImagePath(string url, string type)
+    public static string GetTempImagePath(string url, ImageType type)
     {
         string extension = Path.GetFileName(url);
-        switch (type)
+        return type switch
         {
-            case "maps":
-                return MapsDict.ContainsKey(extension) ? MapsDict[extension] : string.Empty;
-            case "weapons":
-                return WeaponsDict.ContainsKey(extension) ? WeaponsDict[extension] : string.Empty;
-            case "weapons2":
-                return Weapons2Dict.ContainsKey(extension) ? Weapons2Dict[extension] : string.Empty;
-            case "vehicles":
-                return VehiclesDict.ContainsKey(extension) ? VehiclesDict[extension] : string.Empty;
-            case "vehicles2":
-                return Vehicles2Dict.ContainsKey(extension) ? Vehicles2Dict[extension] : string.Empty;
-            case "classes":
-                return ClassesDict.ContainsKey(extension) ? ClassesDict[extension] : string.Empty;
-            case "classes2":
-                return Classes2Dict.ContainsKey(extension) ? Classes2Dict[extension] : string.Empty;
-            default:
-                return string.Empty;
-        }
+            ImageType.maps => MapsDict.ContainsKey(extension) ? MapsDict[extension] : NullImg,
+            ImageType.weapons => WeaponsDict.ContainsKey(extension) ? WeaponsDict[extension] : NullImg,
+            ImageType.weapons2 => Weapons2Dict.ContainsKey(extension) ? Weapons2Dict[extension] : NullImg,
+            ImageType.vehicles => VehiclesDict.ContainsKey(extension) ? VehiclesDict[extension] : NullImg,
+            ImageType.vehicles2 => Vehicles2Dict.ContainsKey(extension) ? Vehicles2Dict[extension] : NullImg,
+            ImageType.classes => ClassesDict.ContainsKey(extension) ? ClassesDict[extension] : NullImg,
+            ImageType.classes2 => Classes2Dict.ContainsKey(extension) ? Classes2Dict[extension] : NullImg,
+            _ => string.Empty,
+        };
     }
 
     public static void InitDict()

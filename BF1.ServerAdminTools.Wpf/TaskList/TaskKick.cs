@@ -1,9 +1,11 @@
 ﻿using BF1.ServerAdminTools.Common;
 using BF1.ServerAdminTools.Common.API.BF1Server;
 using BF1.ServerAdminTools.Common.Data;
+using BF1.ServerAdminTools.Netty;
 using BF1.ServerAdminTools.Wpf.Data;
 using BF1.ServerAdminTools.Wpf.Utils;
 using BF1.ServerAdminTools.Wpf.Views;
+using DotNetty.Buffers;
 using System.Collections.Concurrent;
 
 namespace BF1.ServerAdminTools.Wpf.TaskList;
@@ -97,6 +99,14 @@ internal class TaskKick
             DataSave.NowRule.Custom_WhiteList.Contains(item.Value.Name))
             return;
 
+        if (DataSave.Config.NettyBQ1)
+        {
+            IByteBuffer buff = Unpooled.Buffer();
+            buff.WriteByte(127)
+                .WriteString($"玩家：{item.Value.Name}被T出\n{item.Value.Reason}");
+            NettyCore.SendData(buff);
+        }
+
         item.Value.Time = DateTime.Now;
         await KickPlayer(item.Value);
         NowKick.TryAdd(item.Key, item.Value);
@@ -117,6 +127,13 @@ internal class TaskKick
             info.Status = "踢出失败 " + result.Message;
             info.Time = DateTime.Now;
             LogView.AddKickNOLog?.Invoke(info);
+            if (DataSave.Config.NettyBQ3)
+            {
+                IByteBuffer buff = Unpooled.Buffer();
+                buff.WriteByte(127)
+                    .WriteString($"玩家：{info.Name}踢出失败\n{result.Message}");
+                NettyCore.SendData(buff);
+            }
         }
     }
 }

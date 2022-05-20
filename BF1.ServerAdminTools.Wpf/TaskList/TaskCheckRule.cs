@@ -452,4 +452,53 @@ internal static class TaskCheckRule
             IsSwitching = false;
         });
     }
+
+    private readonly static List<string> WeaponLock1 = new()
+    {
+        "U_MauserC96AutoPistol", "U_LugerArtillery", "U_PieperCarbine", "U_FrommerStopAuto", "U_C93Carbine", "U_Gewehr98_SI", "U_SawnOffShotgun", "U_M1911_Stock", "U_FN1903stock"
+    };
+
+    private readonly static Dictionary<string, string[]> WeaponLock = new()
+    {
+        { CareerData.FLAMETHROWER.ID, new string[]{ 
+            "U_FlameThrower", "", "", "", "", "", "U_Incendiary_Hero", "U_Club" 
+        } },
+        { CareerData.ANTITANK.ID, new string[]{ 
+            "U_TankGewehr", "U_SawnOffShotgun_FK", "U_TrPeriscope_Elite", "", "", "U_ATGrenade_VhKit", "U_FragGrenade", "U_Club" 
+        } },
+        { CareerData.SENTRY.ID + "1", new string[]{ 
+            "U_MaximMG0815", "", "", "", "", "", "U_FragGrenade", "U_Club" 
+        } },
+        { CareerData.SENTRY.ID + "2", new string[]{ 
+            "U_VillarPerosa", "", "", "", "", "", "U_FragGrenade", "U_Club" 
+        } },
+        { CareerData.RUNNER.ID, new string[]{ 
+            "U_MartiniGrenadeLauncher", "U_SawnOffShotgun_FK", "U_FlareGun_Elite", "", "", "U_SpawnBeacon", "U_SmokeGrenade", "U_ScoutKnife" 
+        } },
+        { CareerData.RAIDER.ID, new string[]{ 
+            "U_RoyalClub", "U_SmithWesson", "U_MedicBag", "U_GasMask", "", "U_SmokeGrenade", "U_FragGrenade", "U_RoyalClub" 
+        } },
+        { CareerData.TANKER.ID, new string[]{
+            "", "U_M1911", "U_Wrench", "U_GasMask", "", "U_ATGrenade", "U_FragGrenade", "U_ScoutKnife"
+        } },
+        { CareerData.PILOT.ID, new string[]{
+            "", "U_M1911", "U_Wrench", "U_GasMask", "", "U_FlareGun", "U_FragGrenade", "U_ScoutKnife"
+        } },
+        { CareerData.CAVALRY.ID, new string[]{
+            "U_WinchesterM1895_Horse", "U_LugerP08_VhKit", "U_AmmoPouch_Cav", "U_GasMask", "", "U_Bandages_Cav", "U_Grenade_AT_Cavalry", "U_Saber_Cav"
+        } }
+    };
+
+    private static void WeaponCheck(PlayerData data) 
+    {
+        if (data.Career == CareerData.SENTRY.ID)
+        {
+            string[] temp = WeaponLock[CareerData.SENTRY.ID + "1"];
+            string[] temp1 = WeaponLock[CareerData.SENTRY.ID + "1"];
+            if (data.WeaponS0 != temp[0] && data.WeaponS0 != temp1[0])
+            { 
+                
+            }
+        }
+    }
 }

@@ -81,8 +81,10 @@ public partial class ScoreView : UserControl
         {
             if (_dataGridSelcContent.IsOK)
             {
-                var customKickWindow = new CustomKickWindow(_dataGridSelcContent.Name, _dataGridSelcContent.PersonaId.ToString());
-                customKickWindow.Owner = MainWindow.ThisMainWindow;
+                var customKickWindow = new CustomKickWindow(_dataGridSelcContent.Name, _dataGridSelcContent.PersonaId.ToString())
+                {
+                    Owner = MainWindow.ThisMainWindow
+                };
                 customKickWindow.ShowDialog();
             }
             else

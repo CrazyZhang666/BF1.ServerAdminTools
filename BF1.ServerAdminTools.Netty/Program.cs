@@ -1,4 +1,5 @@
 ﻿using BF1.ServerAdminTools.Common;
+using DotNetty.Buffers;
 
 namespace BF1.ServerAdminTools.Netty;
 
@@ -16,9 +17,19 @@ public class NettyMain
         {
             Console.WriteLine("检测到游戏未启动");
         }
+        Core.HookInit();
+        new Thread(() =>
+        {
+            while (true)
+            {
+                Core.Tick();
+                Thread.Sleep(100);
+            }
+        }).Start();
 
         Console.WriteLine("BF1.ServerAdminTools 正在读取配置文件");
         NettyCore.InitConfig();
+        NettyCore.LoadConfig();
         NettyCore.StartServer();
         Console.WriteLine("BF1.ServerAdminTools Netty服务器已启动");
         while (true)
@@ -78,6 +89,12 @@ public class NettyCore
     /// <returns></returns>
     public static Task StopServer()
          => NettyServer.Stop();
+    /// <summary>
+    /// 发送数据给所有客户端
+    /// </summary>
+    /// <param name="buffer">数据</param>
+    public static void SendData(IByteBuffer buffer)
+        => NettyServer.SendPackToAll(buffer);
     /// <summary>
     /// 获取Netty服务器状态
     /// </summary>

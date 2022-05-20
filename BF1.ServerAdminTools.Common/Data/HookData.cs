@@ -16,6 +16,8 @@ public struct ServerHook
     public long Offset0;
 
     public string ServerName;
+    public string ServerMap;
+    public string ServerMapCH;
     public long ServerID;
     public float ServerTime;
     public string ServerTimeS;

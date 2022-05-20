@@ -6,7 +6,7 @@ using System.Text;
 
 namespace BF1.ServerAdminTools.Netty;
 
-internal static class EncodePack
+public static class EncodePack
 {
     /// <summary>
     /// 写字符串
@@ -14,7 +14,7 @@ internal static class EncodePack
     /// <param name="buff"></param>
     /// <param name="data"></param>
     /// <returns></returns>
-    internal static IByteBuffer WriteString(this IByteBuffer buff, string data)
+    public static IByteBuffer WriteString(this IByteBuffer buff, string data)
     {
         byte[] temp = Encoding.UTF8.GetBytes(data);
         buff.WriteInt(temp.Length);

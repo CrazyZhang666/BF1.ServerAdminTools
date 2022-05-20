@@ -395,6 +395,13 @@
                                 IsReadOnly="True" />
                             <DataGridTextColumn
                                 Width="Auto"
+                                MinWidth="30"
+                                Binding="{Binding Career}"
+                                ElementStyle="{StaticResource CenterAlignmentStyle2}"
+                                Header="兵种"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                Width="Auto"
                                 MinWidth="80"
                                 Binding="{Binding WeaponS0}"
                                 ElementStyle="{StaticResource CenterAlignmentStyle1}"
@@ -565,6 +572,13 @@
                                 Binding="{Binding Score}"
                                 ElementStyle="{StaticResource CenterAlignmentStyle2}"
                                 Header="得分"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                Width="Auto"
+                                MinWidth="30"
+                                Binding="{Binding Career}"
+                                ElementStyle="{StaticResource CenterAlignmentStyle2}"
+                                Header="兵种"
                                 IsReadOnly="True" />
                             <DataGridTextColumn
                                 Width="Auto"

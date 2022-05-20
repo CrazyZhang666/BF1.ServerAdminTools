@@ -60,7 +60,7 @@ public partial class ServerView : UserControl
                 {
                     item.mode = ChsUtils.ToSimplifiedChinese(item.mode);
                     item.currentMap = ChsUtils.ToSimplifiedChinese(item.currentMap);
-                    item.url = ImageData.GetTempImagePath(item.url, "maps");
+                    item.url = ImageData.GetTempImagePath(item.url, ImageData.ImageType.maps);
                     item.platform = new Random().Next(25, 45).ToString();
 
                     Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>

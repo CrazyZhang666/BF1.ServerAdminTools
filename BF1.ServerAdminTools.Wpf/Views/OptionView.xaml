@@ -149,6 +149,20 @@
                             VerticalAlignment="Center"
                             Content="自动启动" />
                     </Grid>
+                    <WrapPanel>
+                        <CheckBox
+                            x:Name="NettyBQ1"
+                            Margin="5"
+                            Content="广播踢出内容" />
+                        <CheckBox
+                            x:Name="NettyBQ2"
+                            Margin="5"
+                            Content="广播换边内容" />
+                        <CheckBox
+                            x:Name="NettyBQ3"
+                            Margin="5"
+                            Content="广播错误内容" />
+                    </WrapPanel>
                     <UniformGrid Columns="2">
                         <Button
                             x:Name="Button_Server"

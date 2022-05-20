@@ -31,7 +31,7 @@ public partial class RuleView : UserControl
         {
             ListWeaponInfo.Items.Add(new WeaponInfoModel()
             {
-                English = item.English,
+                English = item.ID,
                 Chinese = item.Chinese,
                 Mark = ""
             });
@@ -42,7 +42,7 @@ public partial class RuleView : UserControl
         {
             ListNumberWeaponInfo.Items.Add(new WeaponInfoModel()
             {
-                English = item.English,
+                English = item.ID,
                 Chinese = item.Chinese,
                 Mark = ""
             });

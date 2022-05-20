@@ -168,7 +168,7 @@ public partial class QueryView : UserControl
                 if (item.kills != 0)
                 {
                     item.weaponName = ChsUtils.ToSimplifiedChinese(item.weaponName);
-                    item.image = ImageData.GetTempImagePath(item.image, "weapons2");
+                    item.image = ImageData.GetTempImagePath(item.image, ImageData.ImageType.weapons2);
                     item.star = PlayerUtils.GetKillStar(item.kills);
                     item.time = PlayerUtils.GetPlayTime(item.timeEquipped);
 
@@ -187,7 +187,7 @@ public partial class QueryView : UserControl
                 if (item.kills != 0)
                 {
                     item.vehicleName = ChsUtils.ToSimplifiedChinese(item.vehicleName);
-                    item.image = ImageData.GetTempImagePath(item.image, "vehicles2");
+                    item.image = ImageData.GetTempImagePath(item.image, ImageData.ImageType.vehicles2);
                     item.star = PlayerUtils.GetKillStar(item.kills);
                     item.time = PlayerUtils.GetPlayTime(item.timeIn);
 

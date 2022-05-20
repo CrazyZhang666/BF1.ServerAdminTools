@@ -224,6 +224,16 @@ public class PlayerListModel : ObservableObject, IComparable<PlayerListModel>
         set { _weaponS7 = value; OnPropertyChanged(); }
     }
 
+    private string _career;
+    /// <summary>
+    /// 职业
+    /// </summary>
+    public string Career
+    {
+        get { return _career; }
+        set { _career = value; OnPropertyChanged(); }
+    }
+
     public int CompareTo(PlayerListModel other)
     {
         return other.Score.CompareTo(this.Score);
