@@ -43,7 +43,7 @@ public class TempData
         public int Score;
     }
 
-    public struct ClientSoldierWeapon 
+    public struct ClientSoldierWeapon
     {
         public long m_pSoldierWeaponData;
         public long m_pSoldierWeaponUnlockAsset;

@@ -5,7 +5,7 @@ using BF1.ServerAdminTools.Wpf.Data;
 
 namespace BF1.ServerAdminTools.Wpf.Utils;
 
-internal static class ConfigUtils
+internal static class WpfConfigUtils
 {
     public static string ServerRule { get; } = $"{ConfigLocal.Base}/ServerRule";
     public static string Wpf { get; } = $"{ConfigLocal.Base}/Wpf";

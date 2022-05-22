@@ -144,7 +144,7 @@ public partial class OptionView : UserControl
         DataSave.Config.NettyBQ2 = NettyBQ2.IsChecked == true;
         DataSave.Config.NettyBQ3 = NettyBQ3.IsChecked == true;
         DataSave.Config.AutoRunNetty = AutoRun.IsChecked == true;
-        ConfigUtils.SaveConfig();
+        WpfConfigUtils.SaveConfig();
 
         MainWindow.SetOperatingState(1, "设置成功");
         if (NettyCore.State)
@@ -196,7 +196,7 @@ public partial class OptionView : UserControl
             return;
 
         DataSave.Config.Background = file;
-        ConfigUtils.SaveConfig();
+        WpfConfigUtils.SaveConfig();
 
         MainWindow.BG();
     }
@@ -205,7 +205,7 @@ public partial class OptionView : UserControl
     {
         DataSave.Config.Background = "";
         MainWindow.BG();
-        ConfigUtils.SaveConfig();
+        WpfConfigUtils.SaveConfig();
     }
 
     private void Button_Click_5(object sender, RoutedEventArgs e)
@@ -213,7 +213,7 @@ public partial class OptionView : UserControl
         DataSave.Config.WindowVacuity = Window_O.IsChecked == true;
         DataSave.Config.BackgroudOpacity = (int)Slider_BG_O.Value;
         MainWindow.BG();
-        ConfigUtils.SaveConfig();
+        WpfConfigUtils.SaveConfig();
     }
 
     private void Button_Click_7(object sender, RoutedEventArgs e)
@@ -231,50 +231,50 @@ public partial class OptionView : UserControl
     {
         DataSave.Config.GameXYSelect = 0;
         GameWindow.XY = 0;
-        ConfigUtils.SaveConfig();
+        WpfConfigUtils.SaveConfig();
     }
 
     private void ClickXYSelect1_Checked(object sender, RoutedEventArgs e)
     {
         DataSave.Config.GameXYSelect = 1;
         GameWindow.XY = 1;
-        ConfigUtils.SaveConfig();
+        WpfConfigUtils.SaveConfig();
     }
 
     private void ClickAudioSelect0_Checked(object sender, RoutedEventArgs e)
     {
         DataSave.Config.AudioSelect = 0;
-        ConfigUtils.SaveConfig();
+        WpfConfigUtils.SaveConfig();
     }
 
     private void ClickAudioSelect1_Checked(object sender, RoutedEventArgs e)
     {
         DataSave.Config.AudioSelect = 1;
-        ConfigUtils.SaveConfig();
+        WpfConfigUtils.SaveConfig();
     }
 
     private void ClickAudioSelect2_Checked(object sender, RoutedEventArgs e)
     {
         DataSave.Config.AudioSelect = 2;
-        ConfigUtils.SaveConfig();
+        WpfConfigUtils.SaveConfig();
     }
 
     private void ClickAudioSelect3_Checked(object sender, RoutedEventArgs e)
     {
         DataSave.Config.AudioSelect = 3;
-        ConfigUtils.SaveConfig();
+        WpfConfigUtils.SaveConfig();
     }
 
     private void ClickAudioSelect4_Checked(object sender, RoutedEventArgs e)
     {
         DataSave.Config.AudioSelect = 4;
-        ConfigUtils.SaveConfig();
+        WpfConfigUtils.SaveConfig();
     }
 
     private void ClickAudioSelect5_Checked(object sender, RoutedEventArgs e)
     {
         DataSave.Config.AudioSelect = 5;
-        ConfigUtils.SaveConfig();
+        WpfConfigUtils.SaveConfig();
     }
 
     private void Button_Click_6(object sender, RoutedEventArgs e)
@@ -288,7 +288,7 @@ public partial class OptionView : UserControl
         {
             GameWindow.Pause();
         }
-        ConfigUtils.SaveConfig();
+        WpfConfigUtils.SaveConfig();
     }
 
     private void View_Option_Loaded(object sender, RoutedEventArgs e)

@@ -47,8 +47,8 @@ public partial class AuthWindow : Window
             UpdateState("正在为您营造个性化体验...");
 
             Core.ConfigInit();
-            ConfigUtils.Init();
-            ConfigUtils.LoadAll();
+            WpfConfigUtils.Init();
+            WpfConfigUtils.LoadAll();
             Core.SQLInit();
 
             ImageData.InitDict();

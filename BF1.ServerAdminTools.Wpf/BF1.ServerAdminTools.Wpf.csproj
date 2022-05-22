@@ -1027,18 +1027,26 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Downloader" Version="2.3.3" />
+		<PackageReference Include="Chinese" Version="0.5.0" />
+		<PackageReference Include="Dapper" Version="2.0.123" />
+		<PackageReference Include="DotNetty.Buffers" Version="0.7.2" />
+		<PackageReference Include="DotNetty.Codecs" Version="0.7.2" />
+		<PackageReference Include="DotNetty.Common" Version="0.7.2" />
+		<PackageReference Include="DotNetty.Handlers" Version="0.7.2" />
+		<PackageReference Include="DotNetty.Transport" Version="0.7.2" />
+		<PackageReference Include="Downloader" Version="2.3.5" />
+		<PackageReference Include="Microsoft.Data.Sqlite" Version="6.0.5" />
 		<PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.1.2" />
 		<PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1185.39" />
-		<PackageReference Include="ScottPlot.WPF" Version="4.1.41" />
+		<PackageReference Include="NLog" Version="5.0.0" />
+		<PackageReference Include="OpenCvSharp4.Extensions" Version="4.5.5.20211231" />
+		<PackageReference Include="OpenCvSharp4.Windows" Version="4.5.5.20211231" />
+		<PackageReference Include="RestSharp" Version="107.3.0" />
+		<PackageReference Include="ScottPlot.WPF" Version="4.1.45" />
 		<PackageReference Include="Emoji.Wpf" Version="0.3.3" />
+		<PackageReference Include="System.Drawing.Common" Version="6.0.0" />
+		<PackageReference Include="System.Resources.Extensions" Version="6.0.0" />
 		<PackageReference Include="XamlAnimatedGif" Version="2.0.2" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <ProjectReference Include="..\BF1.ServerAdminTools.Common\BF1.ServerAdminTools.Common.csproj" />
-	  <ProjectReference Include="..\BF1.ServerAdminTools.GameImage\BF1.ServerAdminTools.GameImage.csproj" />
-	  <ProjectReference Include="..\BF1.ServerAdminTools.Netty\BF1.ServerAdminTools.Netty.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -1062,5 +1070,11 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </Page>
 	</ItemGroup>
+
+	<Import Project="..\BF1.ServerAdminTools.NettyCore\BF1.ServerAdminTools.NettyCore.projitems" Label="Shared" />
+
+	<Import Project="..\BF1.ServerAdminTools.GameImage\BF1.ServerAdminTools.GameImage.projitems" Label="Shared" />
+
+	<Import Project="..\BF1.ServerAdminTools.Common\BF1.ServerAdminTools.Common.projitems" Label="Shared" />
 
 </Project>

@@ -366,7 +366,7 @@ internal static class MemoryHook
                 survival = true;
                 if (IsValid(_tdCSE.pClientVehicleEntity))
                 {
-                    car = true; 
+                    car = true;
                     _tdCSE.pVehicleEntityData = Read<long>(_tdCSE.pClientVehicleEntity + 0x30);
                     _tdCP.WeaponSlot[0] = ReadString(Read<long>(_tdCSE.pVehicleEntityData + 0x2F8), 64);
 

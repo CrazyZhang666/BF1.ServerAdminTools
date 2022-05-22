@@ -96,7 +96,7 @@ public partial class MainWindow : Window
         ClosingDisposeEvent();
         Core.LogInfo($"调用关闭事件成功");
         Core.SaveConfig();
-        ConfigUtils.SaveAllRule();
+        WpfConfigUtils.SaveAllRule();
         Core.SQLClose();
         Core.MsgFreeMemory();
         Core.HookClose();

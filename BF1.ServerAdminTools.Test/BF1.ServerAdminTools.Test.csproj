@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0-windows</TargetFramework>
@@ -15,12 +15,6 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\BF1.ServerAdminTools.Common\BF1.ServerAdminTools.Common.csproj" />
-    <ProjectReference Include="..\BF1.ServerAdminTools.GameImage\BF1.ServerAdminTools.GameImage.csproj" />
-    <ProjectReference Include="..\BF1.ServerAdminTools.Netty\BF1.ServerAdminTools.Netty.csproj" />
   </ItemGroup>
 
 </Project>

@@ -41,7 +41,7 @@ public partial class App : Application, IMsgCall
         }
     }
 
-    private IByteBuffer NettyCall(IByteBuffer buff) 
+    private IByteBuffer NettyCall(IByteBuffer buff)
     {
         byte index = buff.ReadByte();
         IByteBuffer res = Unpooled.Buffer();

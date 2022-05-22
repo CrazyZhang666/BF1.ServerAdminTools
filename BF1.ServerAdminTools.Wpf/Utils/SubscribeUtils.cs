@@ -64,9 +64,9 @@ internal static class SubscribeUtils
             };
 
             DataSave.Subscribes.UrlList.Add(url);
-            ConfigUtils.SaveSubscribe();
+            WpfConfigUtils.SaveSubscribe();
             DataSave.SubscribeCache.Cache.Add(obj1);
-            ConfigUtils.SaveSubscribeCache();
+            WpfConfigUtils.SaveSubscribeCache();
             res.obj = obj1;
             res.OK = true;
         }
@@ -109,7 +109,7 @@ internal static class SubscribeUtils
             { }
         }
         IsEdit = false;
-        ConfigUtils.SaveSubscribeCache();
+        WpfConfigUtils.SaveSubscribeCache();
     }
 
     /// <summary>
@@ -119,7 +119,7 @@ internal static class SubscribeUtils
     public static void Delete(string url)
     {
         DataSave.Subscribes.UrlList.Remove(url);
-        ConfigUtils.SaveSubscribe();
+        WpfConfigUtils.SaveSubscribe();
         SubscribeObj obj = null;
         foreach (var item in DataSave.SubscribeCache.Cache)
         {
@@ -131,7 +131,7 @@ internal static class SubscribeUtils
         if (obj != null)
         {
             DataSave.SubscribeCache.Cache.Remove(obj);
-            ConfigUtils.SaveSubscribeCache();
+            WpfConfigUtils.SaveSubscribeCache();
         }
     }
 

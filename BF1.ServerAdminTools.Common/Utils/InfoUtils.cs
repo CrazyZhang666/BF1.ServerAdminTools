@@ -185,8 +185,8 @@ public static class InfoUtils
     public static string GetCareerChsName(string input)
     {
         foreach (var item in CareerData.AllCareerInfo)
-        { 
-            if(item.ID == input)
+        {
+            if (item.ID == input)
             {
                 return item.Chinese;
             }
@@ -212,7 +212,7 @@ public static class InfoUtils
     /// </summary>
     /// <param name="input"></param>
     /// <returns></returns>
-    public static string GetMapChsName(string input) 
+    public static string GetMapChsName(string input)
     {
         foreach (var item in ServerMapData.AllMapInfo)
         {

@@ -3,7 +3,6 @@ using BF1.ServerAdminTools.Common.Utils;
 using BF1.ServerAdminTools.Wpf.Data;
 using BF1.ServerAdminTools.Wpf.Extension;
 using BF1.ServerAdminTools.Wpf.Models;
-using BF1.ServerAdminTools.Wpf.Utils;
 using BF1.ServerAdminTools.Wpf.Views;
 
 namespace BF1.ServerAdminTools.Wpf.TaskList;
@@ -233,8 +232,8 @@ internal static class TaskUpdatePlayerList
                     item.KD = Globals.PlayerDatas_Team2[item.PersonaId].KD.ToString("0.00");
                     item.KPM = Globals.PlayerDatas_Team2[item.PersonaId].KPM.ToString("0.00");
                     item.Score = Globals.PlayerDatas_Team2[item.PersonaId].Score;
-                    item.Career = DataSave.IsShowCHSWeaponName ? 
-                        Globals.PlayerDatas_Team2[item.PersonaId].CareerCH : 
+                    item.Career = DataSave.IsShowCHSWeaponName ?
+                        Globals.PlayerDatas_Team2[item.PersonaId].CareerCH :
                         Globals.PlayerDatas_Team2[item.PersonaId].Career;
                     item.WeaponS0 = DataSave.IsShowCHSWeaponName ?
                        Globals.PlayerDatas_Team2[item.PersonaId].WeaponS0CH :

@@ -240,7 +240,7 @@ public partial class RuleView
             }
         }
 
-        ConfigUtils.SaveRule();
+        WpfConfigUtils.SaveRule();
         TaskCheckNumber.Clear();
 
         MainWindow.SetOperatingState(1, "已设置限制组");
@@ -268,7 +268,7 @@ public partial class RuleView
             Name = name
         });
         DataSave.NowRule.WeaponNumbers.Add(namel, obj);
-        ConfigUtils.SaveRule();
+        WpfConfigUtils.SaveRule();
     }
     private void DeleteNumberList(object sender, RoutedEventArgs e)
     {
@@ -278,7 +278,7 @@ public partial class RuleView
         string namel = obj.Name.ToLower();
         if (DataSave.NowRule.WeaponNumbers.Remove(namel))
         {
-            ConfigUtils.SaveRule();
+            WpfConfigUtils.SaveRule();
         }
 
         NumberList.Items.Remove(obj);

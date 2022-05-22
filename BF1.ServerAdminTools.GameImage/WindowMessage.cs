@@ -1,6 +1,5 @@
 ﻿using BF1.ServerAdminTools.Common;
 using BF1.ServerAdminTools.Common.Hook;
-using System.Runtime.InteropServices;
 
 namespace BF1.ServerAdminTools.GameImage;
 

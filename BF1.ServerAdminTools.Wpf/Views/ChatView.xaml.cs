@@ -229,6 +229,6 @@ public partial class ChatView : UserControl
         DataSave.Config.Msg8 = defaultMsg[8];
         DataSave.Config.Msg9 = defaultMsg[9];
 
-        ConfigUtils.SaveConfig();
+        WpfConfigUtils.SaveConfig();
     }
 }

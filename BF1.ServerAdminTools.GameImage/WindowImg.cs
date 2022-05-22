@@ -1,6 +1,6 @@
 ﻿using BF1.ServerAdminTools.Common;
 using System.Drawing;
-using System.Runtime.InteropServices;
+using Image = System.Drawing.Image;
 
 namespace BF1.ServerAdminTools.GameImage;
 

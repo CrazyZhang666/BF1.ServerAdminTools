@@ -10,9 +10,68 @@ using DotNetty.Transport.Channels;
 using DotNetty.Transport.Channels.Sockets;
 using System.Collections.Concurrent;
 using System.Drawing.Imaging;
-using System.Text;
 
 namespace BF1.ServerAdminTools.Netty;
+
+public class NettyCore
+{
+    /// <summary>
+    /// 初始化配置文件
+    /// </summary>
+    public static void InitConfig()
+        => ConfigUtils.Init();
+    /// <summary>
+    /// 加载配置文件
+    /// </summary>
+    public static void LoadConfig()
+        => ConfigUtils.Load();
+    /// <summary>
+    /// 获取配置文件
+    /// </summary>
+    /// <returns></returns>
+    public static ConfigNettyObj GetConfig()
+        => ConfigUtils.Config;
+    /// <summary>
+    /// 保存配置文件
+    /// </summary>
+    /// <param name="obj"></param>
+    public static void SetConfig(ConfigNettyObj obj)
+        => ConfigUtils.Save(obj);
+    /// <summary>
+    /// 开启Netty服务器
+    /// </summary>
+    /// <returns></returns>
+    public static Task StartServer()
+        => NettyServer.Start();
+    /// <summary>
+    /// 停止Netty服务器
+    /// </summary>
+    /// <returns></returns>
+    public static Task StopServer()
+         => NettyServer.Stop();
+    /// <summary>
+    /// 发送数据给所有客户端
+    /// </summary>
+    /// <param name="buffer">数据</param>
+    public static void SendData(IByteBuffer buffer)
+        => NettyServer.SendPackToAll(buffer);
+    /// <summary>
+    /// 设置顶部回调
+    /// </summary>
+    /// <param name="call"></param>
+    public static void SendTopCall(Func<IByteBuffer, IByteBuffer> call)
+        => NettyServer.SetCallBack(call);
+    /// <summary>
+    /// 获取Netty服务器状态
+    /// </summary>
+    public static bool State
+    {
+        get
+        {
+            return NettyServer.State;
+        }
+    }
+}
 
 internal static class NettyServer
 {
@@ -75,7 +134,7 @@ internal static class NettyServer
     /// 发送数据到所有客户端
     /// </summary>
     /// <param name="buffer">数据</param>
-    public static void SendPackToAll(IByteBuffer buffer) 
+    public static void SendPackToAll(IByteBuffer buffer)
     {
         Task.Run(() =>
         {

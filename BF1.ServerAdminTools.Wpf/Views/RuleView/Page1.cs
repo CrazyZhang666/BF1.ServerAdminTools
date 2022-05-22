@@ -48,7 +48,7 @@ public partial class RuleView
 
         DataSave.Rules.Add(name.ToLower(), rule);
         RuleList.Items.Add(rule);
-        ConfigUtils.SaveRule(rule);
+        WpfConfigUtils.SaveRule(rule);
 
         LoadRule();
     }
@@ -95,7 +95,7 @@ public partial class RuleView
 
         DataSave.Rules.Remove(name);
         RuleList.Items.Remove(item);
-        ConfigUtils.DeleteRule(name);
+        WpfConfigUtils.DeleteRule(name);
 
         RuleList.SelectedItem = null;
     }
@@ -137,7 +137,7 @@ public partial class RuleView
         {
             DataSave.Config.MapRule.Add(map, name);
             MapRuleList.Items.Add(new MapRuleModel { Map = map, Name = rule.Name });
-            ConfigUtils.SaveConfig();
+            WpfConfigUtils.SaveConfig();
         }
 
         TaskMapRule.NeedPause = false;
@@ -151,7 +151,7 @@ public partial class RuleView
         TaskMapRule.NeedPause = true;
 
         DataSave.Config.MapRule.Remove(item.Map);
-        ConfigUtils.SaveConfig();
+        WpfConfigUtils.SaveConfig();
         MapRuleList.Items.Remove(item);
 
         TaskMapRule.NeedPause = false;
@@ -173,7 +173,7 @@ public partial class RuleView
 
         DataSave.Config.MapRule[map] = rule.Name.ToLower();
         item.Name = rule.Name;
-        ConfigUtils.SaveConfig();
+        WpfConfigUtils.SaveConfig();
 
         TaskMapRule.NeedPause = false;
     }
@@ -303,7 +303,7 @@ public partial class RuleView
 
         MainWindow.SetOperatingState(1, "应用当前规则成功，请点击<查询当前规则>检验规则是否正确");
 
-        ConfigUtils.SaveRule();
+        WpfConfigUtils.SaveRule();
     }
 
     private void QueryRuleClick(object sender, RoutedEventArgs e)

@@ -90,27 +90,34 @@ internal class TaskKick
     private static async ValueTask KickItem(KeyValuePair<long, BreakRuleInfo> item,
         CancellationToken state)
     {
-        if (state.IsCancellationRequested)
-            return;
-        if (NowKick.ContainsKey(item.Key))
-            return;
-
-        if (Globals.Server_AdminList.Contains(item.Key) ||
-            DataSave.NowRule.Custom_WhiteList.Contains(item.Value.Name))
-            return;
-
-        if (DataSave.Config.NettyBQ1)
+        try
         {
-            IByteBuffer buff = Unpooled.Buffer();
-            buff.WriteByte(127)
-                .WriteByte(60)
-                .WriteString(item.Value.Reason1);
-            NettyCore.SendData(buff);
-        }
+            if (state.IsCancellationRequested)
+                return;
+            if (NowKick.ContainsKey(item.Key))
+                return;
 
-        item.Value.Time = DateTime.Now;
-        await KickPlayer(item.Value);
-        NowKick.TryAdd(item.Key, item.Value);
+            if (Globals.Server_AdminList.Contains(item.Key) ||
+                DataSave.NowRule.Custom_WhiteList.Contains(item.Value.Name))
+                return;
+
+            if (DataSave.Config.NettyBQ1)
+            {
+                IByteBuffer buff = Unpooled.Buffer();
+                buff.WriteByte(127)
+                    .WriteByte(60)
+                    .WriteString(item.Value.Reason1);
+                NettyCore.SendData(buff);
+            }
+
+            item.Value.Time = DateTime.Now;
+            await KickPlayer(item.Value);
+            NowKick.TryAdd(item.Key, item.Value);
+        }
+        catch (Exception e)
+        {
+
+        }
     }
 
     private static async Task KickPlayer(BreakRuleInfo info)

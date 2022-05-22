@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using System.Windows.Interop;
+﻿using System.Windows.Interop;
 
 namespace BF1.ServerAdminTools.Wpf.Utils;
 

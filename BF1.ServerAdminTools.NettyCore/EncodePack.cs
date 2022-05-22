@@ -2,7 +2,6 @@
 using BF1.ServerAdminTools.Common.Data;
 using BF1.ServerAdminTools.Common.Utils;
 using DotNetty.Buffers;
-using System.Text;
 
 namespace BF1.ServerAdminTools.Netty;
 
