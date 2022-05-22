@@ -42,7 +42,7 @@ internal static class ConfigHelper
             string path = ConfigLocal.Log + @"\ErrorLog";
             Directory.CreateDirectory(path);
             path += $@"\#ErrorLog# {DateTime.Now:yyyyMMdd_HH-mm-ss_ffff}.log";
-            File.WriteAllText(path, "[Error]2.0.0运行出现错误" + Environment.NewLine + logContent);
+            File.WriteAllText(path, logContent);
         }
         catch (Exception) { }
     }

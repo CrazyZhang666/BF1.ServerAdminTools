@@ -78,6 +78,7 @@ internal static class NettyServer
     private static IEventLoopGroup bossGroup;
     private static IEventLoopGroup workerGroup;
     private static IChannel boundChannel;
+    private static ServerBootstrap bootstrap;
     private static Func<IByteBuffer, IByteBuffer>? TopCall;
     public static readonly ConcurrentDictionary<IChannelHandlerContext, bool> Contexts = new();
     public static bool State { get; private set; }
@@ -87,9 +88,11 @@ internal static class NettyServer
     /// <returns></returns>
     public static async Task Start()
     {
+        if (State)
+            return;
         bossGroup = new MultithreadEventLoopGroup(1);
         workerGroup = new MultithreadEventLoopGroup();
-        var bootstrap = new ServerBootstrap();
+        bootstrap = new ServerBootstrap();
 
         bootstrap
             .Group(bossGroup, workerGroup)
@@ -113,11 +116,16 @@ internal static class NettyServer
     /// <returns></returns>
     public static async Task Stop()
     {
+        foreach (var item in Contexts)
+        {
+            await item.Key.CloseAsync();
+        }
+        Contexts.Clear();
         if (boundChannel == null)
             return;
         boundChannel.Flush();
         await boundChannel.CloseAsync();
-        await boundChannel.DisconnectAsync();
+        await boundChannel.CloseCompletion;
         State = false;
     }
 
@@ -138,9 +146,16 @@ internal static class NettyServer
     {
         Task.Run(() =>
         {
-            foreach (var item in Contexts.Keys)
+            try
             {
-                item.WriteAndFlushAsync(buffer);
+                foreach (var item in Contexts.Keys)
+                {
+                    item.WriteAndFlushAsync(buffer);
+                }
+            }
+            catch (Exception e)
+            {
+                Core.WriteExceptionMsg(e);
             }
         });
     }
@@ -156,9 +171,9 @@ internal static class NettyServer
             }
         }
 
-        public override void ChannelUnregistered(IChannelHandlerContext context)
+        public override void ChannelInactive(IChannelHandlerContext context)
         {
-            base.ChannelUnregistered(context);
+            base.ChannelInactive(context);
             if (Contexts.ContainsKey(context))
             {
                 Contexts.TryRemove(context, out var item);
@@ -363,6 +378,7 @@ internal static class NettyServer
         {
             Console.WriteLine("Exception: " + exception);
             context.CloseAsync();
+            Contexts.TryRemove(context, out var temp);
         }
     }
 }
