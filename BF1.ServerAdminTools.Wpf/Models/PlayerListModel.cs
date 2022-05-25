@@ -18,7 +18,7 @@ public class PlayerListModel : ObservableObject, IComparable<PlayerListModel>
 
     ///////////////////////////////////////////////////////////////////////
 
-    private string _clan;
+    private string _clan = "";
     /// <summary>
     /// 玩家战队
     /// </summary>
@@ -28,7 +28,7 @@ public class PlayerListModel : ObservableObject, IComparable<PlayerListModel>
         set { _clan = value; OnPropertyChanged(); }
     }
 
-    private string _name;
+    private string _name = "";
     /// <summary>
     /// 玩家ID
     /// </summary>
@@ -48,7 +48,7 @@ public class PlayerListModel : ObservableObject, IComparable<PlayerListModel>
         set { _personaId = value; OnPropertyChanged(); }
     }
 
-    private string _squadId;
+    private string _squadId = "";
     /// <summary>
     /// 玩家小队ID
     /// </summary>
@@ -60,7 +60,7 @@ public class PlayerListModel : ObservableObject, IComparable<PlayerListModel>
 
     ///////////////////////////////////////////////////////////////////////
 
-    private string _admin;
+    private string _admin = "";
     /// <summary>
     /// 管理员
     /// </summary>
@@ -112,7 +112,7 @@ public class PlayerListModel : ObservableObject, IComparable<PlayerListModel>
         set { _dead = value; OnPropertyChanged(); }
     }
 
-    private string _kd;
+    private string _kd = "";
     /// <summary>
     /// KD
     /// </summary>
@@ -122,7 +122,7 @@ public class PlayerListModel : ObservableObject, IComparable<PlayerListModel>
         set { _kd = value; OnPropertyChanged(); }
     }
 
-    private string _kpm;
+    private string _kpm = "";
     /// <summary>
     /// KPM
     /// </summary>
@@ -144,7 +144,7 @@ public class PlayerListModel : ObservableObject, IComparable<PlayerListModel>
 
     ///////////////////////////////////////////////////////////////////////
 
-    private string _weaponS0;
+    private string _weaponS0 = "";
     /// <summary>
     /// 武器槽0
     /// </summary>
@@ -154,7 +154,7 @@ public class PlayerListModel : ObservableObject, IComparable<PlayerListModel>
         set { _weaponS0 = value; OnPropertyChanged(); }
     }
 
-    private string _weaponS1;
+    private string _weaponS1 = "";
     /// <summary>
     /// 武器槽1
     /// </summary>
@@ -164,7 +164,7 @@ public class PlayerListModel : ObservableObject, IComparable<PlayerListModel>
         set { _weaponS1 = value; OnPropertyChanged(); }
     }
 
-    private string _weaponS2;
+    private string _weaponS2 = "";
     /// <summary>
     /// 武器槽2
     /// </summary>
@@ -174,7 +174,7 @@ public class PlayerListModel : ObservableObject, IComparable<PlayerListModel>
         set { _weaponS2 = value; OnPropertyChanged(); }
     }
 
-    private string _weaponS3;
+    private string _weaponS3 = "";
     /// <summary>
     /// 武器槽3
     /// </summary>
@@ -184,7 +184,7 @@ public class PlayerListModel : ObservableObject, IComparable<PlayerListModel>
         set { _weaponS3 = value; OnPropertyChanged(); }
     }
 
-    private string _weaponS4;
+    private string _weaponS4 = "";
     /// <summary>
     /// 武器槽4
     /// </summary>
@@ -194,7 +194,7 @@ public class PlayerListModel : ObservableObject, IComparable<PlayerListModel>
         set { _weaponS4 = value; OnPropertyChanged(); }
     }
 
-    private string _weaponS5;
+    private string _weaponS5 = "";
     /// <summary>
     /// 武器槽5
     /// </summary>
@@ -204,7 +204,7 @@ public class PlayerListModel : ObservableObject, IComparable<PlayerListModel>
         set { _weaponS5 = value; OnPropertyChanged(); }
     }
 
-    private string _weaponS6;
+    private string _weaponS6 = "";
     /// <summary>
     /// 武器槽6
     /// </summary>
@@ -214,7 +214,7 @@ public class PlayerListModel : ObservableObject, IComparable<PlayerListModel>
         set { _weaponS6 = value; OnPropertyChanged(); }
     }
 
-    private string _weaponS7;
+    private string _weaponS7 = "";
     /// <summary>
     /// 武器槽0
     /// </summary>
@@ -224,7 +224,7 @@ public class PlayerListModel : ObservableObject, IComparable<PlayerListModel>
         set { _weaponS7 = value; OnPropertyChanged(); }
     }
 
-    private string _career;
+    private string _career = "";
     /// <summary>
     /// 职业
     /// </summary>
@@ -234,8 +234,10 @@ public class PlayerListModel : ObservableObject, IComparable<PlayerListModel>
         set { _career = value; OnPropertyChanged(); }
     }
 
-    public int CompareTo(PlayerListModel other)
+    public int CompareTo(PlayerListModel? other)
     {
-        return other.Score.CompareTo(this.Score);
+        if (other == null)
+            return 0;
+        return other.Score.CompareTo(Score);
     }
 }

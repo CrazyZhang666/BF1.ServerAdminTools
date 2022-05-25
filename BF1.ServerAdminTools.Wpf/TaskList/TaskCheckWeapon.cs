@@ -4,7 +4,7 @@ using BF1.ServerAdminTools.Wpf.Data;
 
 namespace BF1.ServerAdminTools.Wpf.TaskList;
 
-class TaskCheckWeapon
+internal static class TaskCheckWeapon
 {
     public static bool NeedPause;
     public const int MaxKick = 5;
@@ -126,23 +126,14 @@ class TaskCheckWeapon
 
     private static void WeaponCheck(PlayerData data)
     {
-        if (TaskKick.IsHave(data.PersonaId))
+        if (TaskKick.IsHave(data.PersonaId) || IsEmpty(data) || data.InCar)
         {
             WeaponCheckCount.Remove(data.PersonaId);
             return;
         }
 
-        if (IsEmpty(data))
-        {
-            return;
-        }
-
         if (data.Career == CareerData.SENTRY.ID)
         {
-            if (data.InCar)
-            {
-                return;
-            }
             string[] temp = WeaponLock[CareerData.SENTRY.ID + "1"];
             string[] temp1 = WeaponLock[CareerData.SENTRY.ID + "2"];
             string[] temp2 = WeaponLockName[CareerData.SENTRY.ID + "1"];
@@ -182,10 +173,6 @@ class TaskCheckWeapon
         }
         else if (data.Career == CareerData.TANKER.ID)
         {
-            if (data.InCar)
-            {
-                return;
-            }
             string[] temp = WeaponLock[CareerData.TANKER.ID];
             string[] temp1 = WeaponLockName[CareerData.TANKER.ID];
             if (data.WeaponS2 != temp[2]
@@ -231,10 +218,6 @@ class TaskCheckWeapon
         }
         else if (data.Career == CareerData.PILOT.ID)
         {
-            if (data.InCar)
-            {
-                return;
-            }
             string[] temp = WeaponLock[CareerData.PILOT.ID];
             string[] temp1 = WeaponLockName[CareerData.PILOT.ID];
             if (data.WeaponS2 != temp[2]
@@ -280,10 +263,6 @@ class TaskCheckWeapon
         }
         else if (data.Career == CareerData.CAVALRY.ID)
         {
-            if (data.InCar)
-            {
-                return;
-            }
             string[] temp = WeaponLock[CareerData.CAVALRY.ID];
             string[] temp1 = WeaponLockName[CareerData.CAVALRY.ID];
             if (data.WeaponS0 != temp[0]
@@ -321,10 +300,6 @@ class TaskCheckWeapon
         }
         else if (data.Career == CareerData.FLAMETHROWER.ID)
         {
-            if (data.InCar)
-            {
-                return;
-            }
             string[] temp = WeaponLock[CareerData.FLAMETHROWER.ID];
             string[] temp1 = WeaponLockName[CareerData.FLAMETHROWER.ID];
             if (data.WeaponS0 != temp[0]
@@ -354,10 +329,6 @@ class TaskCheckWeapon
         }
         else if (data.Career == CareerData.ANTITANK.ID)
         {
-            if (data.InCar)
-            {
-                return;
-            }
             string[] temp = WeaponLock[CareerData.ANTITANK.ID];
             string[] temp1 = WeaponLockName[CareerData.ANTITANK.ID];
             if (data.WeaponS0 != temp[0]
@@ -387,10 +358,6 @@ class TaskCheckWeapon
         }
         else if (data.Career == CareerData.RUNNER.ID)
         {
-            if (data.InCar)
-            {
-                return;
-            }
             string[] temp = WeaponLock[CareerData.RUNNER.ID];
             string[] temp1 = WeaponLockName[CareerData.RUNNER.ID];
             if (data.WeaponS0 != temp[0]
@@ -420,10 +387,6 @@ class TaskCheckWeapon
         }
         else if (data.Career == CareerData.RAIDER.ID)
         {
-            if (data.InCar)
-            {
-                return;
-            }
             string[] temp = WeaponLock[CareerData.RAIDER.ID];
             string[] temp1 = WeaponLockName[CareerData.RAIDER.ID];
             if (data.WeaponS0 != temp[0]
@@ -453,36 +416,8 @@ class TaskCheckWeapon
         }
         else if (data.Career == CareerData.ASSAULT.ID)
         {
-            if (data.InCar)
-            {
-                return;
-            }
-            string[] temp = WeaponLock[CareerData.RAIDER.ID];
-            string[] temp1 = WeaponLockName[CareerData.RAIDER.ID];
-            if (data.WeaponS0 != temp[0]
-                || data.WeaponS1 != temp[1]
-                || data.WeaponS2 != temp[2]
-                || data.WeaponS3 != temp[3]
-                || data.WeaponS4 != temp[4]
-                || data.WeaponS5 != temp[5]
-                || data.WeaponS6 != temp[6]
-                || data.WeaponS7 != temp[7])
-            {
-                if (RunKick(data, $"玩家武器错误\n" +
-                    $"兵种：{data.CareerCH}\n" +
-                    $"武器栏：默认 -> 玩家\n" +
-                    $"{temp1[0]} -> {data.WeaponS0CH}\n" +
-                    $"{temp1[1]} -> {data.WeaponS1CH}\n" +
-                    $"{temp1[2]} -> {data.WeaponS2CH}\n" +
-                    $"{temp1[3]} -> {data.WeaponS3CH}\n" +
-                    $"{temp1[4]} -> {data.WeaponS4CH}\n" +
-                    $"{temp1[5]} -> {data.WeaponS5CH}\n" +
-                    $"{temp1[6]} -> {data.WeaponS6CH}\n" +
-                    $"{temp1[7]} -> {data.WeaponS7CH}"))
-                {
-                    return;
-                }
-            }
+            
+            
         }
     }
 

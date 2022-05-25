@@ -61,17 +61,18 @@ public partial class AuthWindow : Window
 
             bool isNew = false;
 
-            try
-            {
-                UpdateState("正在检测版本更新...");
-                Core.LogInfo($"正在检测版本更新...");
-                Update(ref isNew);
-            }
-            catch (Exception ex)
-            {
-                UpdateState("软件更新服务器链接失败");
-                Task.Delay(2000).Wait();
-            }
+            //try
+            //{
+            //    UpdateState("正在检测版本更新...");
+            //    Core.LogInfo($"正在检测版本更新...");
+            //    Update(ref isNew);
+            //}
+            //catch (Exception ex)
+            //{
+            //    Core.WriteExceptionMsg(ex);
+            //    UpdateState("软件更新服务器链接失败");
+            //    Task.Delay(2000).Wait();
+            //}
 
             if (!isNew)
                 Application.Current.Dispatcher.BeginInvoke(() =>

@@ -42,6 +42,7 @@ internal class TaskMapRule
                     continue;
 
                 TaskCheckRule.NeedPause = true;
+                TaskCheckWeapon.NeedPause = true;
                 TaskCheckNumber.NeedPause = true;
 
                 if (DataSave.Rules.TryGetValue(item, out var item1))
@@ -51,6 +52,7 @@ internal class TaskMapRule
                 }
 
                 TaskCheckRule.NeedPause = false;
+                TaskCheckWeapon.NeedPause = false;
                 TaskCheckNumber.NeedPause = false;
             }
         }

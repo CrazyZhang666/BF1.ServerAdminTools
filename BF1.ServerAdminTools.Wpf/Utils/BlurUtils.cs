@@ -1,6 +1,4 @@
-﻿using System.Windows.Interop;
-
-namespace BF1.ServerAdminTools.Wpf.Utils;
+﻿namespace BF1.ServerAdminTools.Wpf.Utils;
 
 public class BlurUtils
 {

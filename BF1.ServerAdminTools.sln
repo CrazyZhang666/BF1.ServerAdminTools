@@ -9,11 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BF1.ServerAdminTools.SDK", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BF1.ServerAdminTools.Test", "BF1.ServerAdminTools.Test\BF1.ServerAdminTools.Test.csproj", "{E10F731C-E5F0-4711-A75A-240AA4E5A3AC}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "BF1.ServerAdminTools.Netty", "BF1.ServerAdminTools.NettyCore\BF1.ServerAdminTools.Netty.shproj", "{E9644F89-063E-48D9-A6FC-3AC7FF6F7771}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BF1.ServerAdminTools.GameImage", "BF1.ServerAdminTools.GameImage\BF1.ServerAdminTools.GameImage.csproj", "{963DFC8E-09D6-4C01-B15A-082D012DD5BE}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "BF1.ServerAdminTools.GameImage", "BF1.ServerAdminTools.GameImage\BF1.ServerAdminTools.GameImage.shproj", "{DED667E7-C678-4794-A326-248CD1CB5AD9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BF1.ServerAdminTools.Common", "BF1.ServerAdminTools.Common\BF1.ServerAdminTools.Common.csproj", "{A16F679A-C046-47FC-B640-5CEFAD627A22}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "BF1.ServerAdminTools.Common", "BF1.ServerAdminTools.Common\BF1.ServerAdminTools.Common.shproj", "{E8B81A1A-3612-4C75-81CF-C7AAE3E04487}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BF1.ServerAdminTools.NettyCore", "BF1.ServerAdminTools.NettyCore\BF1.ServerAdminTools.NettyCore.csproj", "{66356B3D-957B-44DC-A46E-C08E52DF96E6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,19 +33,23 @@ Global
 		{E10F731C-E5F0-4711-A75A-240AA4E5A3AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E10F731C-E5F0-4711-A75A-240AA4E5A3AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E10F731C-E5F0-4711-A75A-240AA4E5A3AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{963DFC8E-09D6-4C01-B15A-082D012DD5BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{963DFC8E-09D6-4C01-B15A-082D012DD5BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{963DFC8E-09D6-4C01-B15A-082D012DD5BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{963DFC8E-09D6-4C01-B15A-082D012DD5BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A16F679A-C046-47FC-B640-5CEFAD627A22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A16F679A-C046-47FC-B640-5CEFAD627A22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A16F679A-C046-47FC-B640-5CEFAD627A22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A16F679A-C046-47FC-B640-5CEFAD627A22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66356B3D-957B-44DC-A46E-C08E52DF96E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66356B3D-957B-44DC-A46E-C08E52DF96E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66356B3D-957B-44DC-A46E-C08E52DF96E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66356B3D-957B-44DC-A46E-C08E52DF96E6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E1F2F23E-1913-49E7-8A40-CB6E5F3C1A39}
-	EndGlobalSection
-	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		BF1.ServerAdminTools.Common\BF1.ServerAdminTools.Common.projitems*{50d29357-28d3-4017-ad13-387643f2cf58}*SharedItemsImports = 5
-		BF1.ServerAdminTools.GameImage\BF1.ServerAdminTools.GameImage.projitems*{50d29357-28d3-4017-ad13-387643f2cf58}*SharedItemsImports = 5
-		BF1.ServerAdminTools.NettyCore\BF1.ServerAdminTools.NettyCore.projitems*{50d29357-28d3-4017-ad13-387643f2cf58}*SharedItemsImports = 5
-		BF1.ServerAdminTools.GameImage\BF1.ServerAdminTools.GameImage.projitems*{ded667e7-c678-4794-a326-248cd1cb5ad9}*SharedItemsImports = 13
-		BF1.ServerAdminTools.Common\BF1.ServerAdminTools.Common.projitems*{e8b81a1a-3612-4c75-81cf-c7aae3e04487}*SharedItemsImports = 13
-		BF1.ServerAdminTools.NettyCore\BF1.ServerAdminTools.NettyCore.projitems*{e9644f89-063e-48d9-a6fc-3ac7ff6f7771}*SharedItemsImports = 13
 	EndGlobalSection
 EndGlobal

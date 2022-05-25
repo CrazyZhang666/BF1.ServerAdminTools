@@ -18,4 +18,6 @@ global using System.Windows.Input;
 global using System.Windows.Media;
 global using System.Windows.Navigation;
 global using System.Windows.Threading;
+global using System.Runtime.InteropServices;
+global using System.Windows.Interop;
 global using Timer = System.Timers.Timer;

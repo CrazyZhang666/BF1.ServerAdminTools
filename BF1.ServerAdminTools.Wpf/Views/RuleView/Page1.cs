@@ -472,6 +472,7 @@ public partial class RuleView
         builder.AppendLine("正在检查玩家");
 
         TasCheckPlayerLifeData.NeedPause = true;
+        TaskCheckWeapon.NeedPause = true;
         TaskCheckRule.NeedPause = true;
         TaskCheckNumber.NeedPause = true;
 
@@ -513,6 +514,7 @@ public partial class RuleView
 
         TasCheckPlayerLifeData.NeedPause = false;
         TaskCheckNumber.NeedPause = false;
+        TaskCheckWeapon.NeedPause = false;
         TaskCheckRule.NeedPause = false;
 
         int index = 1;

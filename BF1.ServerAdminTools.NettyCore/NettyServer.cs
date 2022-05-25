@@ -1,15 +1,12 @@
 ﻿using BF1.ServerAdminTools.Common;
 using BF1.ServerAdminTools.Common.API.BF1Server;
 using BF1.ServerAdminTools.Common.Data;
-using BF1.ServerAdminTools.GameImage;
 using DotNetty.Buffers;
 using DotNetty.Codecs;
 using DotNetty.Handlers.Logging;
 using DotNetty.Transport.Bootstrapping;
 using DotNetty.Transport.Channels;
 using DotNetty.Transport.Channels.Sockets;
-using System.Collections.Concurrent;
-using System.Drawing.Imaging;
 
 namespace BF1.ServerAdminTools.Netty;
 
@@ -343,21 +340,6 @@ internal static class NettyServer
                             buff.WriteBoolean(true);
                             var result3 = await ServerAPI.AdminMovePlayer(player.PersonaId.ToString(), player.TeamID.ToString());
                             buff.WriteBoolean(result3.IsSuccess);
-                            break;
-                        //获取屏幕游戏截图
-                        case 13:
-                            buff.WriteByte(13);
-                            if (!Globals.IsGameRun || !Globals.IsToolInit)
-                            {
-                                buff.WriteBoolean(false);
-                                break;
-                            }
-                            var img = GameWindowImg.GetWindow();
-                            MemoryStream stream = new();
-                            img.Save(stream, ImageFormat.Png);
-                            var data = stream.ToArray();
-                            buff.WriteInt(data.Length);
-                            buff.WriteBytes(data, 0, data.Length);
                             break;
                         //顶层回调
                         case 127:
