@@ -27,11 +27,6 @@ public partial class CustomKickWindow : Window
 
         var reason = ChsUtils.ToTraditionalChinese(TextBox_CustomReason.Text.Trim());
 
-        if (reason == "@Kick")
-        {
-            reason = "ADMINPRIORITY";
-        }
-
         var result = await ServerAPI.AdminKickPlayer(PersonaId, reason);
 
         if (result.IsSuccess)

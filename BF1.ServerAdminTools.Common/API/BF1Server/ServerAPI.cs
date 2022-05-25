@@ -161,6 +161,13 @@ public static class ServerAPI
         Stopwatch sw = new();
         sw.Start();
 
+        //防止权限服
+        if (reason == "ADMINPRIORITY")
+        {
+            reason = "Kick";
+        }
+        reason = $"BFTool:{reason}";
+
         RespContent<object> respContent = new();
 
         try

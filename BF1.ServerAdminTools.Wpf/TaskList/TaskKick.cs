@@ -122,7 +122,7 @@ internal class TaskKick
 
     private static async Task KickPlayer(BreakRuleInfo info)
     {
-        var result = await ServerAPI.AdminKickPlayer(info.PersonaId.ToString(), $"Tools:{info.Reason}");
+        var result = await ServerAPI.AdminKickPlayer(info.PersonaId.ToString(), info.Reason);
 
         if (result.IsSuccess)
         {
